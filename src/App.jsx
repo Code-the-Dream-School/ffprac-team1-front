@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { getAllData } from './util/index';
+import LandingPage from './components/Layout/LandingPage.jsx';
 import './App.css';
 
 const URL = 'http://localhost:8000/api/v1/';
@@ -47,7 +48,7 @@ function App() {
         </ul>
       </nav>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
@@ -62,12 +63,6 @@ function App() {
     </BrowserRouter>
   );
 }
-
-const Home = () => (
-  <div>
-    <h1>This is home/welcome page.</h1>
-  </div>
-);
 
 const Projects = () => (
   <div>
