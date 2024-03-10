@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { getAllData } from './util/index';
 import LandingPage from './components/Layout/LandingPage.jsx';
+import Nav from './components/Layout/Nav.jsx'; 
 import './App.css';
 
 const URL = 'http://localhost:8000/api/v1/';
@@ -27,26 +28,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <nav>
-      <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/projects">Browse Projects</Link></li>
-        {!isLoggedIn && 
-          <li>
-            <Link to="/register">Join Now</Link>
-          </li>}
-          {!isLoggedIn ? (
-            <li><Link to="/login">Sign In</Link></li>
-          ) : (
-            <>
-              <li><Link to="/messaging">Messaging</Link></li>
-              <li><Link to="/notification">Notification</Link></li>
-              <li><Link to="/profile">Profile</Link></li>
-              <li><Link to="/">Sign Out</Link></li>
-            </>
-          )}
-        </ul>
-      </nav>
+      <Nav isLoggedIn={isLoggedIn} />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
