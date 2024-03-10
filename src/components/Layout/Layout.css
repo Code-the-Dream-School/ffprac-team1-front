@@ -26,7 +26,7 @@ body {
 #box2 {
     flex: 30;
     font-size: 1vw;
-    margin-top: 12vh;
+    margin-top: 8vh;
     text-align: center;
 }
 
@@ -42,10 +42,12 @@ body {
     border: none;
     border-radius: 5px;
     cursor:text;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
 }
 
 .signInOnLandingPage {
-    width: 21vw;
+    width: 21.5vw;
     margin-top: 2vh;
     padding: 10px;
     background-color: #4CAF50;
