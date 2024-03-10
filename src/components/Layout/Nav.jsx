@@ -7,8 +7,14 @@ const Nav = ({ isLoggedIn }) => {
     <div className="header">
       <nav className="leftMenu">
         <ul>
-          <img src="./images/logo.svg" alt="logo" />
-          <li className="projectName"><Link to="/">DevConnection</Link></li>
+          <li className="projectLogo">
+            <Link to="/">
+              <img src="./images/logo.svg" alt="logo" />
+            </Link>
+          </li>
+          <li className="projectName">
+            <Link to="/">DevConnection</Link>
+          </li>
         </ul>
       </nav>
       <nav className="rightMenu">

@@ -1,32 +1,28 @@
 /* Nav */
 
-img {
-    width: 25%;
-    height: 25%;
-}
-  
 .header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    font-size: 1.5vw;
-}
-  
-.projectName{
-    margin: 0.5vw;
+    align-items: normal;
+    font-size: 1.3vw;
+    margin-left: 1vw;
 }
 
 ul {
     list-style: none;
     display: flex;
-    margin: 0vh;
-    padding: 0vw;
-    margin-top: 0.5vh;
-    margin-left: 1vw;
+    padding: 0vh;
+    margin: 0.5vw;
 }
   
-li {
+.leftMenu li {
+    margin-right: 1vw;
+    font-size: 2vw;
+}
+
+.rightMenu li {
     margin-right: 3vw;
+    padding: 1vh;
 }
   
 li:last-child {
