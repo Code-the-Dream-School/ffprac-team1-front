@@ -1,3 +1,5 @@
+/* LandingPage */
+
 body {
     background-color: black;
     color: white;
@@ -42,7 +44,7 @@ body {
     cursor:text;
 }
 
-button {
+.signInOnLandingPage {
     width: 21vw;
     margin-top: 2vh;
     padding: 10px;
@@ -53,15 +55,9 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+.signInOnLandingPage:hover {
     background-color: #45a049;
 }
 h6 {
     text-align: center;
-}
-
-img {
-    width: 2.5%;
-    height: 2.5%; ;
-   margin-top: 1vh;
 }

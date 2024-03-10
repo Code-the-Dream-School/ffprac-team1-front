@@ -1,0 +1,39 @@
+/* Nav */
+
+img {
+    width: 25%;
+    height: 25%;
+}
+  
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5vw;
+}
+  
+.projectName{
+    margin: 0.5vw;
+}
+
+ul {
+    list-style: none;
+    display: flex;
+    margin: 0vh;
+    padding: 0vw;
+    margin-top: 0.5vh;
+    margin-left: 1vw;
+}
+  
+li {
+    margin-right: 3vw;
+}
+  
+li:last-child {
+    margin-right: 1vw;
+}
+  
+li a {
+    text-decoration: none;
+    color: white;
+}

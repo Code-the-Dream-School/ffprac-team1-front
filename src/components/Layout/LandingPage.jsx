@@ -16,7 +16,7 @@ const LandingPage = () => (
           <input type="text" className="landingPage-input" placeholder="Email or username"></input> <br />
           Password: <br />
           <input type="text" className="landingPage-input" placeholder="Password"></input> <br />
-          <button>Sign In</button>
+          <button className="signInOnLandingPage">Sign In</button>
           <h6>Don't have an account? <a href="/register">Sign Up</a></h6>
         </div>
       </div>
