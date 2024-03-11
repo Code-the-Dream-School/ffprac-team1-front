@@ -13,7 +13,7 @@ const Nav = ({ isLoggedIn }) => {
             </Link>
           </li>
           <li className="projectName">
-            <Link to="/">DevConnection</Link>
+            <Link to="/">dev.connect</Link>
           </li>
         </ul>
       </nav>
