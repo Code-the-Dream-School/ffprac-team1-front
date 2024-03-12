@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { getAllData } from './util/index';
 import LandingPage from './components/Layout/LandingPage.jsx';
+import ProjectsList from './components/Project/ProjectsList.jsx';
 import Nav from './components/Layout/Nav.jsx'; 
 import './App.css';
 
@@ -19,7 +20,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/create-profile" element={<CreateProfile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
-        <Route path="/projects" element={<Projects />} />
+        <Route path="/projects" element={<ProjectsList />} />
         <Route path="/user-projects" element={<UserProjects />} />
         <Route path="/create-project" element={<CreateProject />} />
         <Route path="/messaging" element={<Messaging />} />
@@ -29,11 +30,7 @@ function App() {
   );
 }
 
-const Projects = () => (
-  <div>
-    <h1>Here you can browse list of all projects.</h1>
-  </div>
-);
+
 
 const Login = ( {setIsLoggedIn} ) => {
   const navigate = useNavigate();

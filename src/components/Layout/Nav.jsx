@@ -25,6 +25,7 @@ const Nav = ({ isLoggedIn }) => {
           <li><Link to="/login">Sign In</Link></li>
         ) : (
           <>
+            <input type="text" className="searchNav" placeholder="Search Projects"></input>
             <li><Link to="/messaging">Messaging</Link></li>
             <li><Link to="/notification">Notification</Link></li>
             <li><Link to="/profile">Profile</Link></li>
