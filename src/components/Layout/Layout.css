@@ -9,7 +9,6 @@ body {
 
 .container {
     display: flex;
-    padding-top: 10vh;
     padding-bottom: 7vh;
 }
 
@@ -26,7 +25,7 @@ body {
 #box2 {
     flex: 30;
     font-size: 1vw;
-    margin-top: 8vh;
+    margin-top: 15vh;
     text-align: center;
 }
 
@@ -62,4 +61,11 @@ body {
 }
 h6 {
     text-align: center;
+}
+
+h3 {
+    margin: 0;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center; 
 }

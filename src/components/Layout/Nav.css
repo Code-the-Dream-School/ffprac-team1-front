@@ -33,3 +33,11 @@ li a {
     text-decoration: none;
     color: white;
 }
+
+.responsive-logo {
+    width: 3vw;
+    height: auto;
+    max-width: 100%;
+    display: block;
+    margin: 0 auto;
+}

@@ -9,7 +9,7 @@ const Nav = ({ isLoggedIn }) => {
         <ul>
           <li className="projectLogo">
             <Link to="/">
-              <img src="./images/logo.svg" alt="logo" />
+              <img src="./images/logo.svg" alt="logo" className="responsive-logo"/>
             </Link>
           </li>
           <li className="projectName">
@@ -19,7 +19,6 @@ const Nav = ({ isLoggedIn }) => {
       </nav>
       <nav className="rightMenu">
       <ul>
-        <li><Link to="/projects">Browse Projects</Link></li>
         {!isLoggedIn && 
         <li><Link to="/register">Join Now</Link></li>}
         {!isLoggedIn ? (
