@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // import { getAllData } from './util/index';
+
 import LandingPage from './components/Layout/LandingPage.jsx';
 import Nav from './components/Layout/Nav.jsx'; 
 import Login from './components/Authentification/Login.jsx';
@@ -17,9 +18,9 @@ import './App.css';
 
 
 function App() {
-  
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
+
   return (
     <BrowserRouter>
       <Nav isLoggedIn={isLoggedIn} />
