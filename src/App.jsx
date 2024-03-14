@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-do
 import { getAllData } from './util/index';
 import LandingPage from './components/Layout/LandingPage.jsx';
 import Nav from './components/Layout/Nav.jsx'; 
+// import Profile  from './components/Layout/ProfilePage.jsx'; 
+import Home  from './components/Layout/HomePage.jsx'; 
 import './App.css';
 
 const URL = 'http://localhost:8000/api/v1/';
@@ -33,6 +35,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/create-profile" element={<CreateProfile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
@@ -55,7 +58,7 @@ const Projects = () => (
 const Login = ( {setIsLoggedIn} ) => {
   const navigate = useNavigate();
   setIsLoggedIn(true);
-  navigate('/profile');
+  navigate('/home');
 
   return (
     <div>
@@ -66,6 +69,13 @@ const Login = ( {setIsLoggedIn} ) => {
     </div>
   );
 };
+
+// const Home = () => (
+//   <div>
+//     <h1>Here is your deshboard</h1>
+//   </div>
+// );
+
 
 const Register = () => {
   const navigate = useNavigate();

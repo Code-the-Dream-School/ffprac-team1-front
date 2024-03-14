@@ -1,38 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Nav.css';
+
+
 
 const Nav = ({ isLoggedIn }) => {
   return (
-    <div className="header">
-      <nav className="leftMenu">
-        <ul>
-          <li className="projectLogo">
-            <Link to="/">
-              <img src="./images/logo.svg" alt="logo" />
-            </Link>
-          </li>
-          <li className="projectName">
-            <Link to="/">DevConnection</Link>
-          </li>
-        </ul>
-      </nav>
-      <nav className="rightMenu">
-      <ul>
-        <li><Link to="/projects">Browse Projects</Link></li>
-        {!isLoggedIn && 
-        <li><Link to="/register">Join Now</Link></li>}
+    <div className="bg-black p-4 flex flex-row justify-between">
+      <div className="flex flex-row items-center pl-2">
+        <Link to="/"> <img src="./images/logo.svg" alt="logo" /></Link>
+        <Link to="/" className="text-2xl pl-2 font-bold">DevConnexion</Link>
+      </div>
+      <nav className="flex flex-row pr-4 pt-2">
+        {/* <div className="pr-4"><Link to="/projects">Browse Projects</Link></div> */}
         {!isLoggedIn ? (
-          <li><Link to="/login">Sign In</Link></li>
-        ) : (
           <>
-            <li><Link to="/messaging">Messaging</Link></li>
-            <li><Link to="/notification">Notification</Link></li>
-            <li><Link to="/profile">Profile</Link></li>
-            <li><Link to="/">Sign Out</Link></li>
+          <div className="pr-4"><Link to="/register">Join Now</Link></div>
+          <div className="pr-4"><Link to="/login">Sign In</Link></div>
           </>
-        )}
-      </ul>
+          ) : (
+            <>
+              <div className="pr-4"> <Link to="/messaging">Messaging</Link> </div>
+              <div className="pr-4"> <Link to="/notification">Notification</Link> </div>
+              <div className="pr-4"> <Link to="/Profile">Profile</Link> </div>
+              <div className="pr-4"> <Link to="/">Sign Out</Link> </div>
+            </>
+          )}
       </nav>
     </div>
   );
