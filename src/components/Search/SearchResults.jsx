@@ -19,7 +19,15 @@ const SearchResults = () => {
             }
             const response = await fetch(`http://localhost:8000/api/v1/projects?search=${encodeURIComponent(searchQuery)}`);
             const data = await response.json();
-            setSearchResults(data.data);
+
+            const sortedResults = data.data.sort((a, b) => {
+               const missingWordsA = a.missingWords ? a.missingWords.length : 0;
+               const missingWordsB = b.missingWords ? b.missingWords.length : 0;
+               
+               return missingWordsA - missingWordsB;
+            });
+
+            setSearchResults(sortedResults);
             setLoading(false);
          } catch (error) {
             console.error('Error:', error);
