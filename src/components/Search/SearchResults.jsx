@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Search from './SearchBar';
 import { useLocation } from 'react-router-dom';
 import './Search.css';
 
@@ -27,6 +28,7 @@ const SearchResults = () => {
 
    return (
       <div className="searchResults">
+         <Search />
          <h2>Search Results: {searchQuery}</h2>
          <ul className="container">
             {searchResults.map((item, index) => (
