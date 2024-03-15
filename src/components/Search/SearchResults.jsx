@@ -35,7 +35,7 @@ const SearchResults = () => {
                      <h3>{item.title}</h3>
                      <p>Description: {item.description}</p>
                      <p>Status: {item.status}</p>
-                     <p>Technologies: {item.technologies && item.technologies.frontend.join(', ')}</p>
+                     <p>Technologies: {renderTechnologies(item.technologies)}</p>
                      <p>Roles Needed: {item.rolesNeeded && item.rolesNeeded.join(', ')}</p>
                   </li>
                )
@@ -43,6 +43,17 @@ const SearchResults = () => {
          </ul>
       </div>
    );
+};
+
+const renderTechnologies = (technologies) => {
+   if (!technologies) return null;
+
+   const allTech = [];
+   for (const type in technologies) {
+      allTech.push(...technologies[type]);
+   }
+
+   return allTech.join(', ');
 };
 
 export default SearchResults;
