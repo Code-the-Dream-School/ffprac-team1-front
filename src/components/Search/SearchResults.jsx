@@ -29,16 +29,18 @@ const SearchResults = () => {
       <div className="searchResults">
          <h2>Search Results: {searchQuery}</h2>
          <ul className="container">
-            {searchResults.map(item => (
-               item.status !== 'Completed' && (
+            {searchResults.map((item, index) => (
+               item.status !== 'Completed' && index < 10 && (
                   <li key={item._id}>
-                     <h3>{item.title}</h3>
-                     <p>Description: {item.description}</p>
-                     <p>Status: {item.status}</p>
-                     <p>Technologies: {renderTechnologies(item.technologies)}</p>
-                     <p>Roles Needed: {item.rolesNeeded && item.rolesNeeded.join(', ')}</p>
+                     <div className="projectBox">
+                        <h3>{item.title}</h3>
+                        <p>Technologies:</p>
+                        <ul>{renderTechnologies(item.technologies)}</ul>
+                        <p className="projectStatus">{item.status}</p>
+                        <p>See details...</p>
+                     </div>
                      {item.missingWords && item.missingWords.length > 0 && (
-                        <p>Missing Words: <span style={{textDecoration: 'line-through'}}>{item.missingWords.join(', ')}</span></p>
+                        <p className="missingWords"><em>Missing Words: <span style={{textDecoration: 'line-through'}}>{item.missingWords.join(', ')}</span></em></p>
                      )}
                   </li>
                )
@@ -56,7 +58,17 @@ const renderTechnologies = (technologies) => {
       allTech.push(...technologies[type]);
    }
 
-   return allTech.join(', ');
+   const displayedTech = allTech.slice(0, 4);
+   const etcTechCount = allTech.length - displayedTech.length;
+
+   return (
+      <div>
+         {displayedTech.map((tech, index) => (
+            <li key={index}>• {tech}</li>
+         ))}
+         {etcTechCount > 0 && <li>etc. ({etcTechCount} more)</li>}
+      </div>
+   );
 };
 
 export default SearchResults;
