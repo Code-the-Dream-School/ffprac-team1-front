@@ -11,7 +11,7 @@ const SearchResults = () => {
       const fetchData = async () => {
          try {
             if (!searchQuery) {
-                setSearchResults([]);
+               setSearchResults([]);
                return;
             }
             const response = await fetch(`http://localhost:8000/api/v1/projects?search=${encodeURIComponent(searchQuery)}`);
@@ -37,6 +37,9 @@ const SearchResults = () => {
                      <p>Status: {item.status}</p>
                      <p>Technologies: {renderTechnologies(item.technologies)}</p>
                      <p>Roles Needed: {item.rolesNeeded && item.rolesNeeded.join(', ')}</p>
+                     {item.missingWords && item.missingWords.length > 0 && (
+                        <p>Missing Words: <span style={{textDecoration: 'line-through'}}>{item.missingWords.join(', ')}</span></p>
+                     )}
                   </li>
                )
             ))}
