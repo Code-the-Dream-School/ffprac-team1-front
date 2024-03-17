@@ -3,8 +3,50 @@
     padding: 10px;
     border: none;
     border-radius: 5px;
-    cursor:text;
+    cursor: text;
     margin: auto;
     margin-top: 11.5vh;
     display: block;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    font-size: 1.4vh;
+}
+
+.projectBox {
+    width: 18vw;
+    height: 23vh;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+.projectStatus {
+    text-align: center;
+}
+
+.missingWords {
+    text-align: right;
+}
+
+@media screen and (min-width: 768px) {
+    .projectBox {
+        flex: 0 1 calc(33.33% - 10px);
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .projectBox {
+        flex: 0 1 calc(25% - 10px);
+    }
 }
