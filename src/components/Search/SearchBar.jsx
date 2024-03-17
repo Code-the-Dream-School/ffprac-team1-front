@@ -28,7 +28,7 @@ const Search = () => {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          className="searchBar"
+          className="search-area w-3/4"
           placeholder="Search your first project..."
           value={searchQuery}
           onChange={handleSearchInputChange}
