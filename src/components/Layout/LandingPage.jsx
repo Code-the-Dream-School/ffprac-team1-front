@@ -3,12 +3,11 @@ import Search from '../Search/SearchBar.jsx';
 
 
 const LandingPage = () => (
-  <div class="flex flex-row items-center h-screen bg-black pb-28">
+  <div className="flex flex-row items-center h-screen bg-black pb-28">
     <div className="basis-1/2">
       <div className="w-3/4 mx-auto">
         <h3 className="text-2xl mb-4 text-blue"><span className="font-bold text-blue">DevConnexion:</span> Personal Journey into the World of Professional Development</h3>
-        <p className="font-sans font-light mb-8">Welcome to DevConnection — a platform created specifically for aspiring developers, web designers, and testers, among others. Here, at the intersection of technology and creativity, you embark on your exciting journey into professional development.</p>
-        {/* <input type="text"  placeholder="Search your first project here" className="search-area w-3/4"></input>  */}
+        <p className="font-sans font-light mb-8">Welcome to DevConnexion — a platform created specifically for aspiring developers, web designers, and testers, among others. Here, at the intersection of technology and creativity, you embark on your exciting journey into professional development.</p>
         <Search />  
       </div>
     </div>
