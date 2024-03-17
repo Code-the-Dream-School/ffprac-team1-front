@@ -18,4 +18,10 @@
     .search-area{
         @apply w-full rounded-md pt-0.5 pl-4 pb-0.5 border-2 ring-2 ring-blue text-black focus:outline-none focus:ring-2 focus:ring-blue  focus:border-transparent;
     }
-  }
+}
+
+body {
+    background-color: #03131A;
+    width: 100vw;
+    height: 100vh;
+}
