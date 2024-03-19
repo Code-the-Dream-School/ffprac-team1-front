@@ -20,6 +20,16 @@
     }
 }
 
+@layer base {
+    body {
+        @apply h-full bg-black;
+    }
+    .contanier-primary{
+        @apply h-full bg-black py-12 px-48; 
+    }
+  }
+
+
 body {
     background-color: #03131A;
     width: 100vw;
