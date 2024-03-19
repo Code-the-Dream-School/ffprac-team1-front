@@ -3,6 +3,8 @@ import Search from './SearchBar';
 import { useLocation } from 'react-router-dom';
 import './Search.css';
 
+import Pagination from '../Layout/Pagination.jsx'
+
 const SearchResults = () => {
    const location = useLocation();
    const searchQuery = new URLSearchParams(location.search).get('search');
@@ -64,6 +66,9 @@ const SearchResults = () => {
                ))}
             </ul>
          )}
+         <div className="flex flex-col items-center py-12">
+         < Pagination />
+         </div>
       </div>
    );
 };
