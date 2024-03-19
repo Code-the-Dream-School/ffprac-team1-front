@@ -52,12 +52,12 @@ const SearchResults = () => {
 
    return (
       <div className="searchResults">
-         <Search />
+         <Search className="w-2/4 mx-auto"/>
          <h2>Search Results: {searchQuery}</h2>
          {loading && <div>Loading...</div>}
          {!loading && filteredResults.length === 0 && <div>No projects found.</div>}
          {!loading && filteredResults.length > 0 && (
-            <ul className="container">
+            <ul className="searchResultsList">
                {currentProjects.map((item, index) => (
                   <li key={item._id}>
                      <div className="projectBox">
