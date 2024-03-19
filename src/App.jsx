@@ -6,7 +6,7 @@ import Login from './components/Authentification/Login.jsx';
 import Register from './components/Authentification/Registration.jsx';
 import Profile from './components/Profile/UserProfile.jsx';
 import CreateProfile from './components/Profile/CreateProfile.jsx';
-import EditProfile from './components/Profile/EdirProfile.jsx';
+import EditProfile from './components/Profile/EditProfile.jsx';
 import ProjectsList from './components/Project/ProjectsList.jsx';
 
 import Project from './components/Project/Project.jsx';
