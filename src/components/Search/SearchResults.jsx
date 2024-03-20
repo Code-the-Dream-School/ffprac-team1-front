@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Search from './SearchBar';
 import { useLocation } from 'react-router-dom';
 import './Search.css';
-
+import ProjectCard from '../Project/ProjectCard_unauthUsers.jsx';
 import Pagination from '../Layout/Pagination.jsx';
 
 const SearchResults = () => {
@@ -57,22 +57,18 @@ const SearchResults = () => {
          {loading && <div>Loading...</div>}
          {!loading && filteredResults.length === 0 && <div>No projects found.</div>}
          {!loading && filteredResults.length > 0 && (
-            <ul className="searchResultsList">
+            <div className="searchResultsList">
                {currentProjects.map((item, index) => (
-                  <li key={item._id}>
-                     <div className="projectBox">
-                        <h3>{item.title}</h3>
-                        <p>Technologies:</p>
-                        <ul>{renderTechnologies(item.technologies)}</ul>
-                        <p className="projectStatus">{item.status}</p>
-                        <p>See details...</p>
-                     </div>
+                  <div key={item._id}>
+                     <ProjectCard project={item} /> 
                      {item.missingWords && item.missingWords.length > 0 && (
-                        <p className="missingWords"><em>Missing Words: <span style={{textDecoration: 'line-through'}}>{item.missingWords.join(', ')}</span></em></p>
+                        <p className="missingWords">
+                           <em>Missing Words: <span style={{textDecoration: 'line-through'}}>{item.missingWords.join(', ')}</span></em>
+                        </p>
                      )}
-                  </li>
+                  </div>
                ))}
-            </ul>
+            </div>
          )}
          <div className="flex flex-col items-center py-12">
             <Pagination
@@ -81,27 +77,6 @@ const SearchResults = () => {
                paginate={paginate}
             />
          </div>
-      </div>
-   );
-};
-
-const renderTechnologies = (technologies) => {
-   if (!technologies) return null;
-
-   const allTech = [];
-   for (const type in technologies) {
-      allTech.push(...technologies[type]);
-   }
-
-   const displayedTech = allTech.slice(0, 4);
-   const etcTechCount = allTech.length - displayedTech.length;
-
-   return (
-      <div>
-         {displayedTech.map((tech, index) => (
-            <li key={index}>• {tech}</li>
-         ))}
-         {etcTechCount > 0 && <li>etc. ({etcTechCount} more)</li>}
       </div>
    );
 };
