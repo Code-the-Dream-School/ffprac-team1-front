@@ -1,9 +1,9 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const navigate = useNavigate();
-  
+
   return (
     <div>
       <h1>This is registration page.</h1>
@@ -11,5 +11,5 @@ const Register = () => {
     </div>
   );
 };
-  
+
 export default Register;

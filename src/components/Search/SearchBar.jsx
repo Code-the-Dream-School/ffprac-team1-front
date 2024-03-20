@@ -6,18 +6,18 @@ const Search = ({ className }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
-  const handleSearchInputChange = (event) => {
+  const handleSearchInputChange = event => {
     setSearchQuery(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/search-results?search=${encodeURIComponent(searchQuery.trim())}`);
     }
   };
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = event => {
     if (event.key === 'Enter') {
       handleSubmit(event);
     }

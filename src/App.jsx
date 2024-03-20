@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './components/Layout/LandingPage.jsx';
-import Nav from './components/Layout/Nav.jsx'; 
+import Nav from './components/Layout/Nav.jsx';
 import Login from './components/Authentification/Login.jsx';
 import Register from './components/Authentification/Registration.jsx';
 import Profile from './components/Profile/UserProfile.jsx';
@@ -19,9 +19,7 @@ import Search from './components/Search/SearchBar.jsx';
 import SearchResults from './components/Search/SearchResults.jsx';
 import './App.css';
 
-
 function App() {
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
@@ -46,5 +44,5 @@ function App() {
     </BrowserRouter>
   );
 }
-  
-export default App
+
+export default App;
