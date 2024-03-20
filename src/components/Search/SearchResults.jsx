@@ -51,42 +51,6 @@ const SearchResults = () => {
    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
    return (
-      // <div className="searchResults">
-      //    <Search className="w-2/4 mx-auto"/>
-      //    <h2>Search Results: {searchQuery}</h2>
-      //    {loading && <div>Loading...</div>}
-      //    {!loading && filteredResults.length === 0 && <div>No projects found.</div>}
-      //    {!loading && filteredResults.length > 0 && (
-      //       <ul className="searchResultsList">
-      //          {currentProjects.map((item, index) => (
-      //             <li key={item._id}>
-      //                <div className="projectBox">
-      //                   <h3>{item.title}</h3>
-      //                   <p>Technologies:</p>
-      //                   <ul>{renderTechnologies(item.technologies)}</ul>
-      //                   <p className="projectStatus">{item.status}</p>
-      //                   <p>See details...</p>
-      //                </div>
-      //                {item.missingWords && item.missingWords.length > 0 && (
-      //                   <p className="missingWords"><em>Missing Words: <span style={{textDecoration: 'line-through'}}>{item.missingWords.join(', ')}</span></em></p>
-      //                )}
-      //             </li>
-      //          ))}
-      //       </ul>
-      //    )}
-      //    <div className="flex flex-col items-center py-12">
-      //       <Pagination
-      //          currentPage={currentPage}
-      //          totalPages={Math.ceil(filteredResults.length / projectsPerPage)}
-      //          paginate={paginate}
-      //       />
-      //    </div>
-      // </div>
-   //    );
-   // };
-
-
-
       <div className="searchResults">
          <Search className="w-2/4 mx-auto"/>
          <h2>Search Results: {searchQuery}</h2>
