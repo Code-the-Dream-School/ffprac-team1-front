@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Search.css';
 
-const Search = () => {
+const Search = ({ className }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ const Search = () => {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          className="search-area w-3/4"
+          className={`search-area ${className || 'w-3/4'}`}
           placeholder="Search your first project..."
           value={searchQuery}
           onChange={handleSearchInputChange}
