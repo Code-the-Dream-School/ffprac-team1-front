@@ -2,35 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
-
 * {
-    font-family: 'Jura', sans-serif;
-    color: #EAEAEA;
+  font-family: 'Jura', sans-serif;
+  color: #eaeaea;
 }
 
 @layer components {
-    .btn-primary {
-      @apply w-full  border-2 border-green rounded-md py-1 bg-green text-black mb-4 hover:cursor-pointer hover:bg-green/85 font-semibold;
-    }
-    .input-area{
-        @apply w-full rounded-md pt-2 pl-4 pb-2 text-black focus:outline-none focus:ring focus:ring-blue focus:border-transparent;
-    }
-    .search-area{
-        @apply w-full rounded-md pt-0.5 pl-4 pb-0.5 border-2 ring-2 ring-blue text-black focus:outline-none focus:ring-2 focus:ring-blue  focus:border-transparent;
-    }
+  .btn-primary {
+    @apply w-full  border-2 border-green rounded-md py-1 bg-green text-black mb-4 hover:cursor-pointer hover:bg-green/85 font-semibold;
+  }
+  .input-area {
+    @apply w-full rounded-md pt-2 pl-4 pb-2 text-black focus:outline-none focus:ring focus:ring-blue focus:border-transparent;
+  }
+  .search-area {
+    @apply w-full rounded-md pt-0.5 pl-4 pb-0.5 border-2 ring-2 ring-blue text-black focus:outline-none focus:ring-2 focus:ring-blue  focus:border-transparent;
+  }
 }
 
 @layer base {
-    body {
-        @apply h-full bg-black;
-    }
-    .contanier-primary{
-
-        @apply h-full bg-black py-20 px-28; 
-    }
+  body {
+    @apply h-full bg-black;
   }
+  .contanier-primary {
+    @apply h-full bg-black py-20 px-28;
+  }
+}
 body {
-    background-color: #03131A;
-    width: 100vw;
-    height: 100vh;
+  background-color: #03131a;
+  width: 100vw;
+  height: 100vh;
 }

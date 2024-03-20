@@ -10,7 +10,9 @@ const Login = ({ setIsLoggedIn }) => {
     <div>
       <h1>This is the login page.</h1>
       <button onClick={() => navigate('/profile')}>Sign In</button>
-      <h2>If you don't have an account, please, <a href="/register"></a>Sign Up</h2>
+      <h2>
+        If you don't have an account, please, <a href="/register"></a>Sign Up
+      </h2>
       <button onClick={() => navigate('/register')}>Sign Up</button>
     </div>
   );
