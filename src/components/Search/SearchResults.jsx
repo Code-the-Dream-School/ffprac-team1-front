@@ -117,26 +117,4 @@ const SearchResults = () => {
    );
 };
 
-
-const renderTechnologies = (technologies) => {
-   if (!technologies) return null;
-
-   const allTech = [];
-   for (const type in technologies) {
-      allTech.push(...technologies[type]);
-   }
-
-   const displayedTech = allTech.slice(0, 4);
-   const etcTechCount = allTech.length - displayedTech.length;
-
-   return (
-      <div>
-         {displayedTech.map((tech, index) => (
-            <li key={index}>• {tech}</li>
-         ))}
-         {etcTechCount > 0 && <li>etc. ({etcTechCount} more)</li>}
-      </div>
-   );
-};
-
 export default SearchResults;
