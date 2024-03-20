@@ -11,7 +11,7 @@ const SearchResults = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const projectsPerPage = 2;
+  const projectsPerPage = 4;
 
   useEffect(() => {
     const fetchData = async () => {
