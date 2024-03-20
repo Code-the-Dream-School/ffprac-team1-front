@@ -1,5 +1,6 @@
 import React from 'react';
 import Search from '../Search/SearchBar.jsx';
+import Registration from '../Authentification/Registration.jsx';
 
 const LandingPage = () => (
   <div className="flex flex-row items-center h-screen bg-black pb-28">
@@ -39,14 +40,8 @@ const LandingPage = () => (
     <dialog id="my_modal_2" className="modal bg-black/50">
       <div className="modal-box bg-black p-8 border border-blue/10">
         <h3 className="font-bold text-lg pb-10 text-2xl text-center">Sign Up</h3>
-        <div className="flex flex-row mb-6">
-          <input type="text" placeholder="First Name" className=" input-area  mb-4 mr-4"></input>
-          <input type="text" placeholder="Last Name" className=" input-area  mb-4 ml-4"></input>
+        <Registration />
         </div>
-        <input type="text" placeholder="Email" className=" input-area  mb-4"></input>
-        <input type="text" placeholder="Password" className=" input-area  mb-8"></input>
-        <button className="btn-primary mr-4">Sign Up</button>
-      </div>
       <form method="dialog" className="modal-backdrop">
         <button>close</button>
       </form>
