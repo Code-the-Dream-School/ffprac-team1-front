@@ -46,10 +46,7 @@
     text-align: center;
 }
 
-.missingWords {
-    text-align: right;
-}
-
 h2 {
-   padding-top: 2vh;
+   padding-top: 6vh;
+   padding-bottom: 10vh;
 }
