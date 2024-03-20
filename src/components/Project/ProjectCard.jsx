@@ -19,21 +19,32 @@ import {
   
     const ProjectCard = ({ }) => {
     return (
-      <Card className="max-w-[14rem] min-w-[12rem] overflow-hidden rounded-xl border border-blue/20 hover:border-blue/70 hover:shadow hover:shadow-blue/30 mb-6 mr-8">
+      <Card className="max-w-[14rem] min-w-[12rem] overflow-hidden bg-gray/10 rounded-xl border border-transparent hover:border-blue/30 mb-6 mr-8">
       <a href="url-to-the-individual-project">
         <CardHeader
           floated={false}
           shadow={false}
           color="transparent"
-          className="m-0 rounded-none max-h-24 opacity-70"
+          className="m-0 rounded-none max-h-24 opacity-70 p-4"
         >
-          <img
+          {/* <img
             src="https://source.unsplash.com/white-and-gray-optical-illusion-7JX0-bfiuxQ"
             alt="project img"
-          />
+          /> */}
+            <div className=" flex flex-row">
+                <img
+                    className="h-10 w-10 rounded-full"
+                    src="https://source.unsplash.com/a-rubik-cube-is-shown-on-a-white-background-fd6K_OFlnRA"
+                    alt="project logo"
+                />
+                <Typography variant="h3" className="text-xs font-[Jura] text-white pl-4 font-medium">
+                { project.name}
+                </Typography>
+            </div>
         </CardHeader>
+        <hr className="mx-3 text-blue/30"></hr>
         <CardBody className="p-3">
-          <div className=" flex flex-row pb-2">
+          {/* <div className=" flex flex-row pb-2">
             <img
               className="h-10 w-10 rounded-full"
               src="https://source.unsplash.com/a-rubik-cube-is-shown-on-a-white-background-fd6K_OFlnRA"
@@ -42,7 +53,7 @@ import {
             <Typography variant="h3" className="text-xs font-[Jura] pl-4 font-medium">
             { project.name}
             </Typography>
-          </div>
+          </div> */}
           {/* <Typography variant="lead" color="gray" className="mt-2 font-normal text-[10px] max-h-20">
             {project.description}
           </Typography> */}

@@ -129,9 +129,7 @@ const Project = () => (
 
         </div>
     </div>
-    {/* <h1>Here is a Project.</h1> */}
-
-
+ 
   </div>
 );
 
