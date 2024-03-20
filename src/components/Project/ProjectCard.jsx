@@ -27,10 +27,6 @@ import {
           color="transparent"
           className="m-0 rounded-none max-h-24 opacity-70 p-4"
         >
-          {/* <img
-            src="https://source.unsplash.com/white-and-gray-optical-illusion-7JX0-bfiuxQ"
-            alt="project img"
-          /> */}
             <div className=" flex flex-row">
                 <img
                     className="h-10 w-10 rounded-full"
@@ -44,19 +40,6 @@ import {
         </CardHeader>
         <hr className="mx-3 text-blue/30"></hr>
         <CardBody className="p-3">
-          {/* <div className=" flex flex-row pb-2">
-            <img
-              className="h-10 w-10 rounded-full"
-              src="https://source.unsplash.com/a-rubik-cube-is-shown-on-a-white-background-fd6K_OFlnRA"
-              alt="project logo"
-            />
-            <Typography variant="h3" className="text-xs font-[Jura] pl-4 font-medium">
-            { project.name}
-            </Typography>
-          </div> */}
-          {/* <Typography variant="lead" color="gray" className="mt-2 font-normal text-[10px] max-h-20">
-            {project.description}
-          </Typography> */}
           <div variant="lead" color="gray" className="mt-2 font-normal text-[10px]">
             <div className="font-normal text-[10px] text-green text-[11px] font-medium">Technologies:</div>
             {project.technologies.map((item, index) => (
