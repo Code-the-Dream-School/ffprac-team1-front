@@ -8,9 +8,8 @@ import Profile from './components/Profile/UserProfile.jsx';
 import CreateProfile from './components/Profile/CreateProfile.jsx';
 import EditProfile from './components/Profile/EditProfile.jsx';
 import ProjectsList from './components/Project/ProjectsList.jsx';
-
 import Project from './components/Project/Project.jsx';
-
+import Projects from './components/Project/Project_unauthUsers.jsx';
 import CreateProject from './components/Project/CreateProject.jsx';
 import UserProjects from './components/Project/UserProjects.jsx';
 import Notification from './components/Notification/Notification.jsx';
@@ -40,6 +39,7 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/search-results" element={<SearchResults />} />
         <Route path="/project" element={<Project />} />
+        <Route path="/projects/:projectId" element={<Projects />} />
       </Routes>
     </BrowserRouter>
   );
