@@ -24,7 +24,7 @@
     @apply h-full bg-black;
   }
   .contanier-primary {
-    @apply h-full bg-black py-20 px-28;
+    @apply h-full bg-black py-4 px-28;
   }
 }
 body {
