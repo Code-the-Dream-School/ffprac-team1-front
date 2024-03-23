@@ -1,19 +1,70 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { login } from "../../util/fetchData";
 
-const Login = ({ setIsLoggedIn }) => {
+const Login = () => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  setIsLoggedIn(true);
-  navigate('/profile');
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: '', form: '' });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.email || !formData.password) {
+      setErrors({
+        ...errors,
+        email: !formData.email ? 'Email is required' : '',
+        password: !formData.password ? 'Password is required' : '',
+      });
+      return;
+    }
+
+    try {
+      const result = await login(formData);
+      if (result.status === 200) {
+        sessionStorage.setItem("jwtToken", result.data.token);
+        navigate("/profile");
+      }
+    } catch (error) {
+      setErrors({
+        ...errors,
+        form: error.response?.data?.message || "Invalid email or password",
+      });
+    }
+  };
 
   return (
-    <div>
-      <h1>This is the login page.</h1>
-      <button onClick={() => navigate('/profile')}>Sign In</button>
-      <h2>
-        If you don't have an account, please, <a href="/register"></a>Sign Up
-      </h2>
-      <button onClick={() => navigate('/register')}>Sign Up</button>
+    <div className="max-w-md mx-auto">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Email"
+            className="input-area w-full"
+          />
+          {errors.email && <div className="text-red-500">{errors.email}</div>}
+        </div>
+        <div>
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Password"
+            className="input-area w-full"
+          />
+          {errors.password && <div className="text-red-500">{errors.password}</div>}
+        </div>
+        <button type="submit" className="btn-primary">Sign In</button>
+        {errors.form && <div className="text-red-500">{errors.form}</div>}
+      </form>
     </div>
   );
 };
