@@ -1,16 +1,24 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardBody, CardFooter, Typography } from '@material-tailwind/react';
 
 const ProjectCard = ({ project }) => {
   return (
     <Card className="max-w-[14rem] min-w-[12rem] overflow-hidden rounded-xl border border-blue/20 hover:border-blue/70 hover:shadow hover:shadow-blue/30 mb-2 mr-8">
-      <a href={`url-to-the-individual-project/${project._id}`}>
+      <Link to={`/projects/${project._id}`} 
+        state={{ 
+          projectId: project._id, 
+          projectTitle: project.title, 
+          projectStatus: project.status, 
+          projectDesc: project.description,
+          projectTechnologies: project.technologies,
+          projectRolesNeeded: project.rolesNeeded 
+        }}> 
         <CardHeader
           floated={false}
           shadow={false}
           color="transparent"
-          className="m-0 rounded-none max-h-24 opacity-70"
-        >
+          className="m-0 rounded-none max-h-24 opacity-70">
           <img
             src="https://source.unsplash.com/white-and-gray-optical-illusion-7JX0-bfiuxQ"
             alt="project img"
@@ -39,11 +47,10 @@ const ProjectCard = ({ project }) => {
         </CardBody>
         <CardFooter
           variant="h3"
-          className="text-[11px] text-right font-[Jura] pl-4 mb-2 mr-2 font-medium"
-        >
+          className="text-[11px] text-right font-[Jura] pl-4 mb-2 mr-2 font-medium">
           See more...
         </CardFooter>
-      </a>
+      </Link>
     </Card>
   );
 };
