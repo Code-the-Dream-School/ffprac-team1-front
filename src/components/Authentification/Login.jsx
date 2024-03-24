@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../util/fetchData";
 
-const Login = () => {
+const Login = ({ setIsLoggedIn }) => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -27,6 +27,7 @@ const Login = () => {
       const result = await login(formData);
       if (result.status === 200) {
         sessionStorage.setItem("jwtToken", result.data.token);
+        setIsLoggedIn(true);
         navigate("/profile");
       }
     } catch (error) {

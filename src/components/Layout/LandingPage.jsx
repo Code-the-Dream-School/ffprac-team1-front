@@ -3,7 +3,7 @@ import Search from '../Search/SearchBar.jsx';
 import Registration from '../Authentification/Registration.jsx';
 import Login from '../Authentification/Login.jsx';
 
-const LandingPage = () => (
+const LandingPage = ({ setIsLoggedIn }) => (
   <div className="flex flex-row items-center h-screen bg-black pb-28">
     <div className="basis-1/2">
       <div className="w-3/4 mx-auto">
@@ -22,7 +22,7 @@ const LandingPage = () => (
     <div className="basis-1/2">
       <div className="w-3/5 mx-auto px-8">
         <h1 className="text-center text-xl pb-6">Sign In</h1>
-        <Login />
+        <Login setIsLoggedIn={setIsLoggedIn}/>
         <h6 className="text-center">
           Don't have an account? <span className="font-bold text-blue underline hover:cursor-pointer" onClick={() => document.getElementById('my_modal_2').showModal()}>
             Sign Up
