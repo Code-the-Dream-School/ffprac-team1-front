@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Project from '../Project/ProjectCard.jsx';
+import Modal from '../Modal_Components/Modal.jsx';
+import CreateProject  from '../Modal_Components/CreateProject.jsx'
 
 // this infirmation will be fassed as a prop from
 const profile = {
@@ -77,9 +79,19 @@ const Profile = () => (
         </div>
 
         <div className="mt-4 mb-1 py-4 px-8 border border-transparent rounded-lg bg-gray/5">
-          <h3 className="text-lg text-green/80">Your Projects:</h3>
+          <div className="flex flex-row w-full justify-between">
+            <h3 className="text-lg text-green/80">Your Projects:</h3>
+            <div>
+            < Modal openModalButton={"+ Add New Project"} modalBody={CreateProject() } className=""/>
+            </div>
+          </div>
+          
           <div className="py-4 flex flex-row">
-
+            < Project/>
+            {/* <div className="max-w-[13rem] min-w-[12rem] overflow-hidden bg-gray/10 rounded-xl border border-transparent hover:border-blue/30 mb-6 mr-8 p-4">
+            <i className="fa-sharp fa-thin fa-plus fa-2xl text-blue/40 rounded-xl border border-blue/40 hover:border-gray px-3 py-5"></i>
+            </div> */}
+           
           </div>
         </div>
         <div className="mt-4 mb-1 py-4 px-8 border border-transparent rounded-lg bg-gray/5">
