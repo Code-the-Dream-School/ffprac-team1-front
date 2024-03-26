@@ -14,11 +14,12 @@ const Login = ({ setIsLoggedIn }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!formData.email || !formData.password) {
       setErrors({
         ...errors,
-        email: !formData.email ? 'Email is required' : '',
-        password: !formData.password ? 'Password is required' : '',
+        email: !formData.email ? "Email is required" : "",
+        password: !formData.password ? "Password is required" : "",
       });
       return;
     }
@@ -26,7 +27,7 @@ const Login = ({ setIsLoggedIn }) => {
     try {
       const result = await login(formData);
       if (result.status === 200) {
-        sessionStorage.setItem("jwtToken", result.data.token);
+        localStorage.setItem("jwtToken", result.data.token);
         setIsLoggedIn(true);
         navigate("/profile");
       }

@@ -23,23 +23,23 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Nav isLoggedIn={isLoggedIn} />
-      <Routes>
+      <Nav isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>      
+     <Routes>
         <Route path="/" element={<LandingPage setIsLoggedIn={setIsLoggedIn}/>} />
         <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/create-profile" element={<CreateProfile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
-        <Route path="/projects" element={<ProjectsList />} />
+        <Route path="/projects-list" element={<ProjectsList isLoggedIn={isLoggedIn}/>} />
         <Route path="/user-projects" element={<UserProjects />} />
         <Route path="/create-project" element={<CreateProject />} />
         <Route path="/messaging" element={<Messaging />} />
         <Route path="/notification" element={<Notification />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/search-results" element={<SearchResults />} />
+        <Route path="/search" element={<Search isLoggedIn={isLoggedIn}/>} />
+        <Route path="/search-results" element={<SearchResults isLoggedIn={isLoggedIn}/>} />
         <Route path="/project" element={<Project />} />
-        <Route path="/projects/:projectId" element={<Projects />} />
+        <Route path="/projects/:projectId" element={<Projects isLoggedIn={isLoggedIn}/>} />
       </Routes>
     </BrowserRouter>
   );

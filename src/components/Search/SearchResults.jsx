@@ -5,7 +5,7 @@ import './Search.css';
 import ProjectCard from '../Project/ProjectCard_unauthUsers.jsx';
 import Pagination from '../Layout/Pagination.jsx';
 
-const SearchResults = () => {
+const SearchResults = ({isLoggedIn}) => {
   const location = useLocation();
   const searchQuery = new URLSearchParams(location.search).get('search');
   const [searchResults, setSearchResults] = useState([]);
@@ -17,19 +17,23 @@ const SearchResults = () => {
     const fetchData = async () => {
       try {
         if (!searchQuery) {
-          setSearchResults([]);
+          const response = await fetch(
+            `http://localhost:8000/api/v1/projects`
+          );
+          const data = await response.json();
+          setSearchResults(data.data);
           setLoading(false);
           return;
         }
+
         const response = await fetch(
-          `http://localhost:8000/api/v1/projects?search=${encodeURIComponent(searchQuery)}`,
+          `http://localhost:8000/api/v1/projects?search=${encodeURIComponent(searchQuery)}`
         );
         const data = await response.json();
 
         const sortedResults = data.data.sort((a, b) => {
           const missingWordsA = a.missingWords ? a.missingWords.length : 0;
           const missingWordsB = b.missingWords ? b.missingWords.length : 0;
-
           return missingWordsA - missingWordsB;
         });
 
@@ -44,7 +48,7 @@ const SearchResults = () => {
     fetchData();
   }, [searchQuery]);
 
-  const filteredResults = searchResults.filter(item => item.status !== 'Completed');
+  const filteredResults = !isLoggedIn ? searchResults.filter(item => item.status !== 'Completed') : searchResults;
 
   const indexOfLastProject = currentPage * projectsPerPage;
   const indexOfFirstProject = indexOfLastProject - projectsPerPage;
@@ -57,10 +61,14 @@ const SearchResults = () => {
 
   return (
     <div className="searchResults">
-      <Search className="w-2/4 mx-auto" />
-      <h2>Search Results: {searchQuery}</h2>
+      <Search className="w-2/4 mx-auto" isLoggedIn={isLoggedIn}/>
+      {searchQuery ? (
+        <h2>Search Results: {searchQuery}</h2>
+      ) : (
+        <h2>Browse Projects:</h2>
+      )}
       {loading && <div>Loading...</div>}
-      {!loading && filteredResults.length === 0 && <div>No projects found.</div>}
+      {!loading && filteredResults.length === 0 && <div className='text-center'>No projects found.</div>}
       {!loading && filteredResults.length > 0 && (
         <div className="searchResultsList">
           {currentProjects.map((item, index) => (
