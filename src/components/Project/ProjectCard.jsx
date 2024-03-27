@@ -19,7 +19,7 @@ const project = {
 
 const ProjectCard = ({}) => {
   return (
-    <Card className="max-w-[14rem] min-w-[12rem] overflow-hidden rounded-xl border border-blue/20 hover:border-blue/70 hover:shadow hover:shadow-blue/30 mb-6 mr-8">
+    <Card className="max-w-[13rem] min-w-[12rem] overflow-hidden bg-gray/10 rounded-xl border border-transparent hover:border-blue/30 mb-6 mr-8 p-4">
       <a href="url-to-the-individual-project">
         <CardHeader
           floated={false}
@@ -27,21 +27,27 @@ const ProjectCard = ({}) => {
           color="transparent"
           className="m-0 rounded-none max-h-24 opacity-70"
         >
-          <img
-            src="https://source.unsplash.com/white-and-gray-optical-illusion-7JX0-bfiuxQ"
-            alt="project img"
-          />
-        </CardHeader>
-        <CardBody className="p-3">
-          <div className=" flex flex-row pb-2">
+           <div className=" flex flex-row">
             <img
+                className="h-10 w-10 rounded-full"
+                src="https://source.unsplash.com/a-rubik-cube-is-shown-on-a-white-background-fd6K_OFlnRA"
+                alt="project logo"
+            />
+            <Typography variant="h3" className="text-xs font-[Jura] text-gray pl-4 font-medium">
+            { project.name}
+            </Typography>
+        </div>
+        </CardHeader>
+        <CardBody className="">
+          <div className=" flex flex-row pb-2">
+            {/* <img
               className="h-10 w-10 rounded-full"
               src="https://source.unsplash.com/a-rubik-cube-is-shown-on-a-white-background-fd6K_OFlnRA"
               alt="project logo"
             />
             <Typography variant="h3" className="text-xs font-[Jura] pl-4 font-medium">
               {project.name}
-            </Typography>
+            </Typography> */}
           </div>
           {/* <Typography variant="lead" color="gray" className="mt-2 font-normal text-[10px] max-h-20">
             {project.description}
@@ -57,7 +63,7 @@ const ProjectCard = ({}) => {
               </span>
             ))}
           </div>
-          <Typography className="font-[Jura] text-[12px] text-center text-blue font-medium py-2 mt-2">
+          <Typography className="font-[Jura] text-[10px] text-center text-blue font-medium py-0.5 my-4 border-[0.5px] border-blue/80 rounded-full">
             {project.status}
           </Typography>
           <div variant="lead" color="gray" className="font-normal text-[10px]">
@@ -74,29 +80,29 @@ const ProjectCard = ({}) => {
         </CardBody>
       </a>
       {/* This will be part of Authorized rout */}
-      <CardFooter className="flex items-center justify-start p-4">
+      <CardFooter className="flex items-center justify-start pt-2">
         <div className="font-normal text-[10px] text-green text-[11px] font-medium pr-4">
           Participants:
         </div>
         <div className="flex items-center -space-x-3">
-          <Tooltip content="Natali Craig" className="font-sans font-extralight text-[10px]">
+          <Tooltip content="Natali Craig" className="font-sans font-extralight text-[10px] px-2">
             {/* Avatar can be linked to the profile of the user on Authorized rout */}
-            <a href="/profile">
+            <a href="/profile" className="hover:z-10">
               <Avatar
                 alt="natali craig"
                 src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1061&q=80"
-                className="border-2 border-blue  h-8 w-8 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
+                className="border-2 border-blue  h-8 w-8 rounded-full hover:border-green hover:cursor-pointer"
               />
             </a>
           </Tooltip>
-          <Tooltip content="Tania Andrew" className="font-sans font-extralight text-[10px]">
-            <a href="/profile">
+          <Tooltip content="Tania Andrew" className="font-sans font-extralight text-[10px] px-2">
+            <a href="/profile" className="hover:z-10">
               <Avatar
                 size="sm"
                 variant="circular"
                 alt="tania andrew"
                 src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-                className="border-2 border-blue h-8 w-8 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
+                className="border-2 border-blue h-8 w-8 rounded-full hover:border-green hover:cursor-pointer"
               />
             </a>
           </Tooltip>

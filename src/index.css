@@ -9,7 +9,10 @@
 
 @layer components {
   .btn-primary {
-    @apply w-full  border-2 border-green rounded-md py-1 bg-green text-black mb-4 hover:cursor-pointer hover:bg-green/85 font-semibold;
+    @apply w-full font-[Jura] border border-green rounded-md py-1 bg-green text-black mb-4 hover:cursor-pointer hover:bg-green/60 font-semibold;
+  }
+  .btn-secondary {
+    @apply w-full font-[Jura] border border-blue/50 rounded-md py-1 bg-black text-gray mb-4 hover:cursor-pointer hover:border-blue font-semibold;
   }
   .input-area {
     @apply w-full rounded-md pt-2 pl-4 pb-2 text-black focus:outline-none focus:ring focus:ring-blue focus:border-transparent;
