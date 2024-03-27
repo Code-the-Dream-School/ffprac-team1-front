@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Search.css';
 
-const Search = ({ className }) => {
+const Search = ({ className, isLoggedIn }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
@@ -13,9 +13,10 @@ const Search = ({ className }) => {
   const handleSubmit = event => {
     event.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/search-results?search=${encodeURIComponent(searchQuery.trim())}`);
+      const searchPath = isLoggedIn ? '/projects-list' : '/search-results';
+      navigate(`${searchPath}?search=${encodeURIComponent(searchQuery.trim())}`);
     }
-  };
+  }
 
   const handleKeyDown = event => {
     if (event.key === 'Enter') {
