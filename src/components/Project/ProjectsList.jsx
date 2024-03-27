@@ -1,9 +1,14 @@
 import React from 'react';
+import SearchResults from '../Search/SearchResults';
 
-const ProjectsList = () => (
-  <div>
-    <h1>Here you can browse list of all projects.</h1>
+const ProjectsList = ( {isLoggedIn }) => {
+
+  return (
+  <div>    
+    <SearchResults isLoggedIn={isLoggedIn}/>
   </div>
-);
+  )
+}
+
 
 export default ProjectsList;

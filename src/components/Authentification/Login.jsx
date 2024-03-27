@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../util/fetchData";
 
-const Login = () => {
+const Login = ({ setIsLoggedIn }) => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -14,11 +14,12 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!formData.email || !formData.password) {
       setErrors({
         ...errors,
-        email: !formData.email ? 'Email is required' : '',
-        password: !formData.password ? 'Password is required' : '',
+        email: !formData.email ? "Email is required" : "",
+        password: !formData.password ? "Password is required" : "",
       });
       return;
     }
@@ -26,7 +27,8 @@ const Login = () => {
     try {
       const result = await login(formData);
       if (result.status === 200) {
-        sessionStorage.setItem("jwtToken", result.data.token);
+        localStorage.setItem("jwtToken", result.data.token);
+        setIsLoggedIn(true);
         navigate("/profile");
       }
     } catch (error) {
