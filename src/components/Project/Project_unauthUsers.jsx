@@ -1,38 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { IconButton } from '@material-tailwind/react';
 
-const Projects = ({isLoggedIn}) => {
+const Projects = ({ isLoggedIn }) => {
     const location = useLocation();
     const projectTitle = location.state.projectTitle;
     const projectDesc = location.state.projectDesc;
     const projectStatus = location.state.projectStatus;
     const projectTechnologies = location.state.projectTechnologies;
     const projectRolesNeeded = location.state.projectRolesNeeded;
+    
+    const [projectImageFile, setProjectImageFile] = useState(null);
 
     const renderProjectTechnologies = technologies => {
         if (!technologies) return null;
-    
+
         const allTech = [];
         for (const type in technologies) {
             allTech.push(...technologies[type]);
         }
-    
+
         return (
             <div>
                 {allTech.map((tech, index) => (
-                <li key={index}>• {tech}</li>
+                    <li key={index}>• {tech}</li>
                 ))}
             </div>
         );
     };
 
+    const changeProjectImage = async () => {
+        try {
+            const formData = new FormData();
+            formData.append('image', projectImageFile);
+
+            const response = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to upload file');
+            }
+
+            const responseData = await response.json();
+            console.log('File uploaded successfully:', responseData);
+        } catch (error) {
+            console.error('Error uploading file:', error);
+        }
+    };
+
+
     return (
-        <div className="contanier-primary px-64 flex flex-col text-gray">
+        <div className="container-primary px-64 flex flex-col text-gray">
+            <input type="file" onChange={(e) => setProjectImageFile(e.target.files[0])} />
             <img
-                src="https://source.unsplash.com/white-and-gray-optical-illusion-7JX0-bfiuxQ"
+                src={projectImageFile ? URL.createObjectURL(projectImageFile) : "https://source.unsplash.com/white-and-gray-optical-illusion-7JX0-bfiuxQ"}
                 alt="project img"
                 className="max-h-40 object-cover object-center"
+                onClick={changeProjectImage}
             />
             <div className="p-5">
                 <div className="flex flex-row">
@@ -47,7 +73,7 @@ const Projects = ({isLoggedIn}) => {
                         />
                     </div>
                     <div className="flex flex-col w-1/2 items-end">
-                        <h2 className="text-[20px] font-semibold text-blue pt-1"> Project Status: 
+                        <h2 className="text-[20px] font-semibold text-blue pt-1"> Project Status:
                             <p className="font-sans text-[14px] text-center font-medium pb-3">{projectStatus}</p>
                         </h2>
                         <div className="pt-2 ">
@@ -66,13 +92,26 @@ const Projects = ({isLoggedIn}) => {
                         <h3 className="text-lg text-green/80">Technologies and languages:</h3>
                         <ul>{renderProjectTechnologies(projectTechnologies)}</ul>
                         <h3 className="pt-4 text-lg text-green/80">Roles Needed:</h3>
-                        <p>{projectRolesNeeded}</p>
+                        <p>{projectRolesNeeded.join(', ')}</p>
                     </div>
-                    {isLoggedIn ? (
+                    {isLoggedIn && (
+                        <>
+                            <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5">
+                                <h3 className="text-lg text-green/80">Project Creator:</h3>
+                                <ul>projectCreatorName</ul>
+                             </div>  
+                             <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5">
+                                <h3 className="pt-4 text-lg text-green/80">Team:</h3>
+                                <p>projectTeam</p>
+                            </div> 
+                        </>   
+                    )}
+                    {isLoggedIn && projectStatus === 'Seeking Team Members' && (
                         <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5 flex flex-col items-center">
                             <Link to="/apply" className="btn-primary w-32 mt-4 text-center">Apply</Link>
                         </div>
-                    ) : (
+                    )}
+                    {!isLoggedIn && (
                         <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5 flex flex-col items-center ">
                             <p className="text-center">
                                 <em>To see more details about this project or to <strong><Link to="/register">Sign Up</Link></strong></em>

@@ -4,7 +4,7 @@ import { Card, CardHeader, CardBody, CardFooter, Typography } from '@material-ta
 
 const ProjectCard = ({ project }) => {
   return (
-    <Card className="max-w-[14rem] min-w-[12rem] overflow-hidden rounded-xl border border-blue/20 hover:border-blue/70 hover:shadow hover:shadow-blue/30 mb-2 mr-8">
+    <Card className="max-w-[14rem] min-w-[12rem] bg- black overflow-hidden rounded-xl border border-blue/20 hover:border-blue/70 hover:shadow hover:shadow-blue/30 mb-2 mr-8">
       <Link to={`/projects/${project._id}`} 
         state={{ 
           projectId: project._id, 
@@ -12,7 +12,7 @@ const ProjectCard = ({ project }) => {
           projectStatus: project.status, 
           projectDesc: project.description,
           projectTechnologies: project.technologies,
-          projectRolesNeeded: project.rolesNeeded 
+          projectRolesNeeded: project.rolesNeeded
         }}> 
         <CardHeader
           floated={false}
