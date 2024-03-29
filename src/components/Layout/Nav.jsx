@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Nav = ({ isLoggedIn, setIsLoggedIn }) => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    const jwtToken = localStorage.getItem("jwtToken");
+    const jwtToken = sessionStorage.getItem("jwtToken");
     if (jwtToken) {
       setIsLoggedIn(true);
     }
@@ -16,6 +16,13 @@ const Nav = ({ isLoggedIn, setIsLoggedIn }) => {
     };
   }, [setIsLoggedIn]);
 
+  useEffect(() => {
+    if (location.pathname === '/') {
+        sessionStorage.removeItem("jwtToken");
+        setIsLoggedIn(false);
+    }
+}, [location, setIsLoggedIn]);
+
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       const dropdown = document.getElementById('dropdown');
@@ -25,7 +32,7 @@ const Nav = ({ isLoggedIn, setIsLoggedIn }) => {
 
   const handleSignOut = () => {
     setIsLoggedIn(false);
-    localStorage.removeItem("jwtToken");
+    sessionStorage.removeItem("jwtToken");
   };
 
   const toggleDropdown = () => {
