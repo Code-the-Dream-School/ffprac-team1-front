@@ -27,7 +27,7 @@ const Login = ({ setIsLoggedIn }) => {
     try {
       const result = await login(formData);
       if (result.status === 200) {
-        localStorage.setItem("jwtToken", result.data.token);
+        sessionStorage.setItem("jwtToken", result.data.token);
         setIsLoggedIn(true);
         navigate("/profile");
       }
