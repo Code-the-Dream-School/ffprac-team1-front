@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './components/Layout/LandingPage.jsx';
 import Nav from './components/Layout/Nav.jsx';
 import Login from './components/Authentification/Login.jsx';
@@ -16,13 +16,9 @@ import Notification from './components/Notification/Notification.jsx';
 import Messaging from './components/Notification/Messaging.jsx';
 import Search from './components/Search/SearchBar.jsx';
 import SearchResults from './components/Search/SearchResults.jsx';
-import { AuthProvider, useAuth } from './AuthContext';
+import ProtectedRoute from './ProtectedRoute';
+import { AuthProvider } from './AuthContext';
 import './App.css';
-
-function ProtectedRoute({ element }) {
-  const { isLoggedIn } = useAuth();
-  return isLoggedIn ? element : <Navigate to="/login" />;
-}
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
