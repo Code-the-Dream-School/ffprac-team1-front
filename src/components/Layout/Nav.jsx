@@ -1,8 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../../AuthContext';
 
-const Nav = ({ isLoggedIn, setIsLoggedIn }) => {
+const Nav = ({ setIsLoggedIn }) => {
+  const { isLoggedIn } = useAuth();
   const dropdownRef = useRef(null);
+  const location = useLocation();
 
   useEffect(() => {
     const jwtToken = sessionStorage.getItem("jwtToken");
@@ -18,10 +21,10 @@ const Nav = ({ isLoggedIn, setIsLoggedIn }) => {
 
   useEffect(() => {
     if (location.pathname === '/') {
-        sessionStorage.removeItem("jwtToken");
-        setIsLoggedIn(false);
+      sessionStorage.removeItem("jwtToken");
+      setIsLoggedIn(false);
     }
-}, [location, setIsLoggedIn]);
+  }, [location, setIsLoggedIn]);
 
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -38,6 +41,10 @@ const Nav = ({ isLoggedIn, setIsLoggedIn }) => {
   const toggleDropdown = () => {
     const dropdown = document.getElementById('dropdown');
     dropdown.classList.toggle('hidden');
+  };
+
+  const handleDropdownLinkClick = () => {
+    toggleDropdown();
   };
 
   return (
@@ -63,8 +70,8 @@ const Nav = ({ isLoggedIn, setIsLoggedIn }) => {
             <div className="pr-4 relative" ref={dropdownRef}>
               <span onClick={toggleDropdown} className="cursor-pointer">Search for...</span>
               <div id="dropdown" className="absolute bg-black rounded shadow-lg mt-2 hidden">
-                <Link to="/projects-list" className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={() => {toggleDropdown()}}>Projects</Link>
-                <Link to="/profiles-list" className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={() => {toggleDropdown()}}>Team members</Link>
+                <Link to="/projects-list" className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={handleDropdownLinkClick}>Projects</Link>
+                <Link to="/profiles-list" className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={handleDropdownLinkClick}>Team members</Link>
               </div>
             </div>
             <div className="pr-4">

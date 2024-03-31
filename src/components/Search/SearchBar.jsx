@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Search.css';
+import {useAuth} from '../../AuthContext'
 
-const Search = ({ className, isLoggedIn }) => {
+const Search = ({ className }) => {
+  const { isLoggedIn } = useAuth(); // Получаем значение isLoggedIn из контекста
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 

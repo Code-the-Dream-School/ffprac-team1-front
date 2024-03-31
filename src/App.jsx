@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect, createContext, useContext } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LandingPage from './components/Layout/LandingPage.jsx';
 import Nav from './components/Layout/Nav.jsx';
 import Login from './components/Authentification/Login.jsx';
@@ -16,32 +16,50 @@ import Notification from './components/Notification/Notification.jsx';
 import Messaging from './components/Notification/Messaging.jsx';
 import Search from './components/Search/SearchBar.jsx';
 import SearchResults from './components/Search/SearchResults.jsx';
+import { AuthProvider } from './AuthContext';
 import './App.css';
 
+const AuthContext = createContext();
+
+function ProtectedRoute({ element }) {
+  const { isLoggedIn } = useContext(AuthContext);
+  return isLoggedIn ? element : <Navigate to="/login" />;
+}
+
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return sessionStorage.getItem('isLoggedIn') === 'true';
+  })
+
+  useEffect(() => {
+    sessionStorage.setItem('isLoggedIn', isLoggedIn);
+  }, [isLoggedIn]);
 
   return (
-    <BrowserRouter>
-      <Nav isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>      
-     <Routes>
-        <Route path="/" element={<LandingPage setIsLoggedIn={setIsLoggedIn}/>} />
-        <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/create-profile" element={<CreateProfile />} />
-        <Route path="/edit-profile" element={<EditProfile />} />
-        <Route path="/projects-list" element={<ProjectsList isLoggedIn={isLoggedIn}/>} />
-        <Route path="/user-projects" element={<UserProjects />} />
-        <Route path="/create-project" element={<CreateProject />} />
-        <Route path="/messaging" element={<Messaging />} />
-        <Route path="/notification" element={<Notification />} />
-        <Route path="/search" element={<Search isLoggedIn={isLoggedIn}/>} />
-        <Route path="/search-results" element={<SearchResults isLoggedIn={isLoggedIn}/>} />
-        <Route path="/project" element={<Project />} />
-        <Route path="/projects/:projectId" element={<Projects isLoggedIn={isLoggedIn}/>} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <AuthContext.Provider value={{ isLoggedIn }}>
+        <BrowserRouter>
+          <Nav setIsLoggedIn={setIsLoggedIn}/>      
+          <Routes>
+            <Route path="/" element={<LandingPage setIsLoggedIn={setIsLoggedIn}/>} />
+            <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/search-results" element={<SearchResults />} />
+            <Route path="/project" element={<Project />} />
+            <Route path="/projects/:projectId" element={<Projects />} />
+            <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
+            <Route path="/create-profile" element={<ProtectedRoute element={<CreateProfile />} />} />
+            <Route path="/edit-profile" element={<ProtectedRoute element={<EditProfile />} />} />
+            <Route path="/projects-list" element={<ProtectedRoute element={<ProjectsList />} />} />
+            <Route path="/user-projects" element={<ProtectedRoute element={<UserProjects />} />} />
+            <Route path="/create-project" element={<ProtectedRoute element={<CreateProject />} />} />
+            <Route path="/messaging" element={<ProtectedRoute element={<Messaging />} />} />
+            <Route path="/notification" element={<ProtectedRoute element={<Notification />} />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthContext.Provider>
+    </AuthProvider>
   );
 }
 
