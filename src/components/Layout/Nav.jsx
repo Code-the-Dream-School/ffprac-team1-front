@@ -4,7 +4,7 @@ import { useAuth } from '../../AuthContext';
 
 const Nav = ({ setIsLoggedIn }) => {
   const { isLoggedIn } = useAuth();
-  const location = useLocation(); // Добавьте эту строку
+  const location = useLocation();
 
   const dropdownRef = useRef(null);
 
