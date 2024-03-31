@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../util/fetchData";
+import { useAuth } from '../../AuthContext';
 
 const Login = ({ setIsLoggedIn }) => {
+  const { isLoggedIn } = useAuth();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -28,8 +30,10 @@ const Login = ({ setIsLoggedIn }) => {
       const result = await login(formData);
       if (result.status === 200) {
         sessionStorage.setItem("jwtToken", result.data.token);
-        setIsLoggedIn(true);
-        navigate("/profile");
+        if (setIsLoggedIn) {
+          setIsLoggedIn(true);
+        }
+        navigate('/profile');
       }
     } catch (error) {
       setErrors({
@@ -38,6 +42,12 @@ const Login = ({ setIsLoggedIn }) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/profile');
+    }
+  }, [isLoggedIn, navigate]);
 
   return (
     <div className="max-w-md mx-auto">

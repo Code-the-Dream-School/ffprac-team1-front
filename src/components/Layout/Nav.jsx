@@ -4,8 +4,9 @@ import { useAuth } from '../../AuthContext';
 
 const Nav = ({ setIsLoggedIn }) => {
   const { isLoggedIn } = useAuth();
+  const location = useLocation(); // Добавьте эту строку
+
   const dropdownRef = useRef(null);
-  const location = useLocation();
 
   useEffect(() => {
     const jwtToken = sessionStorage.getItem("jwtToken");
@@ -36,15 +37,12 @@ const Nav = ({ setIsLoggedIn }) => {
   const handleSignOut = () => {
     setIsLoggedIn(false);
     sessionStorage.removeItem("jwtToken");
+    navigate('/')
   };
 
   const toggleDropdown = () => {
     const dropdown = document.getElementById('dropdown');
     dropdown.classList.toggle('hidden');
-  };
-
-  const handleDropdownLinkClick = () => {
-    toggleDropdown();
   };
 
   return (
@@ -70,8 +68,8 @@ const Nav = ({ setIsLoggedIn }) => {
             <div className="pr-4 relative" ref={dropdownRef}>
               <span onClick={toggleDropdown} className="cursor-pointer">Search for...</span>
               <div id="dropdown" className="absolute bg-black rounded shadow-lg mt-2 hidden">
-                <Link to="/projects-list" className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={handleDropdownLinkClick}>Projects</Link>
-                <Link to="/profiles-list" className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={handleDropdownLinkClick}>Team members</Link>
+                <Link to="/projects-list" className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={() => {toggleDropdown()}}>Projects</Link>
+                <Link to="/profiles-list" className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={() => {toggleDropdown()}}>Team members</Link>
               </div>
             </div>
             <div className="pr-4">

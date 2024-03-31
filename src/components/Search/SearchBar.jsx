@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Search.css';
-import {useAuth} from '../../AuthContext'
+import { useAuth } from '../../AuthContext';
 
 const Search = ({ className }) => {
-  const { isLoggedIn } = useAuth(); // Получаем значение isLoggedIn из контекста
+
+  const { isLoggedIn } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
@@ -15,10 +16,14 @@ const Search = ({ className }) => {
   const handleSubmit = event => {
     event.preventDefault();
     if (searchQuery.trim()) {
-      const searchPath = isLoggedIn ? '/projects-list' : '/search-results';
-      navigate(`${searchPath}?search=${encodeURIComponent(searchQuery.trim())}`);
+      if (isLoggedIn) {
+        navigate(`/projects-list?search=${encodeURIComponent(searchQuery.trim())}`);
+      } else {
+        navigate(`/search-results?search=${encodeURIComponent(searchQuery.trim())}`);
+      }
     }
-  }
+  };
+  
 
   const handleKeyDown = event => {
     if (event.key === 'Enter') {
