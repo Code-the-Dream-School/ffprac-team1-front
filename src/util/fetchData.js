@@ -28,14 +28,6 @@ export const login = async ({ email, password }) => {
   }
 };
 
-export const logout = async (setIsLoggedIn) => {
-  try {
-    const response = await axios.post(`${API_BASE_URL}/logout`);
-    setIsLoggedIn(false);
-    sessionStorage.removeItem('jwtToken');
-    return response.status === 200; 
-  } catch (error) {
-    console.error("Logout error", error);
-    throw error;
-  } 
-};
+export const logout = async () => {
+  return await axios.post(`${API_BASE_URL}/logout`)
+}

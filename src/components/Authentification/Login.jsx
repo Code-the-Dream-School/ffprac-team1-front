@@ -4,7 +4,7 @@ import { login } from "../../util/fetchData";
 import { useAuth } from '../../AuthContext';
 
 const Login = () => {
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const { isLoggedIn, loginUser } = useAuth();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -28,11 +28,10 @@ const Login = () => {
 
     try {
       const result = await login(formData);
+      console.log(formData)
       if (result.status === 200) {
-        sessionStorage.setItem("jwtToken", result.data.token);
-        if (setIsLoggedIn) {
-          setIsLoggedIn(true);
-        }
+        const token = result.data.token;
+        loginUser(token)
         navigate('/profile');
       }
     } catch (error) {

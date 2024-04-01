@@ -4,16 +4,19 @@ import { useAuth } from '../../AuthContext';
 import { logout } from '../../util/fetchData'; 
 
 const Nav = () => {
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const { isLoggedIn, logoutUser } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    try {
-      await logout(setIsLoggedIn);
+    logout()
+     .then ((response) => {
+      console.log(response)
+      logoutUser()      
       navigate('/')
-    } catch (error) {
-      console.error('Logout error', error);
-    }
+    }) 
+      .catch (error => {
+        console.log(error);
+    })
   };
 
   return (
