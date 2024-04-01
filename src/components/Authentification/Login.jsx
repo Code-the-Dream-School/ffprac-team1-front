@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../../util/fetchData";
 import { useAuth } from '../../AuthContext';
 
-const Login = ({ setIsLoggedIn }) => {
-  const { isLoggedIn } = useAuth();
+const Login = () => {
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();

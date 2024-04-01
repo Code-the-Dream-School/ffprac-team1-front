@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './components/Layout/LandingPage.jsx';
 import Nav from './components/Layout/Nav.jsx';
@@ -21,21 +21,13 @@ import { AuthProvider } from './AuthContext';
 import './App.css';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return sessionStorage.getItem('isLoggedIn') === 'true';
-  })
-
-  useEffect(() => {
-    sessionStorage.setItem('isLoggedIn', isLoggedIn);
-  }, [isLoggedIn]);
-
   return (
-    <AuthProvider isLoggedIn={isLoggedIn}>
+    <AuthProvider>
       <BrowserRouter>
-        <Nav setIsLoggedIn={setIsLoggedIn}/>      
+        <Nav />
         <Routes>
-          <Route path="/" element={<LandingPage setIsLoggedIn={setIsLoggedIn}/>} />
-          <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/search" element={<Search />} />
           <Route path="/search-results" element={<SearchResults />} />

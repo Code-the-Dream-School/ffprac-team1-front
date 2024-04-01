@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../AuthContext';
 
-const Nav = ({ setIsLoggedIn }) => {
-  const { isLoggedIn } = useAuth();
+const Nav = () => {
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
   const location = useLocation();
 
   const dropdownRef = useRef(null);
