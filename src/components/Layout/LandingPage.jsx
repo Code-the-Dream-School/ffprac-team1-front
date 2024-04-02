@@ -1,6 +1,5 @@
 import React from 'react';
 import Search from '../Search/SearchBar.jsx';
-// import Registration from '../Authentification/Registration.jsx';
 import Login from '../Authentification/Login.jsx';
 
 const LandingPage = () => (
