@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { register } from '../../util/fetchData';
+import { useAuth } from '../../AuthContext';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,8 @@ const Register = () => {
     email: "",
     password: ""
   });
+
+  const { loginUser } = useAuth();
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -52,7 +55,7 @@ const Register = () => {
       const result = await register(formData);
       if (result.status === 200) {
         setSuccessMessage("Registration successful!");
-        sessionStorage.setItem("jwtToken", result.data.token);
+        loginUser(result.data.token);
         setTimeout(() => navigate("/profile"), 1000);
       }
     } catch (error) {
