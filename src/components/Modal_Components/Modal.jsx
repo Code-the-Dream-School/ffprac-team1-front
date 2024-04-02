@@ -24,9 +24,9 @@ const Modal = ({ openModalButton, modalBody, buttonClassName }) =>  {
         }
         size={size || "md"}
         handler={handleOpen}
-        className="border border-black rounded-3xl"
+        className="border border-black rounded-3xl bg-black h-[96%]"
       >
-        <div className="bg-black border border-blue/30 rounded-2xl px-8 pt-8 pb-4">
+        <div className=" h-full bg-black border border-blue/30 rounded-2xl px-8 pt-8 pb-4">
           <button
               variant="text"
               color="red"
@@ -35,7 +35,7 @@ const Modal = ({ openModalButton, modalBody, buttonClassName }) =>  {
             >
               <span>Cancel</span>
             </button>
-          <DialogBody >
+          <DialogBody>
             { modalBody }
           </DialogBody>
           <footer className="flex flex-row w-full justify-end">
