@@ -1,14 +1,19 @@
 import React from 'react';
-import SearchResults from '../Search/SearchResults';
+import { useAuth } from '../../AuthContext';
+import SearchResults from '../Search/SearchResults.jsx';
 
-const ProjectsList = ( {isLoggedIn }) => {
+const ProjectsList = () => {
+  const { isLoggedIn } = useAuth();
 
   return (
-  <div>    
-    <SearchResults isLoggedIn={isLoggedIn}/>
-  </div>
-  )
-}
-
+    <div>
+      {isLoggedIn ? (
+        <SearchResults />
+      ) : (
+        <div>In need to login.</div>
+      )}
+    </div>
+  );
+};
 
 export default ProjectsList;

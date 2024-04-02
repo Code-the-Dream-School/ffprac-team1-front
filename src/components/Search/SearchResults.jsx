@@ -4,8 +4,10 @@ import { useLocation } from 'react-router-dom';
 import './Search.css';
 import ProjectCard from '../Project/ProjectCard_unauthUsers.jsx';
 import Pagination from '../Layout/Pagination.jsx';
+import { useAuth } from '../../AuthContext';
 
-const SearchResults = ({isLoggedIn}) => {
+const SearchResults = () => {
+  const { isLoggedIn } = useAuth();
   const location = useLocation();
   const searchQuery = new URLSearchParams(location.search).get('search');
   const [searchResults, setSearchResults] = useState([]);
@@ -15,40 +17,39 @@ const SearchResults = ({isLoggedIn}) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        if (!searchQuery) {
+        try {
+          if (!searchQuery) {
+            const response = await fetch(
+              `http://localhost:8000/api/v1/projects`
+            );
+            const data = await response.json();
+            setSearchResults(data.data);
+            setLoading(false);
+            return;
+          }
+  
           const response = await fetch(
-            `http://localhost:8000/api/v1/projects`
+            `http://localhost:8000/api/v1/projects?search=${encodeURIComponent(searchQuery)}`
           );
           const data = await response.json();
-          setSearchResults(data.data);
-          setLoading(false);
-          return;
-        }
-
-        const response = await fetch(
-          `http://localhost:8000/api/v1/projects?search=${encodeURIComponent(searchQuery)}`
-        );
-        const data = await response.json();
-
-        const sortedResults = data.data.sort((a, b) => {
-          const missingWordsA = a.missingWords ? a.missingWords.length : 0;
-          const missingWordsB = b.missingWords ? b.missingWords.length : 0;
-          return missingWordsA - missingWordsB;
-        });
-
-        setSearchResults(sortedResults);
-        setLoading(false);
-      } catch (error) {
+  
+          const sortedResults = data.data.sort((a, b) => {
+            const missingWordsA = a.missingWords ? a.missingWords.length : 0;
+            const missingWordsB = b.missingWords ? b.missingWords.length : 0;
+            return missingWordsA - missingWordsB;
+          });
+  
+          setSearchResults(sortedResults);
+          setLoading(false);      } catch (error) {
         console.error('Error:', error);
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [searchQuery]);
+  }, [searchQuery, isLoggedIn]);
 
-  const filteredResults = !isLoggedIn ? searchResults.filter(item => item.status !== 'Completed') : searchResults;
+  const filteredResults = isLoggedIn ? searchResults : searchResults.filter(item => item.status !== 'Completed');
 
   const indexOfLastProject = currentPage * projectsPerPage;
   const indexOfFirstProject = indexOfLastProject - projectsPerPage;
@@ -61,7 +62,7 @@ const SearchResults = ({isLoggedIn}) => {
 
   return (
     <div className="searchResults">
-      <Search className="w-2/4 mx-auto" isLoggedIn={isLoggedIn}/>
+      <Search className="w-2/4 mx-auto" />
       {searchQuery ? (
         <h2>Search Results: {searchQuery}</h2>
       ) : (

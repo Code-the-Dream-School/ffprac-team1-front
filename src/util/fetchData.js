@@ -27,3 +27,7 @@ export const login = async ({ email, password }) => {
     throw error.response.data;
   }
 };
+
+export const logout = async () => {
+  return await axios.post(`${API_BASE_URL}/logout`)
+}

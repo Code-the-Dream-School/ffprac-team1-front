@@ -1,43 +1,21 @@
-import React, { useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../AuthContext';
+import { logout } from '../../util/fetchData'; 
 
-const Nav = ({ isLoggedIn, setIsLoggedIn }) => {
-  const dropdownRef = useRef(null);
+const Nav = () => {
+  const { isLoggedIn, logoutUser } = useAuth();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const jwtToken = sessionStorage.getItem("jwtToken");
-    if (jwtToken) {
-      setIsLoggedIn(true);
-    }
-
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [setIsLoggedIn]);
-
-  useEffect(() => {
-    if (location.pathname === '/') {
-        sessionStorage.removeItem("jwtToken");
-        setIsLoggedIn(false);
-    }
-}, [location, setIsLoggedIn]);
-
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      const dropdown = document.getElementById('dropdown');
-      dropdown.classList.add('hidden');
-    }
-  };
-
-  const handleSignOut = () => {
-    setIsLoggedIn(false);
-    sessionStorage.removeItem("jwtToken");
-  };
-
-  const toggleDropdown = () => {
-    const dropdown = document.getElementById('dropdown');
-    dropdown.classList.toggle('hidden');
+  const handleLogout = async () => {
+    logout()
+     .then (() => {
+      logoutUser()      
+      navigate('/')
+    }) 
+      .catch (error => {
+        console.log(error);
+    })
   };
 
   return (
@@ -49,7 +27,7 @@ const Nav = ({ isLoggedIn, setIsLoggedIn }) => {
         </p>
       </div>
       <nav className="flex flex-row pr-4 pt-2">
-        {!isLoggedIn ? (
+      {!isLoggedIn ? (
           <>
             <div className="pr-4">
               <Link to="/register">Join Now</Link>
@@ -60,24 +38,20 @@ const Nav = ({ isLoggedIn, setIsLoggedIn }) => {
           </>
         ) : (
           <>
-            <div className="pr-4 relative" ref={dropdownRef}>
-              <span onClick={toggleDropdown} className="cursor-pointer">Search for...</span>
-              <div id="dropdown" className="absolute bg-black rounded shadow-lg mt-2 hidden">
-                <Link to="/projects-list" className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={() => {toggleDropdown()}}>Projects</Link>
-                <Link to="/profiles-list" className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={() => {toggleDropdown()}}>Team members</Link>
-              </div>
-            </div>
             <div className="pr-4">
+              <Link to="/projects-list">Browse projects</Link>
+            </div>
+            {/* <div className="pr-4">
               <Link to="/messaging">Messaging</Link>
             </div>
             <div className="pr-4">
               <Link to="/notification">Notification</Link>
-            </div>
+            </div> */}
             <div className="pr-4">
               <Link to="/profile">Profile</Link>
             </div>
             <div className="pr-4">
-              <Link to="/" onClick={handleSignOut}>Sign Out</Link>
+              <Link to="/" onClick={handleLogout}>Sign Out</Link>
             </div>
           </>
         )}

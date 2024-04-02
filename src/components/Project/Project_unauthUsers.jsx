@@ -1,8 +1,11 @@
 import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { IconButton } from '@material-tailwind/react';
+import { useAuth } from '../../AuthContext' 
 
-const Projects = ({isLoggedIn}) => {
+
+const Projects = () => {
+    const { isLoggedIn } = useAuth(); 
     const location = useLocation();
     const projectTitle = location.state.projectTitle;
     const projectDesc = location.state.projectDesc;
