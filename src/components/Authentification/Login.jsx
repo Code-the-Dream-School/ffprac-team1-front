@@ -28,7 +28,6 @@ const Login = () => {
 
     try {
       const result = await login(formData);
-      console.log(formData)
       if (result.status === 200) {
         const token = result.data.token;
         loginUser(token)

@@ -9,8 +9,7 @@ const Nav = () => {
 
   const handleLogout = async () => {
     logout()
-     .then ((response) => {
-      console.log(response)
+     .then (() => {
       logoutUser()      
       navigate('/')
     }) 
