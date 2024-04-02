@@ -1,6 +1,6 @@
 import React from 'react';
 import Search from '../Search/SearchBar.jsx';
-import Registration from '../Authentification/Registration.jsx';
+// import Registration from '../Authentification/Registration.jsx';
 import Login from '../Authentification/Login.jsx';
 
 const LandingPage = () => (
@@ -23,23 +23,8 @@ const LandingPage = () => (
       <div className="w-3/5 mx-auto px-8">
         <h1 className="text-center text-xl pb-6">Sign In</h1>
         <Login />
-        <h6 className="text-center">
-          Don't have an account? <span className="font-bold text-blue underline hover:cursor-pointer" onClick={() => document.getElementById('my_modal_2').showModal()}>
-            Sign Up
-          </span>
-        </h6>
       </div>
     </div>
-    {/* DaisyUI Modal */}
-    <dialog id="my_modal_2" className="modal bg-black/50">
-      <div className="modal-box bg-black p-8 border border-blue/10">
-        <h3 className="font-bold text-lg pb-10 text-2xl text-center">Sign Up</h3>
-        <Registration />
-        </div>
-      <form method="dialog" className="modal-backdrop">
-        <button>close</button>
-      </form>
-    </dialog>
   </div>
 );
 

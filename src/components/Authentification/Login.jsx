@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../util/fetchData";
 import { useAuth } from '../../AuthContext';
+import RegistrationModal from "../Modal_Components/RegistrationModal";
 
 const Login = () => {
   const { isLoggedIn, loginUser } = useAuth();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
+  const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -47,6 +49,14 @@ const Login = () => {
     }
   }, [isLoggedIn, navigate]);
 
+  const openRegistrationModal = () => {
+    setIsRegistrationModalOpen(true);
+  };
+
+  const closeRegistrationModal = () => {
+    setIsRegistrationModalOpen(false);
+  };
+
   return (
     <div className="max-w-md mx-auto">
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -74,7 +84,14 @@ const Login = () => {
         </div>
         <button type="submit" className="btn-primary">Sign In</button>
         {errors.form && <div className="text-red-500">{errors.form}</div>}
+        <h6 className="text-center">
+          Don't have an account? 
+          <span className="font-bold text-blue underline hover:cursor-pointer" onClick={openRegistrationModal}>
+            Sign Up
+          </span>
+        </h6>
       </form>
+      {isRegistrationModalOpen && <RegistrationModal onClose={closeRegistrationModal} />}
     </div>
   );
 };
