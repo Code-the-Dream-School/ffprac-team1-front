@@ -22,9 +22,9 @@ const Nav = () => {
     <div className="bg-black p-4 flex flex-row justify-between">
       <div className="flex flex-row items-center pl-2">
         <img src="./images/logo.svg" alt="logo" />
-        <p to="/" className="text-2xl pl-2 font-bold">
+        <Link to="/" className="text-2xl pl-2 font-bold">
           DevConnexion
-        </p>
+        </Link>
       </div>
       <nav className="flex flex-row pr-4 pt-2">
       {!isLoggedIn ? (
