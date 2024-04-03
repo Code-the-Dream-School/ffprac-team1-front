@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Project from '../Project/ProjectCard.jsx';
+import ProjectCard from '../Project/ProjectCard.jsx';
 import Modal from '../Modal_Components/Modal.jsx';
 import CreateProject  from '../Modal_Components/CreateProject.jsx'
 
@@ -87,7 +87,11 @@ const Profile = () => (
           </div>
           
           <div className="py-4 flex flex-row">
-            < Project/>
+            <ProjectCard project={{ _id: 'uniqueId', title: 'Project Title', status: 'Project Status', description: 'Project Description', technologies: ['Tech 1', 'Tech 2'], rolesNeeded: ['Role 1', 'Role 2'] }} />
+          </div>
+
+          {/* <div className="py-4 flex flex-row">
+            < ProjectCard /> */}
             {/* <div className="max-w-[13rem] min-w-[12rem] overflow-hidden bg-gray/10 rounded-xl border border-transparent hover:border-blue/30 mb-6 mr-8 p-4">
             <i className="fa-sharp fa-thin fa-plus fa-2xl text-blue/40 rounded-xl border border-blue/40 hover:border-gray px-3 py-5"></i>
             </div> */}
@@ -101,7 +105,6 @@ const Profile = () => (
           </div>
         </div>
       </div>
-  </div>
 );
 
 export default Profile;
