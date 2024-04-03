@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Search from './SearchBar';
 import { useLocation } from 'react-router-dom';
 import './Search.css';
-import ProjectCard from '../Project/ProjectCard_unauthUsers.jsx';
+import ProjectCard from '../Project/ProjectCard.jsx';
 import Pagination from '../Layout/Pagination.jsx';
 import { useAuth } from '../../AuthContext';
 
