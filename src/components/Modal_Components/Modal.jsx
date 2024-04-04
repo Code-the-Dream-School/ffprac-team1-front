@@ -6,7 +6,7 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
  
-const Modal = ({openModalButton, modalBody}) =>  {
+const Modal = ({ openModalButton, modalBody, buttonClassName }) =>  {
   const [size, setSize] = React.useState(null);
  
   const handleOpen = (value) => setSize(value);
@@ -14,7 +14,7 @@ const Modal = ({openModalButton, modalBody}) =>  {
   return (
     <>
       <div className="flex w-full gap-3">
-        <button className="btn-primary font-[Jura] min-w-44" onClick={() => handleOpen("lg")} variant="gradient">
+        <button className={ buttonClassName } onClick={() => handleOpen("lg")} variant="gradient">
           { openModalButton }
         </button>
       </div>
@@ -24,14 +24,10 @@ const Modal = ({openModalButton, modalBody}) =>  {
         }
         size={size || "md"}
         handler={handleOpen}
-        className="border border-black rounded-3xl"
+        className="border border-black rounded-3xl bg-black h-[96%]"
       >
-        <div className="bg-black border border-blue/30 rounded-2xl px-8 pt-8 pb-4">
-          <DialogBody >
-            { modalBody }
-          </DialogBody>
-          <footer className="flex flex-row w-full justify-end">
-            <button
+        <div className=" h-full bg-black border border-blue/30 rounded-2xl px-8 pt-8 pb-4">
+          <button
               variant="text"
               color="red"
               onClick={() => handleOpen(null)}
@@ -39,13 +35,10 @@ const Modal = ({openModalButton, modalBody}) =>  {
             >
               <span>Cancel</span>
             </button>
-            <button
-              variant="gradient"
-              color="green"
-              onClick={() => handleOpen(null)}
-              className="btn-primary text-black w-[20%]" 
-            >Confirm
-            </button>
+          <DialogBody>
+            { modalBody }
+          </DialogBody>
+          <footer className="flex flex-row w-full justify-end">
           </footer>
         </div>
       </Dialog>

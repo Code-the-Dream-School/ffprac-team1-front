@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import ProjectCard from '../Project/ProjectCard.jsx';
 import Modal from '../Modal_Components/Modal.jsx';
 import CreateProject  from '../Modal_Components/CreateProject.jsx'
+import EditIcon  from '../Modal_Components/EditIcon.jsx'
+
+
 
 // this infirmation will be fassed as a prop from
 const profile = {
@@ -46,6 +49,7 @@ const Profile = () => (
             <div className="font-sans font-extralight text-sm text-blue italic pb-2">{profile.title} </div>
             </div>
             <div className="flex flex-col w-1/2 items-end">
+             < Modal  buttonClassName={""} openModalButton ={EditIcon() } modalBody={""}/>
               <div className="font-sans font-extralight text-xs italic pb-2 pr-2">Looking for: </div>
                 <div className="flex flex-row items-end">
                   <div className="font-sans font-extralight text-[13px] p-0.5 px-4 ml-2 border rounded-full text-green/80">{ profile.lookingFor[0]} </div>
@@ -55,7 +59,6 @@ const Profile = () => (
           </div>
       </div>
     </div>
-
       <div className="">
         <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5">
           <header className="pb-3 text-xl text-green/85">About:</header>
@@ -82,7 +85,7 @@ const Profile = () => (
           <div className="flex flex-row w-full justify-between">
             <h3 className="text-lg text-green/80">Your Projects:</h3>
             <div>
-            < Modal openModalButton={"+ Add New Project"} modalBody={CreateProject() } className=""/>
+            < Modal openModalButton={"+ Add New Project"} buttonClassName={"btn-primary font-[Jura] min-w-44"} modalBody={CreateProject() } className=""/>
             </div>
           </div>
           
