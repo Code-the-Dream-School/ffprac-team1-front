@@ -3,29 +3,21 @@ import { useLocation, Link } from 'react-router-dom';
 import { IconButton } from '@material-tailwind/react';
 import { Avatar, Tooltip } from '@material-tailwind/react';
 import { useAuth } from '../../AuthContext' 
-
+import { v4 as uuidv4 } from 'uuid';
 
 const Project = () => {
   const { isLoggedIn } = useAuth(); 
-  const location = useLocation();
-  const projectTitle = location.state.projectTitle;
-  const projectDesc = location.state.projectDesc;
-  const projectStatus = location.state.projectStatus;
-  const projectTechnologies = location.state.projectTechnologies;
-  const projectRolesNeeded = location.state.projectRolesNeeded;
+  const { state: { projectTitle, projectDesc, projectStatus, projectTechnologies, projectRolesNeeded } } = useLocation();
 
   const renderProjectTechnologies = technologies => {
       if (!technologies) return null;
   
-      const allTech = [];
-      for (const type in technologies) {
-          allTech.push(...technologies[type]);
-      }
-  
+      const allTech = Object.values(technologies).flat();
+
       return (
           <div>
-              {allTech.map((tech, index) => (
-              <li key={index}>• {tech}</li>
+              {allTech.map((tech) => (
+              <li key={uuidv4()}>• {tech}</li>
               ))}
           </div>
       );
@@ -73,10 +65,13 @@ const Project = () => {
         <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5">
           <h3 className="text-lg text-green/80">Technologies and languages:</h3>
           <ul>{renderProjectTechnologies(projectTechnologies)}</ul>
-          <h3 className="pt-4 text-lg text-green/80">Roles Needed:</h3>
-          <p>{projectRolesNeeded.join(', ')}</p>
+          {projectStatus !== "In Progress" && projectStatus !== "Completed" && (
+            <div>
+              <h3 className="pt-4 text-lg text-green/80">Roles Needed:</h3>
+              <p>{projectRolesNeeded.join(', ')}</p>
+            </div>
+          )}
         </div>
-
 
         {isLoggedIn ? (
             <>
