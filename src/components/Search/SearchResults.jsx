@@ -5,6 +5,7 @@ import './Search.css';
 import ProjectCard from '../Project/ProjectCard.jsx';
 import Pagination from '../Layout/Pagination.jsx';
 import { useAuth } from '../../AuthContext';
+import { fetchProjects } from '../../util/fetchData';
 
 const SearchResults = () => {
   const { isLoggedIn } = useAuth();
@@ -13,41 +14,25 @@ const SearchResults = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const projectsPerPage = 4;
+  const [projectsPerPage] = useState(5);
+  const [totalPages, setTotalPages] = useState(1);
+  
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   useEffect(() => {
     const fetchData = async () => {
-        try {
-          if (!searchQuery) {
-            const response = await fetch(
-              `http://localhost:8000/api/v1/projects`
-            );
-            const data = await response.json();
-            setSearchResults(data.data);
-            setLoading(false);
-            return;
-          }
-  
-          const response = await fetch(
-            `http://localhost:8000/api/v1/projects?search=${encodeURIComponent(searchQuery)}`
-          );
-          const data = await response.json();
-  
-          const sortedResults = data.data.sort((a, b) => {
-            const missingWordsA = a.missingWords ? a.missingWords.length : 0;
-            const missingWordsB = b.missingWords ? b.missingWords.length : 0;
-            return missingWordsA - missingWordsB;
-          });
-  
-          setSearchResults(sortedResults);
-          setLoading(false);      } catch (error) {
-        console.error('Error:', error);
-        setLoading(false);
-      }
+      setLoading(true);
+      const data = await fetchProjects(searchQuery, isLoggedIn);
+      setSearchResults(data);
+      setLoading(false);
     };
 
     fetchData();
   }, [searchQuery, isLoggedIn]);
+
+  useEffect(() => {
+    setTotalPages(Math.ceil(searchResults.length / projectsPerPage));
+  }, [searchResults, projectsPerPage]);
 
   const filteredResults = isLoggedIn ? searchResults : searchResults.filter(item => item.status !== 'Completed');
 
@@ -57,8 +42,6 @@ const SearchResults = () => {
     indexOfFirstProject,
     Math.min(indexOfLastProject, filteredResults.length),
   );
-
-  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   return (
     <div className="searchResults">
@@ -90,11 +73,7 @@ const SearchResults = () => {
         </div>
       )}
       <div className="flex flex-col items-center py-12">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={Math.ceil(filteredResults.length / projectsPerPage)}
-          paginate={paginate}
-        />
+      <Pagination currentPage={currentPage} totalPages={totalPages} paginate={paginate} />
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ const ProjectsList = () => {
       {isLoggedIn ? (
         <SearchResults />
       ) : (
-        <div>In need to login.</div>
+        <div>You need to login.</div>
       )}
     </div>
   );

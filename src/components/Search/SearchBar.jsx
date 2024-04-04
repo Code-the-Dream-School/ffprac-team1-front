@@ -4,7 +4,6 @@ import './Search.css';
 import { useAuth } from '../../AuthContext';
 
 const Search = ({ className }) => {
-
   const { isLoggedIn } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
@@ -16,14 +15,10 @@ const Search = ({ className }) => {
   const handleSubmit = event => {
     event.preventDefault();
     if (searchQuery.trim()) {
-      if (isLoggedIn) {
-        navigate(`/projects-list?search=${encodeURIComponent(searchQuery.trim())}`);
-      } else {
-        navigate(`/search-results?search=${encodeURIComponent(searchQuery.trim())}`);
-      }
+      const searchPath = isLoggedIn ? '/projects-list' : '/search-results';
+      navigate(`${searchPath}?search=${encodeURIComponent(searchQuery.trim())}`);
     }
   };
-  
 
   const handleKeyDown = event => {
     if (event.key === 'Enter') {
@@ -32,18 +27,16 @@ const Search = ({ className }) => {
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          className={`search-area ${className || 'w-3/4'}`}
-          placeholder="Search your first project..."
-          value={searchQuery}
-          onChange={handleSearchInputChange}
-          onKeyDown={handleKeyDown}
-        />
-      </form>
-    </>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        className={`search-area ${className || 'w-3/4'}`}
+        placeholder="Search your first project..."
+        value={searchQuery}
+        onChange={handleSearchInputChange}
+        onKeyDown={handleKeyDown}
+      />
+    </form>
   );
 };
 
