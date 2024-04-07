@@ -55,7 +55,7 @@ const Register = () => {
       const result = await register(formData);
       if (result.status === 200) {
         setSuccessMessage("Registration successful!");
-        loginUser(result.data.token);
+        loginUser();
         setTimeout(() => navigate("/profile"), 1000);
       }
     } catch (error) {

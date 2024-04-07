@@ -32,7 +32,7 @@ const Login = () => {
       const result = await login(formData);
       if (result.status === 200) {
         const token = result.data.token;
-        loginUser(token)
+        loginUser()
         navigate('/profile');
       }
     } catch (error) {
