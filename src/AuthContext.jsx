@@ -7,22 +7,22 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const jwtToken = sessionStorage.getItem('jwtToken');
+  const isToken = sessionStorage.getItem('isToken');
   useEffect(()=> {
-    if (jwtToken) {
+    if (isToken) {
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
     }
-  }, [jwtToken]);
+  }, [isToken]);
 
-  const loginUser = (token) => {
-    sessionStorage.setItem('jwtToken', token);
+  const loginUser = (status) => {
+    sessionStorage.setItem('isToken', status);
     setIsLoggedIn(true);
   };
 
   const logoutUser = () => {
-    sessionStorage.removeItem('jwtToken');
+    sessionStorage.removeItem('isToken');
     setIsLoggedIn(false);
   };
   
