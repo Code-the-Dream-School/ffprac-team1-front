@@ -31,7 +31,6 @@ const Login = () => {
     try {
       const result = await login(formData);
       if (result.status === 200) {
-        const token = result.data.token;
         loginUser(true)
         navigate('/profile');
       }
