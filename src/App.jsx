@@ -4,7 +4,7 @@ import LandingPage from './components/Layout/LandingPage.jsx';
 import Nav from './components/Layout/Nav.jsx';
 import Login from './components/Authentification/Login.jsx';
 import Register from './components/Authentification/Registration.jsx';
-import Profile from './components/Profile/UserProfile.jsx';
+import UserProfilePage from './components/Profile/UserProfilePage.jsx';
 import CreateProfile from './components/Profile/CreateProfile.jsx';
 import EditProfile from './components/Profile/EditProfile.jsx';
 import ProjectsList from './components/Project/ProjectsList.jsx';
@@ -17,11 +17,13 @@ import Search from './components/Search/SearchBar.jsx';
 import SearchResults from './components/Search/SearchResults.jsx';
 import ProtectedRoute from './ProtectedRoute';
 import { AuthProvider } from './AuthContext';
+import { ProfileProvider } from "./components/Profile/ProfileContext";
 import './App.css';
 
 function App() {
   return (
     <AuthProvider>
+      <ProfileProvider>
       <BrowserRouter>
         <Nav />
         <Routes>
@@ -31,7 +33,7 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/search-results" element={<SearchResults />} />
           <Route path="/projects/:projectId" element={<Project />} />
-          <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
+          <Route path="/profile" element={<ProtectedRoute element={<UserProfilePage />} />} /> 
           <Route path="/create-profile" element={<ProtectedRoute element={<CreateProfile />} />} />
           <Route path="/edit-profile" element={<ProtectedRoute element={<EditProfile />} />} />
           <Route path="/projects-list" element={<ProtectedRoute element={<ProjectsList />} />} />
@@ -41,6 +43,7 @@ function App() {
           <Route path="/notification" element={<ProtectedRoute element={<Notification />} />} />
         </Routes>
       </BrowserRouter>
+      </ProfileProvider>
     </AuthProvider>
   );
 }

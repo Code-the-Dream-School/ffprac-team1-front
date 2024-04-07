@@ -9,11 +9,7 @@ export const AuthProvider = ({ children }) => {
 
   const jwtToken = sessionStorage.getItem('jwtToken');
   useEffect(()=> {
-    if (jwtToken) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
+    setIsLoggedIn(!!jwtToken); 
   }, [jwtToken]);
 
   const loginUser = (token) => {
