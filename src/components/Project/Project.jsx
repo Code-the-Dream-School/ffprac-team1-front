@@ -2,6 +2,8 @@ import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { IconButton } from '@material-tailwind/react';
 import { Avatar, Tooltip } from '@material-tailwind/react';
+import Modal from '../Modal_Components/Modal.jsx';
+import UploadImage  from '../Modal_Components/UploadImages.jsx'
 import { useAuth } from '../../AuthContext' 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -23,6 +25,21 @@ const Project = () => {
       );
   };
 
+
+  const imageButton = () => {
+    return(
+    <Tooltip content="Upload Image" className="bg-blue/10" placement="right-end" >
+              <img
+                size="sm"
+                variant="circular"
+                alt="tania andrew"
+                src="https://source.unsplash.com/a-rubik-cube-is-shown-on-a-white-background-fd6K_OFlnRA"
+                className="border-4 border-transparent h-36 w-36 rounded-full bject-cover object-center hover:cursor-pointer hover:border-green"
+              />
+            </Tooltip>
+    )
+  }
+
   return (
   <div className="contanier-primary px-64 flex flex-col text-gray">
     <img
@@ -34,13 +51,7 @@ const Project = () => {
       <div className="flex flex-row">
         <div className="flex flex-col w-1/2">
           <div className="text-2xl font-medium pb-4">{projectTitle} </div>
-          <img
-            size="sm"
-            variant="circular"
-            alt="tania andrew"
-            src="https://source.unsplash.com/a-rubik-cube-is-shown-on-a-white-background-fd6K_OFlnRA"
-            className="border-\4 border-grey h-36 w-36 rounded-full bject-cover object-center"
-          />
+          <Modal buttonClassName={""} openModalButton ={ imageButton() } modalBody={UploadImage()} />
         </div>
         <div className="flex flex-col w-1/2 items-end">
           <h2 className="text-[20px] font-semibold text-right text-blue pt-1"> Project Status:
