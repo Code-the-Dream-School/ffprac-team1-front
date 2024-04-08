@@ -33,29 +33,23 @@ export const logout = async () => {
 }
 
 export const fetchProjects = async (search, page, limit) => {
-  let url = 'http://localhost:8000/api/v1/projects';
-  
+  const baseUrl = 'http://localhost:8000/api/v1/projects';
   const queryParams = new URLSearchParams();
-  if (search) {
-    queryParams.append('search', search);
-  }
-  if (page) {
-    queryParams.append('page', page);
-  }
-  if (limit) {
-    queryParams.append('limit', limit);
-  }
 
-  if (queryParams.toString()) {
-    url += '?' + queryParams.toString();
-  }
+  const params = { search, page, limit };
+  Object.keys(params).forEach(key => {
+    if (params[key]) queryParams.append(key, params[key]);
+  });
+
+  const url = queryParams.toString() ? `${baseUrl}?${queryParams.toString()}` : baseUrl;
 
   try {
     const response = await fetch(url);
-    const data = await response.json();
-    return data;
+    if (!response.ok) throw new Error('Network response was not ok');
+    return await response.json();
   } catch (error) {
     console.error('Error:', error);
     return { data: [], totalPages: 0 };
   }
 };
+
