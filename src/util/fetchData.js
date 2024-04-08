@@ -15,6 +15,7 @@ export const register = async ({ firstName, lastName, email, password }) => {
    throw error.response.data;
   }
  };
+
  export const login = async ({ email, password }) => {
   try {
    const response = await axios.post(`${API_BASE_URL}/login`, {
@@ -26,23 +27,35 @@ export const register = async ({ firstName, lastName, email, password }) => {
    throw error.response.data;
   }
 };
+
 export const logout = async () => {
   return await axios.post(`${API_BASE_URL}/logout`, {} , { withCredentials: true });
 }
 
-export const fetchProjects = async (searchQuery, isLoggedIn) => {
+export const fetchProjects = async (search, page, limit) => {
   let url = 'http://localhost:8000/api/v1/projects';
   
-  if (searchQuery) {
-    url = `${url}?search=${encodeURIComponent(searchQuery)}`;
+  const queryParams = new URLSearchParams();
+  if (search) {
+    queryParams.append('search', search);
+  }
+  if (page) {
+    queryParams.append('page', page);
+  }
+  if (limit) {
+    queryParams.append('limit', limit);
+  }
+
+  if (queryParams.toString()) {
+    url += '?' + queryParams.toString();
   }
 
   try {
     const response = await fetch(url);
     const data = await response.json();
-    return data.data;
+    return data;
   } catch (error) {
     console.error('Error:', error);
-    return [];
+    return { data: [], totalPages: 0 };
   }
 };
