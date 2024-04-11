@@ -23,13 +23,18 @@ const SearchResults = () => {
       setLoading(false);
     };
 
-    setPage(1);
     fetchData();
   }, [search, page, limit]);
 
   const paginate = pageNumber => {
     setPage(pageNumber);
   };
+
+  useEffect(() => {
+    if (page > 1) {
+      setPage(1);
+    }
+  }, [search]);
 
   return (
     <div className="m-5">
