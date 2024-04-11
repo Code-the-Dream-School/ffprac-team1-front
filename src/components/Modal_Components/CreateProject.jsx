@@ -1,15 +1,17 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input, Select, Option, Textarea } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
-import { XCircleIcon } from '@heroicons/react/24/outline'
-
-
+import { XCircleIcon } from '@heroicons/react/24/outline';
+import { useAuth } from '../../AuthContext';
+import axios from "axios";
+import { createProject } from '../../util/fetchData.js'
 
  const CreateProject = () => {
 
   const [ frontEnd, setFrontEnd ] = useState([]);
   const [frontEndList, setFrontEndList ] = useState([" ", "HTML/CSS", "JavaScript", "TypeScript", "React", "Angular", "Vue.js", "Svelte", "Next.js", "Redux", "Bootstrap", "Tailwind CSS", "SASS/LESS"]);
+  
   let array = [];
 
     const handleChange=(e)=>{
@@ -47,7 +49,48 @@ import { XCircleIcon } from '@heroicons/react/24/outline'
       setFrontEnd(array);
       }
     
+      // useEffect(() => {
+      //   const fetchData = async () => {
+      //       try {
 
+      //         const response = await fetch(
+      //           `http://localhost:8000/api/v1/projects`
+      //         );
+      //         const data = await response.json();
+      //         console.log(data)
+      //         // setSearchResults(sortedResults);
+      //         //setLoading(false);      
+      //       } catch (error) {
+      //       console.error('Error:', error);
+      //       //setLoading(false);
+      //     }
+      //   }
+
+      //   console.log("Got Here")
+      //   fetchData();
+      // }, [frontEndList]);
+
+
+      useEffect(() => {
+        const fetchData = async () => {
+            try {
+              const response = await axios.get(
+                `http://localhost:8000/api/v1/profiles/myProfile`, { withCredentials: true }
+              );
+              //console.log(response);
+              const data = await response;
+              
+              console.log(data.data);
+              // setLoading(false);      
+            } catch (error) {
+            console.error('Error:', error);
+            // setLoading(false);
+          }
+        };
+        console.log("Got Here")
+        fetchData();
+      }, [frontEndList]);
+      
 
     return (
       <div className="h-fit overflow-scrolling" >

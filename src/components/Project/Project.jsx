@@ -3,7 +3,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { IconButton } from '@material-tailwind/react';
 import { Avatar, Tooltip } from '@material-tailwind/react';
 import Modal from '../Modal_Components/Modal.jsx';
-import UploadImage  from '../Modal_Components/UploadImage.jsx'
+import UploadImage  from '../Modal_Components/UploadImages.jsx'
 import { useAuth } from '../../AuthContext' 
 
 
