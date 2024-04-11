@@ -1,36 +1,44 @@
-import axios from "axios";
+import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8000/api/v1/users';
 
 export const register = async ({ firstName, lastName, email, password }) => {
   try {
-   const response = await axios.post(`${API_BASE_URL}/register`, {
-    firstName,
-    lastName,
-    email,
-    password
-   }, { withCredentials: true });
-   return response;
+    const response = await axios.post(
+      `${API_BASE_URL}/register`,
+      {
+        firstName,
+        lastName,
+        email,
+        password,
+      },
+      { withCredentials: true },
+    );
+    return response;
   } catch (error) {
-   throw error.response.data;
+    throw error.response.data;
   }
- };
+};
 
- export const login = async ({ email, password }) => {
+export const login = async ({ email, password }) => {
   try {
-   const response = await axios.post(`${API_BASE_URL}/login`, {
-    email,
-    password
-   }, { withCredentials: true });
-   return response;
+    const response = await axios.post(
+      `${API_BASE_URL}/login`,
+      {
+        email,
+        password,
+      },
+      { withCredentials: true },
+    );
+    return response;
   } catch (error) {
-   throw error.response.data;
+    throw error.response.data;
   }
 };
 
 export const logout = async () => {
-  return await axios.post(`${API_BASE_URL}/logout`, {} , { withCredentials: true });
-}
+  return await axios.post(`${API_BASE_URL}/logout`, {}, { withCredentials: true });
+};
 
 export const fetchProjects = async (search, page, limit) => {
   const baseUrl = 'http://localhost:8000/api/v1/projects';
@@ -53,3 +61,23 @@ export const fetchProjects = async (search, page, limit) => {
   }
 };
 
+export const likeProject = async projectId => {
+  try {
+    const response = await fetch(`http://localhost:8000/api/v1/projects/${projectId}/like`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+    if (response.ok) {
+      const responseData = await response.json();
+      return responseData.totalLikes;
+    } else {
+      throw new Error('Failed to like project');
+    }
+  } catch (error) {
+    console.error('An error occurred while processing your request:', error);
+    throw error;
+  }
+};

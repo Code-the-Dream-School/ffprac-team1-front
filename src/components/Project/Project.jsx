@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { IconButton } from '@material-tailwind/react';
 import { Avatar, Tooltip } from '@material-tailwind/react';
@@ -6,12 +6,36 @@ import Modal from '../Modal_Components/Modal.jsx';
 import UploadImage from '../Modal_Components/UploadImages.jsx';
 import { useAuth } from '../../AuthContext';
 import { v4 as uuidv4 } from 'uuid';
+import { likeProject } from '../../util/fetchData.js';
 
 const Project = () => {
   const { isLoggedIn } = useAuth();
   const {
-    state: { projectTitle, projectDesc, projectStatus, projectTechnologies, projectRolesNeeded },
+    state: {
+      projectId,
+      projectTitle,
+      projectDesc,
+      projectStatus,
+      projectTechnologies,
+      projectRolesNeeded,
+      projectLikes,
+    },
   } = useLocation();
+
+  const [likes, setLikes] = useState(projectLikes);
+  
+  const handleLikeClick = async () => {
+    try {
+      const newLikes = await likeProject(projectId);
+      setLikes(newLikes);
+    } catch (error) {
+      console.error('An error occurred while processing your request:', error);
+    }
+  };
+
+  const handleLoginPrompt = () => {
+    alert('Please register or sign in to perform this action.');
+  };
 
   const renderProjectTechnologies = technologies => {
     if (!technologies) return null;
@@ -61,9 +85,25 @@ const Project = () => {
               <p className="font-sans text-[15px] font-medium pb-3">{projectStatus}</p>
             </h2>
             <div className="pt-2">
-              <IconButton variant="outlined" className="text-blue rounded-lg bg-blue mr-4">
-                <i className="fas fa-heart fa-xl text-black" />
-              </IconButton>
+              {isLoggedIn ? (
+                <IconButton
+                  variant="outlined"
+                  className="text-blue rounded-lg bg-blue mr-4"
+                  onClick={handleLikeClick}
+                >
+                  <i className="fas fa-heart fa-xl text-black" />
+                  {likes}
+                </IconButton>
+              ) : (
+                <IconButton
+                  variant="outlined"
+                  className="text-blue rounded-lg bg-blue mr-4"
+                  onClick={handleLoginPrompt}
+                >
+                  <i className="fas fa-heart fa-xl text-black" />
+                  {likes}
+                </IconButton>
+              )}
               {/* <IconButton variant="outlined" className="text-blue rounded-lg bg-blue">
               <i className="fas fa-thumbs-up fa-xl text-black" />
             </IconButton> */}
