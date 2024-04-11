@@ -13,7 +13,7 @@ import {
 
 
 const ProjectCard = ({ project }) => {
-  const { _id, title, status, description, technologies, rolesNeeded } = project;
+  const { _id, title, status, description, technologies, rolesNeeded, likeCount } = project;
 
   const renderTechnologies = technologies => {
     if (!technologies) return null;
@@ -41,7 +41,9 @@ const ProjectCard = ({ project }) => {
         projectStatus: status, 
         projectDesc: description,
         projectTechnologies: technologies, 
-        projectRolesNeeded: rolesNeeded }}>
+        projectRolesNeeded: rolesNeeded,
+        projectLikes: likeCount
+         }}>
 
         <CardHeader
           floated={false}
