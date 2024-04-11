@@ -23,6 +23,7 @@ const SearchResults = () => {
       setLoading(false);
     };
 
+    setPage(1);
     fetchData();
   }, [search, page, limit]);
 
