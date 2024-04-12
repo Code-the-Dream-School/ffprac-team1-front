@@ -21,6 +21,7 @@ export const register = async ({ firstName, lastName, email, password }) => {
     throw error.response.data;
   }
  };
+
  export const login = async ({ email, password }) => {
   try {
     const response = await axios.post(
@@ -83,13 +84,13 @@ export const likeProject = async projectId => {
   }
 };
 
- export const createProject = async ({ title, description, rolesNeeded }) => {
+ export const createProject = async (title, description, rolesNeeded) => {
   try {
-   const response = await axios.post(`${API_BASE_URL_PROJECTS}r`, {
+   const response = await axios.post(`${API_BASE_URL_PROJECTS}`, {
     title,
     description,
     rolesNeeded
-   }, { withCredentials: true });
+   }, { withCredentials: true })
    return response;
   } catch (error) {
    throw error.response.data;
