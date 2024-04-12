@@ -21,6 +21,7 @@ const Project = () => {
       projectTechnologies,
       projectRolesNeeded,
       projectLikes,
+      projectCreator,
     },
   } = useLocation();
 
@@ -86,9 +87,11 @@ const Project = () => {
                 Project Status:
                 <p className="font-sans text-[15px] font-medium pb-3">{projectStatus}</p>
               </h2>
-              <div>
-                <Modal openModalButton={<EditIcon />} modalBody={EditProject()}  />
-              </div>
+              {isLoggedIn && (
+                <div>
+                  <Modal openModalButton={<EditIcon />} modalBody={EditProject()} />
+                </div>
+              )}
             </div>
             <div className="pt-2">
               {isLoggedIn ? (
