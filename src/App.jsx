@@ -17,7 +17,6 @@ import Search from './components/Search/SearchBar.jsx';
 import SearchResults from './components/Search/SearchResults.jsx';
 import ProtectedRoute from './ProtectedRoute';
 import { AuthProvider } from './AuthContext';
-import './App.css';
 
 function App() {
   return (
