@@ -7,6 +7,8 @@ import UploadImage from '../Modal_Components/UploadImages.jsx';
 import { useAuth } from '../../AuthContext';
 import { v4 as uuidv4 } from 'uuid';
 import { likeProject } from '../../util/fetchData.js';
+import EditProject from '../Modal_Components/EditProject.jsx';
+import EditIcon from '../Modal_Components/EditIcon.jsx';
 
 const Project = () => {
   const { isLoggedIn } = useAuth();
@@ -23,7 +25,7 @@ const Project = () => {
   } = useLocation();
 
   const [likes, setLikes] = useState(projectLikes);
-  
+
   const handleLikeClick = async () => {
     try {
       const newLikes = await likeProject(projectId);
@@ -79,11 +81,15 @@ const Project = () => {
             <Modal buttonClassName={''} openModalButton={imageButton()} modalBody={UploadImage()} />
           </div>
           <div className="flex flex-col w-1/2 items-end">
-            <h2 className="text-[20px] font-semibold text-right text-blue pt-1">
-              {' '}
-              Project Status:
-              <p className="font-sans text-[15px] font-medium pb-3">{projectStatus}</p>
-            </h2>
+            <div className="flex items-center justify-between mt-7">
+              <h2 className="text-[20px] font-semibold text-right text-blue mr-2">
+                Project Status:
+                <p className="font-sans text-[15px] font-medium pb-3">{projectStatus}</p>
+              </h2>
+              <div>
+                <Modal openModalButton={<EditIcon />} modalBody={EditProject()}  />
+              </div>
+            </div>
             <div className="pt-2">
               {isLoggedIn ? (
                 <IconButton
