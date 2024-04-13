@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 import { Input, Textarea } from "@material-tailwind/react";
 import { XCircleIcon } from '@heroicons/react/24/outline';
+import { useNavigate} from "react-router-dom";
 
-const EditProject = ({ projectTitle: initialProjectTitle, projectDesc: initialProjectDesc, projectRolesNeeded: initialProjectRolesNeeded }) => {
+
+const EditProject = ({ projectId, projectTitle: initialProjectTitle, projectDesc: initialProjectDesc, projectRolesNeeded: initialProjectRolesNeeded }) => {
+  const navigate = useNavigate()
+  
   const [projectTitle, setProjectTitle] = useState(initialProjectTitle);
+  // console.log(projectTitle);
+  // console.log(projectId)
+
   const [projectDesc, setProjectDesc] = useState(initialProjectDesc);
   const [projectRolesNeeded, setProjectRolesNeeded] = useState(initialProjectRolesNeeded);
   
@@ -19,10 +26,17 @@ const EditProject = ({ projectTitle: initialProjectTitle, projectDesc: initialPr
       setProjectDesc(value);
     } else if (name === "projectRolesNeeded") {
       setProjectRolesNeeded(value);
+    } else if (name.startsWith("technologies")) {
+      const [, technologyKey] = name.split(".");
+      setTechnologies((prevTechnologies) => ({
+        ...prevTechnologies,
+        [technologyKey]: value,
+      }));
     } else {
       setSelectedFrontEnd(value);
     }
   };
+  
 
   const handleAddFrontEnd = () => {
     if (selectedFrontEnd.trim() !== "") {
@@ -37,10 +51,44 @@ const EditProject = ({ projectTitle: initialProjectTitle, projectDesc: initialPr
     setFrontEndList((prevList) => [...prevList, param]);
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const updatedProject = {
+      projectTitle,
+      projectDesc,
+      projectRolesNeeded,
+      frontEnd
+    };
+
+    // console.log("New data:", updatedProject);
+
+    try {
+      const response = await fetch(`http://localhost:8000/api/v1/projects/${projectId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedProject),
+      credentials: 'include' 
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update project');
+      }
+      // console.log(response)
+      console.log('Project updated successfully');
+      // setProjectTitle(updatedProject.projectTitle);
+      // console.log(updatedProject.projectTitle)
+    } catch (error) {
+      console.error('Error updating project:', error.message);
+    }
+  };
+
   return (
     <div className="h-fit overflow-scrolling">
       <header className="text-center text-xl pb-6 font-bold text-green"> Edit your project</header>
-      <form className="w-full h-[90%] py-6 flex flex-col">
+      <form className="w-full h-[90%] py-6 flex flex-col" onSubmit={handleSubmit}>
         <div className="flex flex-row justify-center">
           <div className="w-[60%] flex flex-col">
             <Input label="Project Title" name="projectTitle" className="text-gray" value={projectTitle} onChange={handleChange} />

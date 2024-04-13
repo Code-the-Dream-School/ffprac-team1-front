@@ -27,7 +27,7 @@ const Project = () => {
   } = useLocation();
 
   const [likes, setLikes] = useState(projectLikes);
-  console.log(profile);
+  // console.log(profile);
 
   const handleLikeClick = async () => {
     try {
@@ -94,7 +94,7 @@ const Project = () => {
                   <Modal
                     openModalButton={<EditIcon />}
                     modalBody={
-                      <EditProject projectTitle={projectTitle} projectDesc={projectDesc} projectRolesNeeded={projectRolesNeeded}/>
+                      <EditProject projectId={projectId} projectTitle={projectTitle} projectDesc={projectDesc} projectRolesNeeded={projectRolesNeeded}/>
                     }
                   />
                 </div>

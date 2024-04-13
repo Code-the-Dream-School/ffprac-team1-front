@@ -19,7 +19,7 @@ const ProjectCard = ({ project, profile }) => {
   const { isLoggedIn } = useAuth(); // Получаем информацию о пользователе из контекста аутентификации
 
   // console.log(createdBy);
-  console.log(profile)
+  // console.log(profile)
 
   // Дополнительная логика для определения, является ли текущий пользователь создателем проекта
   const renderTechnologies = technologies => {
