@@ -103,8 +103,8 @@ const Profile = () => {
           <div className="flex flex-row w-full justify-between">
             <h3 className="text-lg text-green/80">Your Projects:</h3>
             <div>
-              <p>add create project</p>
-              {/* < Modal openModalButton={"+ Add New Project"} buttonClassName={"btn-primary font-[Jura] min-w-44"} modalBody={CreateProject() } className=""/> */}
+              {/* <p>add create project</p> */}
+              < Modal openModalButton={"+ Add New Project"} buttonClassName={"btn-primary font-[Jura] min-w-44"} modalBody={<CreateProject />} className=""/>
             </div>
           </div>
           <div className="py-4 flex flex-row">
