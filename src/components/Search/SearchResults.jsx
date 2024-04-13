@@ -5,7 +5,7 @@ import ProjectCard from '../Project/ProjectCard';
 import Pagination from '../Layout/Pagination';
 import { fetchProjects } from '../../util/fetchData';
 
-const SearchResults = () => {
+const SearchResults = ({profile}) => {
   const location = useLocation();
   const search = new URLSearchParams(location.search).get('search');
   const [searchResults, setSearchResults] = useState([]);
@@ -53,7 +53,7 @@ const SearchResults = () => {
           <div className="flex flex-wrap justify-center p-0 m-0 list-none text-xs">
             {searchResults.map((item, index) => (
               <div key={item._id}>
-                <ProjectCard project={item}/>
+                <ProjectCard project={item} profile={profile}/>
                 {item.missingWords && item.missingWords.length > 0 && (
                   <p className="missingWords">
                     <em>

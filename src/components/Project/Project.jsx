@@ -89,7 +89,7 @@ const Project = () => {
                 Project Status:
                 <p className="font-sans text-[15px] font-medium pb-3">{projectStatus}</p>
               </h2>
-              {isLoggedIn && (
+              {isLoggedIn && profile.profile._id === projectCreator && (
                 <div>
                   <Modal
                     openModalButton={<EditIcon />}
