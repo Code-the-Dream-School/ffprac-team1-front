@@ -16,18 +16,18 @@ const Project = () => {
     state: {
       projectId,
       projectTitle,
-      projectDesc, 
+      projectDesc,
       projectStatus,
       projectTechnologies,
       projectRolesNeeded,
       projectLikes,
       projectCreator,
-      profile
+      profile,
     },
   } = useLocation();
 
   const [likes, setLikes] = useState(projectLikes);
-  console.log(profile)
+  console.log(profile);
 
   const handleLikeClick = async () => {
     try {
@@ -91,7 +91,12 @@ const Project = () => {
               </h2>
               {isLoggedIn && (
                 <div>
-                  <Modal openModalButton={<EditIcon />} modalBody={EditProject()} />
+                  <Modal
+                    openModalButton={<EditIcon />}
+                    modalBody={
+                      <EditProject projectTitle={projectTitle} projectDesc={projectDesc} projectRolesNeeded={projectRolesNeeded}/>
+                    }
+                  />
                 </div>
               )}
             </div>
@@ -143,7 +148,7 @@ const Project = () => {
               <div className="mt-4 mb-1 py-4 px-8 border border-transparent rounded-lg bg-gray/5">
                 <h3 className="text-lg text-green/80">Project Creator:</h3>
                 <div className="py-4 flex flex-row">
-                  <Tooltip content={profile.profile._id}>
+                  <Tooltip content={`${profile.profile.firstName} ${profile.profile.lastName}`}>
                     <Avatar
                       size="sm"
                       variant="circular"
@@ -153,7 +158,9 @@ const Project = () => {
                     />
                   </Tooltip>
                   <div className="pl-4">
-                    <header>{profile.profile.firstName} {profile.profile.lastName}</header>
+                    <header>
+                      {profile.profile.firstName} {profile.profile.lastName}
+                    </header>
                     <p className="font-sans font-extralight italic text-[11px] text-blue">
                       {' '}
                       Project Manager
