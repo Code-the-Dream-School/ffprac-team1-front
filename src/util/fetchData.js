@@ -81,3 +81,28 @@ export const likeProject = async projectId => {
     throw error;
   }
 };
+
+
+const fetchProfile = async () => {
+  try {
+    const response = await fetch('http://localhost:8000/api/v1/profiles/myProfile', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+    if (response.ok) {
+      const profileData = await response.json();
+      return profileData;
+    } else {
+      console.error('Failed to fetch profile:', response.status);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+    return null;
+  }
+};
+
+export default fetchProfile;

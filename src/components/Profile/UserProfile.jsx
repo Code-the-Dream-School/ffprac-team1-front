@@ -4,33 +4,22 @@ import ProjectCard from '../Project/ProjectCard.jsx';
 import Modal from '../Modal_Components/Modal.jsx';
 import CreateProject from '../Modal_Components/CreateProject.jsx';
 import EditIcon from '../Modal_Components/EditIcon.jsx';
+import fetchProfile from '../../util/fetchData.js'
+
 
 const Profile = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await fetch('http://localhost:8000/api/v1/profiles/myProfile', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-        });
-        if (response.ok) {
-          const profileData = await response.json();
-          // console.log('Profile Data:', profileData);
-          setProfile(profileData);
-        } else {
-          console.error('Failed to fetch profile:', response.status);
-        }
-      } catch (error) {
-        console.error('Error fetching profile:', error);
+    const fetchData = async () => {
+      const profileData = await fetchProfile();
+      if (profileData) {
+        setProfile(profileData);
       }
     };
-    fetchProfile();
+
+    fetchData();
   }, []);
 
   if (!profile) {
@@ -108,6 +97,7 @@ const Profile = () => {
             </div>
           </div>
           <div className="py-4 flex flex-row">
+            {profile.profile._id}
             {profile.profile.ownProjects.map((project, index) => (
               <ProjectCard
                 key={index}
@@ -118,7 +108,9 @@ const Profile = () => {
                   description: project.description,
                   technologies: project.technologies,
                   rolesNeeded: project.rolesNeeded,
+                  createdBy: profile.profile._id
                 }}
+                profile={profile}
               />
             ))}
           </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { useAuth } from '../../AuthContext'; // Подставьте путь к вашему контексту аутентификации
 import {
   Card,
   CardHeader,
@@ -12,9 +13,15 @@ import {
 } from '@material-tailwind/react';
 
 
-const ProjectCard = ({ project }) => {
+const ProjectCard = ({ project, profile }) => {
   const { _id, title, status, description, technologies, rolesNeeded, likeCount, createdBy } = project;
 
+  const { isLoggedIn } = useAuth(); // Получаем информацию о пользователе из контекста аутентификации
+
+  // console.log(createdBy);
+  console.log(profile)
+
+  // Дополнительная логика для определения, является ли текущий пользователь создателем проекта
   const renderTechnologies = technologies => {
     if (!technologies) return null;
     const allTech = Object.values(technologies).flat();
@@ -44,6 +51,7 @@ const ProjectCard = ({ project }) => {
         projectRolesNeeded: rolesNeeded,
         projectLikes: likeCount,
         projectCreator: createdBy,
+        profile: profile
          }}>
 
         <CardHeader

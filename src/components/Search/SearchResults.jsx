@@ -53,7 +53,7 @@ const SearchResults = () => {
           <div className="flex flex-wrap justify-center p-0 m-0 list-none text-xs">
             {searchResults.map((item, index) => (
               <div key={item._id}>
-                <ProjectCard project={item} />
+                <ProjectCard project={item}/>
                 {item.missingWords && item.missingWords.length > 0 && (
                   <p className="missingWords">
                     <em>

@@ -16,16 +16,18 @@ const Project = () => {
     state: {
       projectId,
       projectTitle,
-      projectDesc,
+      projectDesc, 
       projectStatus,
       projectTechnologies,
       projectRolesNeeded,
       projectLikes,
       projectCreator,
+      profile
     },
   } = useLocation();
 
   const [likes, setLikes] = useState(projectLikes);
+  console.log(profile)
 
   const handleLikeClick = async () => {
     try {
@@ -141,17 +143,17 @@ const Project = () => {
               <div className="mt-4 mb-1 py-4 px-8 border border-transparent rounded-lg bg-gray/5">
                 <h3 className="text-lg text-green/80">Project Creator:</h3>
                 <div className="py-4 flex flex-row">
-                  <Tooltip content="Tania Andrew">
+                  <Tooltip content={profile.profile._id}>
                     <Avatar
                       size="sm"
                       variant="circular"
-                      alt="tania andrew"
+                      alt="{profile.profile._id}"
                       src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
                       className="border-2 border-gray h-12 w-12 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
                     />
                   </Tooltip>
                   <div className="pl-4">
-                    <header>Tania Andrew</header>
+                    <header>{profile.profile.firstName} {profile.profile.lastName}</header>
                     <p className="font-sans font-extralight italic text-[11px] text-blue">
                       {' '}
                       Project Manager
