@@ -8,6 +8,7 @@ const Nav = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
+    logoutUser();
     logout()
      .then (() => {
       logoutUser()      
