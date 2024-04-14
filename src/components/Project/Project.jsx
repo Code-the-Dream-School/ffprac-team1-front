@@ -29,7 +29,6 @@ const Project = () => {
   const [likes, setLikes] = useState(projectLikes);
   const [creatorFirstName, setCreatorFirstName] = useState('');
   const [creatorLastName, setCreatorLastName] = useState('');
- 
   const handleLikeClick = async () => {
     try {
       const newLikes = await likeProject(projectId);
@@ -105,7 +104,11 @@ const Project = () => {
         <div className="flex flex-row">
           <div className="flex flex-col w-1/2">
             <div className="text-2xl font-medium pb-4">{projectTitle} </div>
-            <Modal buttonClassName={''} openModalButton={imageButton()} modalBody={UploadImage()} />
+            <Modal
+              buttonClassName={''}
+              openModalButton={imageButton()}
+              modalBody={<UploadImage projectId={projectId} />}
+            />{' '}
           </div>
           <div className="flex flex-col w-1/2 items-end">
             <div className="flex items-center justify-between mt-7">
