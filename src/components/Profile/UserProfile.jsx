@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import Slider from 'react-slick';
 import { useNavigate } from 'react-router-dom';
 import ProjectCard from '../Project/ProjectCard.jsx';
 import Modal from '../Modal_Components/Modal.jsx';
 import CreateProject from '../Modal_Components/CreateProject.jsx';
 import EditIcon from '../Modal_Components/EditIcon.jsx';
-import fetchProfile from '../../util/fetchData.js'
+import fetchProfile from '../../util/fetchData.js';
 
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -25,6 +28,13 @@ const Profile = () => {
   if (!profile) {
     return <div>Loading...</div>;
   }
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+  };
 
   return (
     <div className="contanier-primary px-64 flex flex-col text-gray">
@@ -92,25 +102,35 @@ const Profile = () => {
           <div className="flex flex-row w-full justify-between">
             <h3 className="text-lg text-green/80">Your Projects:</h3>
             <div>
-              < Modal openModalButton={"+ Add New Project"} buttonClassName={"btn-primary font-[Jura] min-w-44"} modalBody={<CreateProject />} className=""/>
+              <Modal
+                openModalButton={'+ Add New Project'}
+                buttonClassName={'btn-primary font-[Jura] min-w-44'}
+                modalBody={<CreateProject />}
+                className=""
+              />
             </div>
           </div>
-          <div className="py-4 flex flex-row">
-            {profile.profile.ownProjects.map((project, index) => (
-              <ProjectCard
-                key={index}
-                project={{
-                  _id: project._id,
-                  title: project.title,
-                  status: project.status,
-                  description: project.description,
-                  technologies: project.technologies,
-                  rolesNeeded: project.rolesNeeded,
-                  createdBy: profile.profile._id
-                }}
-                profile={profile}
-              />
-            ))}
+          <div className="mt-4">
+            <Slider {...settings}>
+              {profile.profile.ownProjects.map((project, index) => (
+                <div key={index} className="flex justify-center">
+                  <div className="mx-6">
+                    <ProjectCard
+                      project={{
+                        _id: project._id,
+                        title: project.title,
+                        status: project.status,
+                        description: project.description,
+                        technologies: project.technologies,
+                        rolesNeeded: project.rolesNeeded,
+                        createdBy: profile.profile._id,
+                      }}
+                      profile={profile}
+                    />
+                  </div>
+                </div>
+              ))}
+            </Slider>
           </div>
           {/* <div className="py-4 flex flex-row">
             < ProjectCard /> */}

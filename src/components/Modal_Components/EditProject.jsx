@@ -6,6 +6,8 @@ import { useNavigate} from "react-router-dom";
 
 const EditProject = ({ projectId, projectTitle: initialProjectTitle, projectDesc: initialProjectDesc, projectRolesNeeded: initialProjectRolesNeeded }) => {
   const navigate = useNavigate()
+
+  console.log(projectId)
   
   const [projectTitle, setProjectTitle] = useState(initialProjectTitle);
   const [projectDesc, setProjectDesc] = useState(initialProjectDesc);
@@ -67,13 +69,15 @@ const EditProject = ({ projectId, projectTitle: initialProjectTitle, projectDesc
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(updatedProject),
-      credentials: 'include' 
+        credentials: 'include' 
       });
 
-      if (!response.ok) {
+      if (response.ok) {
+        navigate(`/profile`);
+        console.log("after submit", projectId)
+        } else {
         throw new Error('Failed to update project');
       }
-      // console.log('Project updated successfully', response);
     } catch (error) {
       console.error('Error updating project:', error.message);
     }
