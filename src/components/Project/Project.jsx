@@ -38,10 +38,11 @@ const Project = () => {
       console.error('An error occurred while processing your request:', error);
     }
   };
-  
+
   useEffect(() => {
     const fetchCreator = async () => {
       try {
+        if (!isLoggedIn) return;
         const response = await axios.get(
           `http://localhost:8000/api/v1/profiles/${projectCreator}`,
           {
@@ -60,8 +61,10 @@ const Project = () => {
         );
       }
     };
-    fetchCreator();
-  }, [projectCreator]);
+    if (isLoggedIn) {
+      fetchCreator();
+    }
+  }, [isLoggedIn, projectCreator]);
 
   const handleLoginPrompt = () => {
     alert('Please register or sign in to perform this action.');
