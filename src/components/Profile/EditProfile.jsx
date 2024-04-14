@@ -47,7 +47,7 @@ const EditProfile = ({ profileData, onSave }) => {
         onSave();
     } catch (error) {
       console.error('Error updating profile:', error);
-      alert('Error updating profile. See console for more details.');
+      alert('Error updating profile. Try again later.');
     }
   };
 
