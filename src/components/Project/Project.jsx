@@ -94,7 +94,12 @@ const Project = () => {
                   <Modal
                     openModalButton={<EditIcon />}
                     modalBody={
-                      <EditProject projectId={projectId} projectTitle={projectTitle} projectDesc={projectDesc} projectRolesNeeded={projectRolesNeeded}/>
+                      <EditProject
+                        projectId={projectId}
+                        projectTitle={projectTitle}
+                        projectDesc={projectDesc}
+                        projectRolesNeeded={projectRolesNeeded}
+                      />
                     }
                   />
                 </div>
@@ -148,18 +153,32 @@ const Project = () => {
               <div className="mt-4 mb-1 py-4 px-8 border border-transparent rounded-lg bg-gray/5">
                 <h3 className="text-lg text-green/80">Project Creator:</h3>
                 <div className="py-4 flex flex-row">
-                  <Tooltip content={`${profile.profile.firstName} ${profile.profile.lastName}`}>
-                    <Avatar
-                      size="sm"
-                      variant="circular"
-                      alt="{profile.profile._id}"
-                      src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-                      className="border-2 border-gray h-12 w-12 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
-                    />
-                  </Tooltip>
+                  {profile && profile.profile._id === projectCreator ? (
+                    <Tooltip content={`${profile.profile.firstName} ${profile.profile.lastName}`}>
+                      <Avatar
+                        size="sm"
+                        variant="circular"
+                        alt="{profile.profile._id}"
+                        src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+                        className="border-2 border-gray h-12 w-12 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
+                      />
+                    </Tooltip>
+                  ) : (
+                    <Tooltip content="User">
+                      <Avatar
+                        size="sm"
+                        variant="circular"
+                        alt="User"
+                        src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+                        className="border-2 border-gray h-12 w-12 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
+                      />
+                    </Tooltip>
+                  )}
                   <div className="pl-4">
                     <header>
-                      {profile.profile.firstName} {profile.profile.lastName}
+                      {profile && profile.profile._id === projectCreator
+                        ? `${profile.profile.firstName} ${profile.profile.lastName}`
+                        : projectCreator}
                     </header>
                     <p className="font-sans font-extralight italic text-[11px] text-blue">
                       {' '}
