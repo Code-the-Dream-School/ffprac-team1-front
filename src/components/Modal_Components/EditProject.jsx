@@ -77,7 +77,7 @@ const EditProject = ({ projectId, projectTitle: initialProjectTitle, projectDesc
         throw new Error('Failed to update project');
       }
       // console.log(response)
-      console.log('Project updated successfully');
+      console.log('Project updated successfully', response);
       // setProjectTitle(updatedProject.projectTitle);
       // console.log(updatedProject.projectTitle)
     } catch (error) {
@@ -113,7 +113,7 @@ const EditProject = ({ projectId, projectTitle: initialProjectTitle, projectDesc
               ))}
             </div>
             <div>
-              <Textarea label="Roles needed" name="projectRolesNeeded" className="" value={projectRolesNeeded} onChange={handleChange} />
+              <Textarea label="Roles needed" name="projectRolesNeeded" className="text-gray" value={projectRolesNeeded} onChange={handleChange} />
             </div>
           </div>
         </div>

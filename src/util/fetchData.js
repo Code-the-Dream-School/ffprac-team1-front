@@ -52,7 +52,9 @@ export const fetchProjects = async (search, page, limit) => {
   const url = queryParams.toString() ? `${baseUrl}?${queryParams.toString()}` : baseUrl;
 
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      credentials: 'include'
+    });
     if (!response.ok) throw new Error('Network response was not ok');
     return await response.json();
   } catch (error) {

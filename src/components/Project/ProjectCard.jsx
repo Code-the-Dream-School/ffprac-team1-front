@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { useAuth } from '../../AuthContext'; // Подставьте путь к вашему контексту аутентификации
+import { useAuth } from '../../AuthContext';
 import {
   Card,
   CardHeader,
@@ -16,12 +16,10 @@ import {
 const ProjectCard = ({ project, profile }) => {
   const { _id, title, status, description, technologies, rolesNeeded, likeCount, createdBy } = project;
 
-  const { isLoggedIn } = useAuth(); // Получаем информацию о пользователе из контекста аутентификации
-
+  const { isLoggedIn } = useAuth(); 
   // console.log(createdBy);
   // console.log(profile)
 
-  // Дополнительная логика для определения, является ли текущий пользователь создателем проекта
   const renderTechnologies = technologies => {
     if (!technologies) return null;
     const allTech = Object.values(technologies).flat();
