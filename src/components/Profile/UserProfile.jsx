@@ -92,10 +92,17 @@ const Profile = () => {
           <p className="font-sans font-extralight text-sm">{profile.profile.offer}</p>
         </div>
         <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5">
-        <h3 className="text-lg text-green/80">Contacts:</h3>
-          <p>LinkedIn: <a href={profile.profile.contacts.linkedIn}>{profile.profile.contacts.linkedIn}</a></p>
-          <p>GitHub: <a href={profile.profile.contacts.github}>{profile.profile.contacts.github}</a></p>
-          <p>Portfolio: <a href={profile.profile.contacts.portfolioWebsite}>{profile.profile.contacts.portfolioWebsite}</a></p>
+          <h3 className="text-lg text-green/80">Links:</h3>
+          <p>
+            My email: <a href={`mailto:${profile.profile.email}`}>{profile.profile.email}</a>
+          </p>
+          {profile.profile &&
+            profile.profile.links &&
+            Object.keys(profile.profile.links).map((item, index) => (
+              <li key={index} className="font-sans font-extralight text-[14px]">
+                {item + ', '}
+              </li>
+            ))}
         </div>
         <div className="mt-4 mb-1 py-4 px-8 border border-transparent rounded-lg bg-gray/5">
           <div className="flex flex-row w-full justify-between">

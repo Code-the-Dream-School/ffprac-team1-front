@@ -7,11 +7,7 @@ const EditProfile = ({ profileData, onSave }) => {
   const [profile, setProfile] = useState({
     about: '',
     offer: '',
-    contacts: {
-      linkedIn: '',
-      github: '',
-      portfolioWebsite: ''
-    },
+    links: '',
     ownProjects: '',
     participatingProjects: ''
   });
@@ -21,11 +17,7 @@ const EditProfile = ({ profileData, onSave }) => {
       setProfile({
         about: profileData.profile.about || '',
         offer: profileData.profile.offer || '',
-        contacts: {
-          linkedIn: profileData.profile.contacts?.linkedIn || '',
-          github: profileData.profile.contacts?.github || '',
-          portfolioWebsite: profileData.profile.contacts?.portfolioWebsite || ''
-        },
+        links: JSON.stringify(profileData.profile.links || []),
         ownProjects: JSON.stringify(profileData.profile.ownProjects || []),
         participatingProjects: JSON.stringify(profileData.profile.participatingProjects || [])
       });
@@ -33,22 +25,10 @@ const EditProfile = ({ profileData, onSave }) => {
   }, [profileData]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name.startsWith('contacts.')) {
-      const field = name.split('.')[1];
-      setProfile(prev => ({
-        ...prev,
-        contacts: {
-          ...prev.contacts,
-          [field]: value
-        }
-      }));
-    } else {
-      setProfile(prev => ({
-        ...prev,
-        [name]: value
-      }));
-    }
+    setProfile({
+      ...profile,
+      [e.target.name]: e.target.value
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -58,7 +38,7 @@ const EditProfile = ({ profileData, onSave }) => {
       const profileDetails = {
         about: profile.about,
         offer: profile.offer,
-        contacts: profile.contacts,
+        links: JSON.parse(profile.links),
         ownProjects: JSON.parse(profile.ownProjects),
         participatingProjects: JSON.parse(profile.participatingProjects),
       };
@@ -72,7 +52,7 @@ const EditProfile = ({ profileData, onSave }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxHeight: '700px', overflowY: 'auto' }} className="p-4 rounded-lg ">
+    <form onSubmit={handleSubmit} className="p-4 rounded-lg ">
       <div className="space-y-6">
         <h1 className="pt-4 pb-3 text-xl text-white/85">Edit your profile</h1>
 
@@ -92,29 +72,10 @@ const EditProfile = ({ profileData, onSave }) => {
           className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent"
         />
 
-<label className="pb-3 text-xl text-green/85">LinkedIn</label>
-        <input
-          type="text"
-          name="contacts.linkedIn"
-          value={profile.contacts.linkedIn}
-          onChange={handleChange}
-          className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent"
-        />
-
-        <label className="pb-3 text-xl text-green/85">GitHub</label>
-        <input
-          type="text"
-          name="contacts.github"
-          value={profile.contacts.github}
-          onChange={handleChange}
-          className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent"
-        />
-
-        <label className="pb-3 text-xl text-green/85">Portfolio Website</label>
-        <input
-          type="text"
-          name="contacts.portfolioWebsite"
-          value={profile.contacts.portfolioWebsite}
+        <label className="pb-3 text-xl text-green/85">Links</label>
+        <textarea
+          name="links"
+          value={profile.links}
           onChange={handleChange}
           className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent"
         />
