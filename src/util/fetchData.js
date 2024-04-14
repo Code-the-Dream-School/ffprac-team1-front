@@ -1,11 +1,11 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_BASE_URL = 'http://localhost:8000/api/v1/users';
+const API_BASE_URL = 'http://localhost:8000/api/v1';
 
 export const register = async ({ firstName, lastName, email, password }) => {
   try {
     const response = await axios.post(
-      `${API_BASE_URL}/register`,
+      `${API_BASE_URL}/users/register`,
       {
         firstName,
         lastName,
@@ -23,7 +23,7 @@ export const register = async ({ firstName, lastName, email, password }) => {
 export const login = async ({ email, password }) => {
   try {
     const response = await axios.post(
-      `${API_BASE_URL}/login`,
+      `${API_BASE_URL}/users/login`,
       {
         email,
         password,
@@ -37,7 +37,7 @@ export const login = async ({ email, password }) => {
 };
 
 export const logout = async () => {
-  return await axios.post(`${API_BASE_URL}/logout`, {}, { withCredentials: true });
+  return await axios.post(`${API_BASE_URL}/users/logout`, {}, { withCredentials: true });
 };
 
 export const fetchProjects = async (search, page, limit) => {
@@ -80,4 +80,36 @@ export const likeProject = async projectId => {
     console.error('An error occurred while processing your request:', error);
     throw error;
   }
+};
+
+export const fetchUserProfile = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/profiles/myProfile`, {
+      withCredentials: true
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const updateProfile = async (profileDetails) => {
+  try {
+    const response = await axios.patch(`${API_BASE_URL}/profiles/myProfile`, profileDetails, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export default {
+  register,
+  login,
+  logout,
+  fetchProjects,
+  likeProject,
+  fetchUserProfile,
+  updateProfile,
 };
