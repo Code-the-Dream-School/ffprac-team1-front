@@ -55,10 +55,10 @@ const EditProject = ({ projectId, projectTitle: initialProjectTitle, projectDesc
     e.preventDefault();
 
     const updatedProject = {
-      projectTitle,
-      projectDesc,
-      projectRolesNeeded,
-      frontEnd
+      title: projectTitle,
+      description: projectDesc,
+      rolesNeeded: projectRolesNeeded,
+      // frontEnd
     };
 
     // console.log("New data:", updatedProject);
