@@ -8,9 +8,6 @@ const EditProject = ({ projectId, projectTitle: initialProjectTitle, projectDesc
   const navigate = useNavigate()
   
   const [projectTitle, setProjectTitle] = useState(initialProjectTitle);
-  // console.log(projectTitle);
-  // console.log(projectId)
-
   const [projectDesc, setProjectDesc] = useState(initialProjectDesc);
   const [projectRolesNeeded, setProjectRolesNeeded] = useState(initialProjectRolesNeeded);
   
@@ -76,10 +73,7 @@ const EditProject = ({ projectId, projectTitle: initialProjectTitle, projectDesc
       if (!response.ok) {
         throw new Error('Failed to update project');
       }
-      // console.log(response)
-      console.log('Project updated successfully', response);
-      // setProjectTitle(updatedProject.projectTitle);
-      // console.log(updatedProject.projectTitle)
+      // console.log('Project updated successfully', response);
     } catch (error) {
       console.error('Error updating project:', error.message);
     }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { IconButton } from '@material-tailwind/react';
 import { Avatar, Tooltip } from '@material-tailwind/react';
@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { likeProject } from '../../util/fetchData.js';
 import EditProject from '../Modal_Components/EditProject.jsx';
 import EditIcon from '../Modal_Components/EditIcon.jsx';
+import axios from 'axios';
 
 const Project = () => {
   const { isLoggedIn } = useAuth();
@@ -25,10 +26,10 @@ const Project = () => {
       profile,
     },
   } = useLocation();
-
   const [likes, setLikes] = useState(projectLikes);
-  // console.log(profile);
-
+  const [creatorFirstName, setCreatorFirstName] = useState('');
+  const [creatorLastName, setCreatorLastName] = useState('');
+ 
   const handleLikeClick = async () => {
     try {
       const newLikes = await likeProject(projectId);
@@ -37,6 +38,30 @@ const Project = () => {
       console.error('An error occurred while processing your request:', error);
     }
   };
+  
+  useEffect(() => {
+    const fetchCreator = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/v1/profiles/${projectCreator}`,
+          {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: 'include',
+          },
+        );
+        setCreatorFirstName(response.data.profile.firstName);
+        setCreatorLastName(response.data.profile.lastName);
+        if (response.status === 200) {
+        }
+      } catch (error) {
+        console.error(
+          'Error updating project:',
+          error.response ? error.response.data : error.message,
+        );
+      }
+    };
+    fetchCreator();
+  }, [projectCreator]);
 
   const handleLoginPrompt = () => {
     alert('Please register or sign in to perform this action.');
@@ -44,9 +69,7 @@ const Project = () => {
 
   const renderProjectTechnologies = technologies => {
     if (!technologies) return null;
-
     const allTech = Object.values(technologies).flat();
-
     return (
       <div>
         {allTech.map(tech => (
@@ -55,7 +78,6 @@ const Project = () => {
       </div>
     );
   };
-
   const imageButton = () => {
     return (
       <Tooltip content="Upload Image" className="bg-blue/10" placement="right-end">
@@ -69,7 +91,6 @@ const Project = () => {
       </Tooltip>
     );
   };
-
   return (
     <div className="contanier-primary px-64 flex flex-col text-gray">
       <img
@@ -147,7 +168,6 @@ const Project = () => {
               </div>
             )}
           </div>
-
           {isLoggedIn ? (
             <>
               <div className="mt-4 mb-1 py-4 px-8 border border-transparent rounded-lg bg-gray/5">
@@ -178,7 +198,7 @@ const Project = () => {
                     <header>
                       {profile && profile.profile._id === projectCreator
                         ? `${profile.profile.firstName} ${profile.profile.lastName}`
-                        : projectCreator}
+                        : `${creatorFirstName} ${creatorLastName}`}
                     </header>
                     <p className="font-sans font-extralight italic text-[11px] text-blue">
                       {' '}
@@ -252,5 +272,4 @@ const Project = () => {
     </div>
   );
 };
-
 export default Project;
