@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import Slider from 'react-slick';
 import { useNavigate } from 'react-router-dom';
 import ProjectCard from '../Project/ProjectCard.jsx';
 import Modal from '../Modal_Components/Modal.jsx';
 import CreateProject from '../Modal_Components/CreateProject.jsx';
 import EditIcon from '../Modal_Components/EditIcon.jsx';
-import fetchProfile from '../../util/fetchData.js';
-
+import EditProfile from '../Profile/EditProfile.jsx';
+import { fetchUserProfile } from '../../util/fetchData';
+import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
@@ -15,42 +15,23 @@ const Profile = () => {
   const [profile, setProfile] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const profileData = await fetchProfile();
-      if (profileData) {
-        setProfile(profileData);
+    const fetchUserProfileData = async () => {
+      try {
+        const userProfile = await fetchUserProfile();
+        setProfile(userProfile);
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
       }
     };
 
-    fetchData();
+    fetchUserProfileData();
   }, []);
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-  };
-
-{/* 
-  const fetchProfile = async () => {
-    try {
-      const profileData = await fetchUserProfile();
-      setProfile(profileData);
-    } catch (error) {
-      console.error('Error fetching profile:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchProfile(); 
-  }, []); */}
 
   const handleProfileUpdate = async () => {
     try {
-      await fetchProfile(); 
-      alert('Profile Updated'); 
+      const updatedProfile = await fetchUserProfile();
+      setProfile(updatedProfile);
+      alert('Profile Updated');
     } catch (error) {
       console.error('Error updating profile:', error);
       alert('Failed to update profile. Try again later.');
@@ -61,6 +42,14 @@ const Profile = () => {
     return <div>Loading...</div>;
   }
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+  };
+  
   return (
     <div className="contanier-primary px-64 flex flex-col text-gray">
       <div className="flex flex-col w-full border border-transparent rounded-lg bg-gray/5">
@@ -85,11 +74,11 @@ const Profile = () => {
               {/* <div className="font-sans font-extralight text-sm text-blue italic pb-2">{profile.profile.title} </div> */}
             </div>
             <div className="flex flex-col w-1/2 items-end">
-            <Modal
-              buttonClassName={""}
-              openModalButton={<EditIcon />}
-              modalBody={<EditProfile profileData={profile} onSave={handleProfileUpdate} />}
-            />
+              <Modal
+                buttonClassName={''}
+                openModalButton={<EditIcon />}
+                modalBody={<EditProfile profileData={profile} onSave={handleProfileUpdate} />}
+              />{' '}
               {/* <div className="font-sans font-extralight text-xs italic pb-2 pr-2">
                 Looking for:{' '}
               </div>
@@ -166,13 +155,6 @@ const Profile = () => {
           {/* <div className="max-w-[13rem] min-w-[12rem] overflow-hidden bg-gray/10 rounded-xl border border-transparent hover:border-blue/30 mb-6 mr-8 p-4">
             <i className="fa-sharp fa-thin fa-plus fa-2xl text-blue/40 rounded-xl border border-blue/40 hover:border-gray px-3 py-5"></i>
             </div> */}
-  
-        </div>
-        <div className="mt-4 mb-1 py-4 px-8 border border-transparent rounded-lg bg-gray/5">
-          <h3 className="text-lg text-green/80">Projects you are involved in:</h3>
-          <div className="py-4 flex flex-row">
-
-          </div>
         </div>
       </div>
       {/* <div className="mt-4 mb-1 py-4 px-8 border border-transparent rounded-lg bg-gray/5">
@@ -182,5 +164,4 @@ const Profile = () => {
     </div>
   );
 };
-
 export default Profile;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../AuthContext';
 import SearchResults from '../Search/SearchResults.jsx';
-import fetchProfile from '../../util/fetchData.js';
+import { fetchProfile } from '../../util/fetchData.js';
 
 const ProjectsList = () => {
   const { isLoggedIn } = useAuth();
@@ -19,13 +19,7 @@ const ProjectsList = () => {
   }, [isLoggedIn]);
 
   return (
-    <div>
-      {isLoggedIn ? (
-        <SearchResults profile={profile} />
-      ) : (
-        <div>You need to login.</div>
-      )}
-    </div>
+    <div>{isLoggedIn ? <SearchResults profile={profile} /> : <div>You need to login.</div>}</div>
   );
 };
 

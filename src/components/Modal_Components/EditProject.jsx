@@ -7,8 +7,6 @@ import { useNavigate} from "react-router-dom";
 const EditProject = ({ projectId, projectTitle: initialProjectTitle, projectDesc: initialProjectDesc, projectRolesNeeded: initialProjectRolesNeeded }) => {
   const navigate = useNavigate()
 
-  console.log(projectId)
-  
   const [projectTitle, setProjectTitle] = useState(initialProjectTitle);
   const [projectDesc, setProjectDesc] = useState(initialProjectDesc);
   const [projectRolesNeeded, setProjectRolesNeeded] = useState(initialProjectRolesNeeded);
@@ -60,8 +58,6 @@ const EditProject = ({ projectId, projectTitle: initialProjectTitle, projectDesc
       // frontEnd
     };
 
-    // console.log("New data:", updatedProject);
-
     try {
       const response = await fetch(`http://localhost:8000/api/v1/projects/${projectId}`, {
         method: 'PATCH',
@@ -74,7 +70,6 @@ const EditProject = ({ projectId, projectTitle: initialProjectTitle, projectDesc
 
       if (response.ok) {
         navigate(`/profile`);
-        console.log("after submit", projectId)
         } else {
         throw new Error('Failed to update project');
       }
