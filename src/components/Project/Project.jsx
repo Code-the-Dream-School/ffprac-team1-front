@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { IconButton } from '@material-tailwind/react';
 import { Avatar, Tooltip } from '@material-tailwind/react';
@@ -7,6 +7,9 @@ import UploadImage from '../Modal_Components/UploadImages.jsx';
 import { useAuth } from '../../AuthContext';
 import { v4 as uuidv4 } from 'uuid';
 import { likeProject } from '../../util/fetchData.js';
+import EditProject from '../Modal_Components/EditProject.jsx';
+import EditIcon from '../Modal_Components/EditIcon.jsx';
+import axios from 'axios';
 
 const Project = () => {
   const { isLoggedIn } = useAuth();
@@ -19,11 +22,14 @@ const Project = () => {
       projectTechnologies,
       projectRolesNeeded,
       projectLikes,
+      projectCreator,
+      profile,
     },
   } = useLocation();
-
   const [likes, setLikes] = useState(projectLikes);
-  
+  const [creatorFirstName, setCreatorFirstName] = useState('');
+  const [creatorLastName, setCreatorLastName] = useState('');
+ 
   const handleLikeClick = async () => {
     try {
       const newLikes = await likeProject(projectId);
@@ -33,15 +39,40 @@ const Project = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchCreator = async () => {
+      try {
+        if (!isLoggedIn) return;
+        const response = await axios.get(
+          `http://localhost:8000/api/v1/profiles/${projectCreator}`,
+          {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: 'include',
+          },
+        );
+        setCreatorFirstName(response.data.profile.firstName);
+        setCreatorLastName(response.data.profile.lastName);
+        if (response.status === 200) {
+        }
+      } catch (error) {
+        console.error(
+          'Error updating project:',
+          error.response ? error.response.data : error.message,
+        );
+      }
+    };
+    if (isLoggedIn) {
+      fetchCreator();
+    }
+  }, [isLoggedIn, projectCreator]);
+
   const handleLoginPrompt = () => {
     alert('Please register or sign in to perform this action.');
   };
 
   const renderProjectTechnologies = technologies => {
     if (!technologies) return null;
-
     const allTech = Object.values(technologies).flat();
-
     return (
       <div>
         {allTech.map(tech => (
@@ -50,7 +81,6 @@ const Project = () => {
       </div>
     );
   };
-
   const imageButton = () => {
     return (
       <Tooltip content="Upload Image" className="bg-blue/10" placement="right-end">
@@ -64,7 +94,6 @@ const Project = () => {
       </Tooltip>
     );
   };
-
   return (
     <div className="contanier-primary px-64 flex flex-col text-gray">
       <img
@@ -79,11 +108,27 @@ const Project = () => {
             <Modal buttonClassName={''} openModalButton={imageButton()} modalBody={UploadImage()} />
           </div>
           <div className="flex flex-col w-1/2 items-end">
-            <h2 className="text-[20px] font-semibold text-right text-blue pt-1">
-              {' '}
-              Project Status:
-              <p className="font-sans text-[15px] font-medium pb-3">{projectStatus}</p>
-            </h2>
+            <div className="flex items-center justify-between mt-7">
+              <h2 className="text-[20px] font-semibold text-right text-blue mr-2">
+                Project Status:
+                <p className="font-sans text-[15px] font-medium pb-3">{projectStatus}</p>
+              </h2>
+              {isLoggedIn && profile.profile._id === projectCreator && (
+                <div>
+                  <Modal
+                    openModalButton={<EditIcon />}
+                    modalBody={
+                      <EditProject
+                        projectId={projectId}
+                        projectTitle={projectTitle}
+                        projectDesc={projectDesc}
+                        projectRolesNeeded={projectRolesNeeded}
+                      />
+                    }
+                  />
+                </div>
+              )}
+            </div>
             <div className="pt-2">
               {isLoggedIn ? (
                 <IconButton
@@ -126,23 +171,38 @@ const Project = () => {
               </div>
             )}
           </div>
-
           {isLoggedIn ? (
             <>
               <div className="mt-4 mb-1 py-4 px-8 border border-transparent rounded-lg bg-gray/5">
                 <h3 className="text-lg text-green/80">Project Creator:</h3>
                 <div className="py-4 flex flex-row">
-                  <Tooltip content="Tania Andrew">
-                    <Avatar
-                      size="sm"
-                      variant="circular"
-                      alt="tania andrew"
-                      src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-                      className="border-2 border-gray h-12 w-12 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
-                    />
-                  </Tooltip>
+                  {profile && profile.profile._id === projectCreator ? (
+                    <Tooltip content={`${profile.profile.firstName} ${profile.profile.lastName}`}>
+                      <Avatar
+                        size="sm"
+                        variant="circular"
+                        alt="{profile.profile._id}"
+                        src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+                        className="border-2 border-gray h-12 w-12 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
+                      />
+                    </Tooltip>
+                  ) : (
+                    <Tooltip content="User">
+                      <Avatar
+                        size="sm"
+                        variant="circular"
+                        alt="User"
+                        src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+                        className="border-2 border-gray h-12 w-12 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
+                      />
+                    </Tooltip>
+                  )}
                   <div className="pl-4">
-                    <header>Tania Andrew</header>
+                    <header>
+                      {profile && profile.profile._id === projectCreator
+                        ? `${profile.profile.firstName} ${profile.profile.lastName}`
+                        : `${creatorFirstName} ${creatorLastName}`}
+                    </header>
                     <p className="font-sans font-extralight italic text-[11px] text-blue">
                       {' '}
                       Project Manager
@@ -215,5 +275,4 @@ const Project = () => {
     </div>
   );
 };
-
 export default Project;

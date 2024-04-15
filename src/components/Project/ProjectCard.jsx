@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { useAuth } from '../../AuthContext';
 import {
   Card,
   CardHeader,
@@ -12,8 +13,12 @@ import {
 } from '@material-tailwind/react';
 
 
-const ProjectCard = ({ project }) => {
-  const { _id, title, status, description, technologies, rolesNeeded, likeCount } = project;
+const ProjectCard = ({ project, profile }) => {
+  const { _id, title, status, description, technologies, rolesNeeded, likeCount, createdBy } = project;
+
+  const { isLoggedIn } = useAuth(); 
+  // console.log(createdBy);
+  // console.log(profile)
 
   const renderTechnologies = technologies => {
     if (!technologies) return null;
@@ -42,7 +47,9 @@ const ProjectCard = ({ project }) => {
         projectDesc: description,
         projectTechnologies: technologies, 
         projectRolesNeeded: rolesNeeded,
-        projectLikes: likeCount
+        projectLikes: likeCount,
+        projectCreator: createdBy,
+        profile: profile
          }}>
 
         <CardHeader

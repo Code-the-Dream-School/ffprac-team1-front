@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8000/api/v1';
 
@@ -52,7 +52,9 @@ export const fetchProjects = async (search, page, limit) => {
   const url = queryParams.toString() ? `${baseUrl}?${queryParams.toString()}` : baseUrl;
 
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      credentials: 'include',
+    });
     if (!response.ok) throw new Error('Network response was not ok');
     return await response.json();
   } catch (error) {
@@ -82,10 +84,32 @@ export const likeProject = async projectId => {
   }
 };
 
+export const fetchProfile = async () => {
+  try {
+    const response = await fetch('http://localhost:8000/api/v1/profiles/myProfile', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+    if (response.ok) {
+      const profileData = await response.json();
+      return profileData;
+    } else {
+      console.error('Failed to fetch profile:', response.status);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+    return null;
+  }
+};
+
 export const fetchUserProfile = async () => {
   try {
     const response = await axios.get(`${API_BASE_URL}/profiles/myProfile`, {
-      withCredentials: true
+      withCredentials: true,
     });
     return response.data;
   } catch (error) {
@@ -93,7 +117,7 @@ export const fetchUserProfile = async () => {
   }
 };
 
-export const updateProfile = async (profileDetails) => {
+export const updateProfile = async profileDetails => {
   try {
     const response = await axios.patch(`${API_BASE_URL}/profiles/myProfile`, profileDetails, {
       withCredentials: true,
@@ -112,4 +136,5 @@ export default {
   likeProject,
   fetchUserProfile,
   updateProfile,
+  fetchProfile,
 };

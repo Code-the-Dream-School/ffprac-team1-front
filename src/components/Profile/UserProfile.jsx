@@ -4,30 +4,34 @@ import ProjectCard from '../Project/ProjectCard.jsx';
 import Modal from '../Modal_Components/Modal.jsx';
 import CreateProject from '../Modal_Components/CreateProject.jsx';
 import EditIcon from '../Modal_Components/EditIcon.jsx';
-import { fetchUserProfile } from '../../util/fetchData';
 import EditProfile from '../Profile/EditProfile.jsx';
+import { fetchUserProfile } from '../../util/fetchData';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const Profile = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
 
-  const fetchProfile = async () => {
-    try {
-      const profileData = await fetchUserProfile();
-      setProfile(profileData);
-    } catch (error) {
-      console.error('Error fetching profile:', error);
-    }
-  };
-
   useEffect(() => {
-    fetchProfile(); 
+    const fetchUserProfileData = async () => {
+      try {
+        const userProfile = await fetchUserProfile();
+        setProfile(userProfile);
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+    fetchUserProfileData();
   }, []);
 
   const handleProfileUpdate = async () => {
     try {
-      await fetchProfile(); 
-      alert('Profile Updated'); 
+      const updatedProfile = await fetchUserProfile();
+      setProfile(updatedProfile);
+      alert('Profile Updated');
     } catch (error) {
       console.error('Error updating profile:', error);
       alert('Failed to update profile. Try again later.');
@@ -38,6 +42,14 @@ const Profile = () => {
     return <div>Loading...</div>;
   }
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+  };
+  
   return (
     <div className="contanier-primary px-64 flex flex-col text-gray">
       <div className="flex flex-col w-full border border-transparent rounded-lg bg-gray/5">
@@ -62,11 +74,11 @@ const Profile = () => {
               {/* <div className="font-sans font-extralight text-sm text-blue italic pb-2">{profile.profile.title} </div> */}
             </div>
             <div className="flex flex-col w-1/2 items-end">
-            <Modal
-              buttonClassName={""}
-              openModalButton={<EditIcon />}
-              modalBody={<EditProfile profileData={profile} onSave={handleProfileUpdate} />}
-            />
+              <Modal
+                buttonClassName={''}
+                openModalButton={<EditIcon />}
+                modalBody={<EditProfile profileData={profile} onSave={handleProfileUpdate} />}
+              />{' '}
               {/* <div className="font-sans font-extralight text-xs italic pb-2 pr-2">
                 Looking for:{' '}
               </div>
@@ -108,24 +120,35 @@ const Profile = () => {
           <div className="flex flex-row w-full justify-between">
             <h3 className="text-lg text-green/80">Your Projects:</h3>
             <div>
-              <p>add create project</p>
-              {/* < Modal openModalButton={"+ Add New Project"} buttonClassName={"btn-primary font-[Jura] min-w-44"} modalBody={CreateProject() } className=""/> */}
+              <Modal
+                openModalButton={'+ Add New Project'}
+                buttonClassName={'btn-primary font-[Jura] min-w-44'}
+                modalBody={<CreateProject />}
+                className=""
+              />
             </div>
           </div>
-          <div className="py-4 flex flex-row">
-            {profile.profile.ownProjects.map((project, index) => (
-              <ProjectCard
-                key={index}
-                project={{
-                  _id: project._id,
-                  title: project.title,
-                  status: project.status,
-                  description: project.description,
-                  technologies: project.technologies,
-                  rolesNeeded: project.rolesNeeded,
-                }}
-              />
-            ))}
+          <div className="mt-4">
+            <Slider {...settings}>
+              {profile.profile.ownProjects.map((project, index) => (
+                <div key={index} className="flex justify-center">
+                  <div className="mx-6">
+                    <ProjectCard
+                      project={{
+                        _id: project._id,
+                        title: project.title,
+                        status: project.status,
+                        description: project.description,
+                        technologies: project.technologies,
+                        rolesNeeded: project.rolesNeeded,
+                        createdBy: profile.profile._id,
+                      }}
+                      profile={profile}
+                    />
+                  </div>
+                </div>
+              ))}
+            </Slider>
           </div>
           {/* <div className="py-4 flex flex-row">
             < ProjectCard /> */}
@@ -141,5 +164,4 @@ const Profile = () => {
     </div>
   );
 };
-
 export default Profile;

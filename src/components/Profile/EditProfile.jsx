@@ -8,8 +8,8 @@ const EditProfile = ({ profileData, onSave }) => {
     about: '',
     offer: '',
     links: '',
-    ownProjects: '',
-    participatingProjects: ''
+    // ownProjects: '',
+    // participatingProjects: ''
   });
 
   useEffect(() => {
@@ -18,8 +18,8 @@ const EditProfile = ({ profileData, onSave }) => {
         about: profileData.profile.about || '',
         offer: profileData.profile.offer || '',
         links: JSON.stringify(profileData.profile.links || []),
-        ownProjects: JSON.stringify(profileData.profile.ownProjects || []),
-        participatingProjects: JSON.stringify(profileData.profile.participatingProjects || [])
+        // ownProjects: JSON.stringify(profileData.profile.ownProjects || []),
+        // participatingProjects: JSON.stringify(profileData.profile.participatingProjects || [])
       });
     }
   }, [profileData]);
@@ -39,8 +39,8 @@ const EditProfile = ({ profileData, onSave }) => {
         about: profile.about,
         offer: profile.offer,
         links: JSON.parse(profile.links),
-        ownProjects: JSON.parse(profile.ownProjects),
-        participatingProjects: JSON.parse(profile.participatingProjects),
+        // ownProjects: JSON.parse(profile.ownProjects),
+        // participatingProjects: JSON.parse(profile.participatingProjects),
       };
 
         await updateProfile(profileDetails);
@@ -80,7 +80,7 @@ const EditProfile = ({ profileData, onSave }) => {
           className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent"
         />
 
-        <label className="pb-3 text-xl text-green/85">Your Projects</label>
+        {/* <label className="pb-3 text-xl text-green/85">Your Projects</label>
         <textarea
           name="ownProjects"
           value={profile.ownProjects}
@@ -94,7 +94,7 @@ const EditProfile = ({ profileData, onSave }) => {
           value={profile.participatingProjects}
           onChange={handleChange}
           className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent"
-        />
+        /> */}
 
         <div className="flex justify-center pt-4 ">
             <button
