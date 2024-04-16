@@ -24,6 +24,7 @@ const Project = () => {
       projectLikes,
       projectCreator,
       projectImage,
+      projectCoverImage,
       profile,
     },
   } = useLocation();
@@ -33,6 +34,7 @@ const Project = () => {
   const [creatorFirstName, setCreatorFirstName] = useState('');
   const [creatorLastName, setCreatorLastName] = useState('');
   const [projectPictureUrl, setProjectPictureUrl] = useState('');
+  const [projectCoverPictureUrl, setProjectCoverPictureUrl] = useState('');
 
   const handleLikeClick = async () => {
     try {
@@ -78,6 +80,8 @@ const Project = () => {
           withCredentials: 'include',
         });
         setProjectPictureUrl(response.data.project.projectPictureUrl);
+        setProjectCoverPictureUrl(response.data.project.projectCoverPictureUrl);
+        console.log(response.data.project.projectCoverPictureUrl)
       } catch (error) {
         console.error(
           'Error fetching project picture:',
@@ -123,7 +127,7 @@ const Project = () => {
       <Tooltip content="Upload Image" className="bg-blue/10" placement="right-end">
         <div style={{ width: '65vw', height: '30vh' }}>
           <img
-            src="https://source.unsplash.com/white-and-gray-optical-illusion-7JX0-bfiuxQ"
+            src={projectCoverImage}
             alt="project img"
             className="border-4 border-transparent rounded-lg object-cover object-center hover:cursor-pointer hover:border-green"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}

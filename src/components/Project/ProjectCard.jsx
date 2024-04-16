@@ -14,12 +14,9 @@ import {
 
 
 const ProjectCard = ({ project, profile }) => {
-  const { _id, title, status, description, technologies, rolesNeeded, likeCount, createdBy, projectPictureUrl } = project;
-
+  const { _id, title, status, description, technologies, rolesNeeded, likeCount, createdBy, projectPictureUrl, projectCoverPictureUrl } = project;
+console.log(projectCoverPictureUrl)
   const { isLoggedIn } = useAuth(); 
-  // console.log(createdBy);
-  // console.log(profile)
-  console.log(projectPictureUrl)
 
   const renderTechnologies = technologies => {
     if (!technologies) return null;
@@ -50,6 +47,7 @@ const ProjectCard = ({ project, profile }) => {
         projectLikes: likeCount,
         projectCreator: createdBy,
         projectImage: projectPictureUrl,
+        projectCoverImage: projectCoverPictureUrl,
         profile: profile
          }}>
 
