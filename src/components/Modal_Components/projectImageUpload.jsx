@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-const projectImageUpload = (projectId) => {
+const projectImageUpload = (projectId, isCover = false) => {
   const [file, setFile] = useState();
 
   const handleChange = (e) => {
@@ -9,9 +9,9 @@ const projectImageUpload = (projectId) => {
     setFile(image);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (onSuccess) => {
     const formData = new FormData();
-    formData.append('projectPicture', file);
+    formData.append(isCover ? 'coverProjectPicture' : 'projectPicture', file);
     axios
       .patch(`http://localhost:8000/api/v1/projects/${projectId}`, formData, {
         headers: {
@@ -22,8 +22,8 @@ const projectImageUpload = (projectId) => {
       .then((response) => {
         console.log(response.data);
         if (typeof onSuccess === 'function') {
-            onSuccess(response.data.projectPictureUrl);
-          }
+          onSuccess(isCover ? response.data.projectCoverPictureUrl : response.data.projectPictureUrl);
+        }
       })
       .catch((error) => {
         console.error(error);

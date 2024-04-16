@@ -1,8 +1,9 @@
 import React from 'react';
 import projectImageUpload from './projectImageUpload';
 
-const UploadImage = ({ projectId }) => {
-  const { file, handleChange, handleSubmit } = projectImageUpload(projectId);
+const UploadImage = ({ projectId, isCoverImage }) => {
+  const { file, handleChange, handleSubmit } = projectImageUpload(projectId, isCoverImage);
+
 
   return (
     <>
@@ -12,7 +13,7 @@ const UploadImage = ({ projectId }) => {
         <header className="text-center text-ld pb-6 font-bold text-gray"> Image preview</header>
         <img
           src={file ? URL.createObjectURL(file) : ''}
-          className="h-56 w-56 rounded-full object-cover object-center bg-black"
+          className={isCoverImage ? "h-56 w-56 rounded-lg object-cover object-center bg-black" : "h-56 w-56 rounded-full object-cover object-center bg-black"}
           alt="Preview"
         />
       </div>

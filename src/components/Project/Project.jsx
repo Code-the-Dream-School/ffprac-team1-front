@@ -138,7 +138,7 @@ const Project = () => {
       <Modal
         buttonClassName={''}
         openModalButton={coverImageButton()}
-        modalBody={<UploadImage projectId={projectId} />}
+        modalBody={<UploadImage projectId={projectId} isCoverImage={true}/>}
       />{' '}
       <div className="p-10">
         <div className="flex flex-row">
@@ -147,7 +147,7 @@ const Project = () => {
             <Modal
               buttonClassName={''}
               openModalButton={imageButton()}
-              modalBody={<UploadImage projectId={projectId} />}
+              modalBody={<UploadImage projectId={projectId} isCoverImage={false} />}
             />{' '}
           </div>
           <div className="flex flex-col w-1/2 items-end">
