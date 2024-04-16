@@ -29,7 +29,6 @@ const Project = () => {
     },
   } = useLocation();
 
-  console.log(projectImage);
   const [likes, setLikes] = useState(projectLikes);
   const [creatorFirstName, setCreatorFirstName] = useState('');
   const [creatorLastName, setCreatorLastName] = useState('');
@@ -81,7 +80,6 @@ const Project = () => {
         });
         setProjectPictureUrl(response.data.project.projectPictureUrl);
         setProjectCoverPictureUrl(response.data.project.projectCoverPictureUrl);
-        console.log(response.data.project.projectCoverPictureUrl)
       } catch (error) {
         console.error(
           'Error fetching project picture:',

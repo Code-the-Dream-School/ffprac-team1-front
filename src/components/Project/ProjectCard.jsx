@@ -15,7 +15,6 @@ import {
 
 const ProjectCard = ({ project, profile }) => {
   const { _id, title, status, description, technologies, rolesNeeded, likeCount, createdBy, projectPictureUrl, projectCoverPictureUrl } = project;
-console.log(projectCoverPictureUrl)
   const { isLoggedIn } = useAuth(); 
 
   const renderTechnologies = technologies => {
