@@ -21,6 +21,9 @@ const projectImageUpload = (projectId) => {
       })
       .then((response) => {
         console.log(response.data);
+        if (typeof onSuccess === 'function') {
+            onSuccess(response.data.projectPictureUrl);
+          }
       })
       .catch((error) => {
         console.error(error);

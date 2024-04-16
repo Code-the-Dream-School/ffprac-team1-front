@@ -23,12 +23,16 @@ const Project = () => {
       projectRolesNeeded,
       projectLikes,
       projectCreator,
+      projectImage,
       profile,
     },
   } = useLocation();
+
+  console.log(projectImage)
   const [likes, setLikes] = useState(projectLikes);
   const [creatorFirstName, setCreatorFirstName] = useState('');
   const [creatorLastName, setCreatorLastName] = useState('');
+  const [projectPictureUrl, setProjectPictureUrl] = useState('');
  
   const handleLikeClick = async () => {
     try {
@@ -66,6 +70,27 @@ const Project = () => {
     }
   }, [isLoggedIn, projectCreator]);
 
+  useEffect(() => {
+    const fetchProjectPicture = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/v1/projects/${projectId}`,
+          {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: 'include',
+          },
+        );
+        setProjectPictureUrl(response.data.project.projectPictureUrl);
+      } catch (error) {
+        console.error(
+          'Error fetching project picture:',
+          error.response ? error.response.data : error.message,
+        );
+      }
+    };
+    fetchProjectPicture();
+  }, [projectId]);
+
   const handleLoginPrompt = () => {
     alert('Please register or sign in to perform this action.');
   };
@@ -88,7 +113,7 @@ const Project = () => {
           size="sm"
           variant="circular"
           alt="tania andrew"
-          src="https://source.unsplash.com/a-rubik-cube-is-shown-on-a-white-background-fd6K_OFlnRA"
+          src={projectImage}
           className="border-4 border-transparent h-36 w-36 rounded-full bject-cover object-center hover:cursor-pointer hover:border-green"
         />
       </Tooltip>
