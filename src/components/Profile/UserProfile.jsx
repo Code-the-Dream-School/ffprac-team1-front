@@ -142,6 +142,8 @@ const Profile = () => {
                         technologies: project.technologies,
                         rolesNeeded: project.rolesNeeded,
                         createdBy: profile.profile._id,
+                        projectPictureUrl: project.projectPictureUrl,
+                        projectCoverPictureUrl: project.projectCoverPictureUrl,
                       }}
                       profile={profile}
                     />

@@ -14,11 +14,8 @@ import {
 
 
 const ProjectCard = ({ project, profile }) => {
-  const { _id, title, status, description, technologies, rolesNeeded, likeCount, createdBy } = project;
-
+  const { _id, title, status, description, technologies, rolesNeeded, likeCount, createdBy, projectPictureUrl, projectCoverPictureUrl } = project;
   const { isLoggedIn } = useAuth(); 
-  // console.log(createdBy);
-  // console.log(profile)
 
   const renderTechnologies = technologies => {
     if (!technologies) return null;
@@ -36,7 +33,6 @@ const ProjectCard = ({ project, profile }) => {
       </div>
     );
   };
-
   return (
     <Card className="max-w-[13rem] min-w-[13rem] overflow-hidden bg-gray/10 rounded-xl border border-transparent hover:border-blue/30 mb-6 mr-8 p-4">
       <Link to={`/projects/${_id}`} 
@@ -49,6 +45,8 @@ const ProjectCard = ({ project, profile }) => {
         projectRolesNeeded: rolesNeeded,
         projectLikes: likeCount,
         projectCreator: createdBy,
+        projectImage: projectPictureUrl,
+        projectCoverImage: projectCoverPictureUrl,
         profile: profile
          }}>
 

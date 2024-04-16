@@ -23,13 +23,18 @@ const Project = () => {
       projectRolesNeeded,
       projectLikes,
       projectCreator,
+      projectImage,
+      projectCoverImage,
       profile,
     },
   } = useLocation();
+
   const [likes, setLikes] = useState(projectLikes);
   const [creatorFirstName, setCreatorFirstName] = useState('');
   const [creatorLastName, setCreatorLastName] = useState('');
- 
+  const [projectPictureUrl, setProjectPictureUrl] = useState('');
+  const [projectCoverPictureUrl, setProjectCoverPictureUrl] = useState('');
+
   const handleLikeClick = async () => {
     try {
       const newLikes = await likeProject(projectId);
@@ -66,6 +71,25 @@ const Project = () => {
     }
   }, [isLoggedIn, projectCreator]);
 
+  useEffect(() => {
+    const fetchProjectPicture = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/v1/projects/${projectId}`, {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: 'include',
+        });
+        setProjectPictureUrl(response.data.project.projectPictureUrl);
+        setProjectCoverPictureUrl(response.data.project.projectCoverPictureUrl);
+      } catch (error) {
+        console.error(
+          'Error fetching project picture:',
+          error.response ? error.response.data : error.message,
+        );
+      }
+    };
+    fetchProjectPicture();
+  }, [projectId]);
+
   const handleLoginPrompt = () => {
     alert('Please register or sign in to perform this action.');
   };
@@ -81,31 +105,52 @@ const Project = () => {
       </div>
     );
   };
+  
   const imageButton = () => {
     return (
       <Tooltip content="Upload Image" className="bg-blue/10" placement="right-end">
         <img
           size="sm"
           variant="circular"
-          alt="tania andrew"
-          src="https://source.unsplash.com/a-rubik-cube-is-shown-on-a-white-background-fd6K_OFlnRA"
+          alt="project logo"
+          src={projectImage}
           className="border-4 border-transparent h-36 w-36 rounded-full bject-cover object-center hover:cursor-pointer hover:border-green"
         />
       </Tooltip>
     );
   };
+
+  const coverImageButton = () => {
+    return (
+      <Tooltip content="Upload Image" className="bg-blue/10" placement="right-end">
+        <div style={{ width: '65vw', height: '30vh' }}>
+          <img
+            src={projectCoverImage}
+            alt="project img"
+            className="border-4 border-transparent rounded-lg object-cover object-center hover:cursor-pointer hover:border-green"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        </div>
+      </Tooltip>
+    );
+  };
+
   return (
     <div className="contanier-primary px-64 flex flex-col text-gray">
-      <img
-        src="https://source.unsplash.com/white-and-gray-optical-illusion-7JX0-bfiuxQ"
-        alt="project img"
-        className="max-h-60 object-cover object-center"
-      />
+      <Modal
+        buttonClassName={''}
+        openModalButton={coverImageButton()}
+        modalBody={<UploadImage projectId={projectId} isCoverImage={true}/>}
+      />{' '}
       <div className="p-10">
         <div className="flex flex-row">
           <div className="flex flex-col w-1/2">
             <div className="text-2xl font-medium pb-4">{projectTitle} </div>
-            <Modal buttonClassName={''} openModalButton={imageButton()} modalBody={UploadImage()} />
+            <Modal
+              buttonClassName={''}
+              openModalButton={imageButton()}
+              modalBody={<UploadImage projectId={projectId} isCoverImage={false} />}
+            />{' '}
           </div>
           <div className="flex flex-col w-1/2 items-end">
             <div className="flex items-center justify-between mt-7">
