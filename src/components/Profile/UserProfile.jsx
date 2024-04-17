@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Tooltip } from '@material-tailwind/react';
 import ProjectCard from '../Project/ProjectCard.jsx';
 import Modal from '../Modal_Components/Modal.jsx';
 import CreateProject from '../Modal_Components/CreateProject.jsx';
@@ -7,6 +8,7 @@ import EditIcon from '../Modal_Components/EditIcon.jsx';
 import EditProfile from '../Profile/EditProfile.jsx';
 import { fetchUserProfile } from '../../util/fetchData';
 import Slider from 'react-slick';
+import UploadProfileImage from '../Modal_Components/UploadProfileImages.jsx';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
@@ -56,23 +58,51 @@ const Profile = () => {
     slidesToShow: 3,
     slidesToScroll: 1,
   };
+
   
+  const imageButton = () => {
+    return (
+      <Tooltip content="Upload Image" className="bg-blue/10" placement="right-end">
+        <img
+          size="sm"
+          variant="circular"
+          alt="project logo"
+          src="https://source.unsplash.com/a-rubik-cube-is-shown-on-a-white-background-fd6K_OFlnRA"
+          className="border-4 border-transparent h-36 w-36 rounded-full bject-cover object-center hover:cursor-pointer hover:border-green"
+        />
+      </Tooltip>
+    );
+  };
+
+  const coverImageButton = () => {
+    return (
+      <Tooltip content="Upload Image" className="bg-blue/10" placement="right-end">
+        <div style={{ width: '65vw', height: '30vh' }}>
+          <img
+            src="https://source.unsplash.com/white-and-gray-optical-illusion-7JX0-bfiuxQ"
+            alt="project img"
+            className="border-4 border-transparent rounded-lg object-cover object-center hover:cursor-pointer hover:border-green"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        </div>
+      </Tooltip>
+    );
+  };
+
   return (
     <div className="contanier-primary px-64 flex flex-col text-gray">
       <div className="flex flex-col w-full border border-transparent rounded-lg bg-gray/5">
-        <img
-          src="https://source.unsplash.com/white-and-gray-optical-illusion-7JX0-bfiuxQ"
-          alt="project img"
-          className="max-h-60 object-cover object-center border rounded-t-lg"
-        />
+      <Modal
+        buttonClassName={''}
+        openModalButton={coverImageButton()}
+        modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={true}/>}
+      />{' '}
         <div className="px-8 pb-8">
-          <img
-            size="sm"
-            variant="circular"
-            alt="tania andrew"
-            src="https://source.unsplash.com/a-rubik-cube-is-shown-on-a-white-background-fd6K_OFlnRA"
-            className="border-[5px] border-white h-36 w-36 rounded-full bject-cover object-center -mt-24"
-          />
+        <Modal
+              buttonClassName={''}
+              openModalButton={imageButton()}
+              modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={false}/>}
+            />{' '}
           <div className="flex flex-row pt-4">
             <div className="flex flex-col w-1/2">
               <div className="text-2xl font-bold  pb-1">
