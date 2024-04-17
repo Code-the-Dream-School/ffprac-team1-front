@@ -13,14 +13,18 @@ import 'slick-carousel/slick/slick-theme.css';
 const Profile = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   useEffect(() => {
     const fetchUserProfileData = async () => {
       try {
         const userProfile = await fetchUserProfile();
         setProfile(userProfile);
+        setError('');
       } catch (error) {
         console.error('Error fetching user profile:', error);
+        setError('The profile is unavailable. Try again later please');
       }
     };
 
@@ -31,12 +35,15 @@ const Profile = () => {
     try {
       const updatedProfile = await fetchUserProfile();
       setProfile(updatedProfile);
-      alert('Profile Updated');
+      setSuccess('Profile successfully updated.');
+      setError('');
     } catch (error) {
       console.error('Error updating profile:', error);
-      alert('Failed to update profile. Try again later.');
+      setError('We could not update your profile. Try again later please.');
+      setSuccess('');
     }
   };
+
 
   if (!profile) {
     return <div>Loading...</div>;
@@ -104,17 +111,10 @@ const Profile = () => {
           <p className="font-sans font-extralight text-sm">{profile.profile.offer}</p>
         </div>
         <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5">
-          <h3 className="text-lg text-green/80">Links:</h3>
-          <p>
-            My email: <a href={`mailto:${profile.profile.email}`}>{profile.profile.email}</a>
-          </p>
-          {profile.profile &&
-            profile.profile.links &&
-            Object.keys(profile.profile.links).map((item, index) => (
-              <li key={index} className="font-sans font-extralight text-[14px]">
-                {item + ', '}
-              </li>
-            ))}
+          <h3 className="text-lg text-green/80">Contacts:</h3>
+          <p>LinkedIn: <a href={profile.profile.contacts.linkedIn}>{profile.profile.contacts.linkedIn}</a></p>
+          <p>GitHub: <a href={profile.profile.contacts.github}>{profile.profile.contacts.github}</a></p>
+          <p>Portfolio Website: <a href={profile.profile.contacts.portfolioWebsite}>{profile.profile.contacts.portfolioWebsite}</a></p>
         </div>
         <div className="mt-4 mb-1 py-4 px-8 border border-transparent rounded-lg bg-gray/5">
           <div className="flex flex-row w-full justify-between">
