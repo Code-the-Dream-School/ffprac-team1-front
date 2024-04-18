@@ -71,7 +71,7 @@ const Profile = () => {
         <img
           size="sm"
           variant="circular"
-          alt="project logo"
+          alt="profile picture"
           src={profile.profile.profilePictureUrl}
           className="border-4 border-transparent h-36 w-36 rounded-full bject-cover object-center hover:cursor-pointer hover:border-green"
         />
@@ -85,7 +85,7 @@ const Profile = () => {
         <div style={{ width: '65vw', height: '30vh' }}>
           <img
             src={profile.profile.profileCoverPictureUrl}
-            alt="project img"
+            alt="profile cover picture"
             className="border-4 border-transparent rounded-lg object-cover object-center hover:cursor-pointer hover:border-green"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
