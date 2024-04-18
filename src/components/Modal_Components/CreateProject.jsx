@@ -28,9 +28,6 @@ import axios from "axios";
   "DevOps Engineer", 
   "Quality Assurance Engineer"]);
 
-  // const [ frontEnd, setFrontEnd ] = useState([]);
-  // const [frontEndList, setFrontEndList ] = useState([" ", "HTML/CSS", "JavaScript", "TypeScript", "React", "Angular", "Vue.js", "Svelte", "Next.js", "Redux", "Bootstrap", "Tailwind CSS", "SASS/LESS"]);
-  
   let array = [];
 
   const handleChange = (e) => {
@@ -100,7 +97,7 @@ import axios from "axios";
               value={formData.description}  className="" onChange={ handleChange }/>
               </div>
               <div className=" mt-10 pb-10 flex flex-row bg-black">
-                <Select label="Roles Needed" value={rolesNeededList} onChange={handleSelectChange} className="bg-black z-10">
+                <Select label="Roles Needed" value={rolesNeededList.toString()} onChange={handleSelectChange} className="bg-black z-10">
                   {rolesNeededList.map((item, index) => (
                     <Option value={item} key={index}  className="bg-black h-full w-full z-10">{item}</Option>
                   ))}
@@ -108,9 +105,9 @@ import axios from "axios";
               </div>
               <div className="">
                 { rolesNeeded.map((item, index) => (
-                  <div className="flex flex-row">
-                     <div key={index}>{item} </div>
-                     <XCircleIcon onClick={() => removeItem(item)} strokeWidth="1"  className=" h-5 w-5 stroke-blue/50 hover:stroke-blue hover:cursor-pointer"/>
+                  <div className="flex flex-row" key={index}>
+                     <div >{item} </div>
+                     <XCircleIcon onClick={() => removeItem(item)} strokeWidth="1" className=" h-5 w-5 stroke-blue/50 hover:stroke-blue hover:cursor-pointer"/>
                   </div>
                 ))}
               </div>
