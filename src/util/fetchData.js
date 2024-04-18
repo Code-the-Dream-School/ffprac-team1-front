@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8000/api/v1';
+const API_BASE_URL_PROJECTS = 'http://localhost:8000/api/v1/projects';
 
 export const register = async ({ firstName, lastName, email, password }) => {
   try {
@@ -128,6 +129,21 @@ export const updateProfile = async profileDetails => {
   }
 };
 
+export const createProject = async ( { title, description, rolesNeeded } ) => {
+  try {
+   const response = await axios.post(
+    `${API_BASE_URL_PROJECTS}`, 
+    {
+    title,
+    description,
+    rolesNeeded
+   }, { withCredentials: true })
+   return response;
+  } catch (error) {
+   throw error.response.data;
+  }
+ };
+
 export default {
   register,
   login,
@@ -137,4 +153,5 @@ export default {
   fetchUserProfile,
   updateProfile,
   fetchProfile,
+  createProject,
 };
