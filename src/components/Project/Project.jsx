@@ -10,6 +10,7 @@ import { likeProject } from '../../util/fetchData.js';
 import EditProject from '../Modal_Components/EditProject.jsx';
 import EditIcon from '../Modal_Components/EditIcon.jsx';
 import axios from 'axios';
+import Apply from '../Modal_Components/Apply.jsx';
 
 const Project = () => {
   const { isLoggedIn } = useAuth();
@@ -28,6 +29,8 @@ const Project = () => {
       profile,
     },
   } = useLocation();
+
+  console.log(projectRolesNeeded);
 
   const [likes, setLikes] = useState(projectLikes);
   const [creatorFirstName, setCreatorFirstName] = useState('');
@@ -105,7 +108,7 @@ const Project = () => {
       </div>
     );
   };
-  
+
   const imageButton = () => {
     return (
       <Tooltip content="Upload Image" className="bg-blue/10" placement="right-end">
@@ -140,7 +143,7 @@ const Project = () => {
       <Modal
         buttonClassName={''}
         openModalButton={coverImageButton()}
-        modalBody={<UploadImage projectId={projectId} isCoverImage={true}/>}
+        modalBody={<UploadImage projectId={projectId} isCoverImage={true} />}
       />{' '}
       <div className="p-10">
         <div className="flex flex-row">
@@ -294,11 +297,21 @@ const Project = () => {
                   </div>
                 </div>
               </div>
-              <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5 flex flex-col items-center">
-                <Link to="/apply" className="btn-primary w-32 mt-4 text-center">
-                  Apply
-                </Link>
-              </div>
+              {isLoggedIn && profile.profile._id !== projectCreator && (
+                <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5 flex flex-col items-center">
+                    {' '}
+                    <Modal
+                      openModalButton="Apply"
+                      modalBody={
+                        <Apply
+                          projectId={projectId}
+                          projectTitle={projectTitle}
+                          projectRolesNeeded={projectRolesNeeded}
+                        />
+                      }
+                    />
+                </div>
+              )}
             </>
           ) : (
             <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5 flex flex-col items-center ">
