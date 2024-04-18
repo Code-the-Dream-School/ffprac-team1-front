@@ -3,7 +3,7 @@ import profileImageUpload from './profileImageUpload';
 
 const UploadProfileImage = ({ profileId, isCoverImage}) => {
   const { file, handleChange, handleSubmit } = profileImageUpload(profileId, isCoverImage);
-console.log(profileId)
+
   return (
     <>
       <header className="text-center text-xl pb-6 font-bold text-green"> Upload Profile Image</header>

@@ -17,6 +17,9 @@ const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [profilePictureUrl, setProfilePictureUrl] = useState('');
+  const [profileCoverPictureUrl, setProfileCoverPictureUrl] = useState('');
+ 
 
   useEffect(() => {
     const fetchUserProfileData = async () => {
@@ -24,6 +27,8 @@ const Profile = () => {
         const userProfile = await fetchUserProfile();
         setProfile(userProfile);
         setError('');
+        setProfilePictureUrl(userProfile.profilePictureUrl);
+        setProfileCoverPictureUrl(userProfile.profileCoverPictureUrl);
       } catch (error) {
         console.error('Error fetching user profile:', error);
         setError('The profile is unavailable. Try again later please');
@@ -58,8 +63,8 @@ const Profile = () => {
     slidesToShow: 3,
     slidesToScroll: 1,
   };
-
   
+
   const imageButton = () => {
     return (
       <Tooltip content="Upload Image" className="bg-blue/10" placement="right-end">
@@ -67,7 +72,7 @@ const Profile = () => {
           size="sm"
           variant="circular"
           alt="project logo"
-          src="https://source.unsplash.com/a-rubik-cube-is-shown-on-a-white-background-fd6K_OFlnRA"
+          src={profile.profile.profilePictureUrl}
           className="border-4 border-transparent h-36 w-36 rounded-full bject-cover object-center hover:cursor-pointer hover:border-green"
         />
       </Tooltip>
@@ -79,7 +84,7 @@ const Profile = () => {
       <Tooltip content="Upload Image" className="bg-blue/10" placement="right-end">
         <div style={{ width: '65vw', height: '30vh' }}>
           <img
-            src="https://source.unsplash.com/white-and-gray-optical-illusion-7JX0-bfiuxQ"
+            src={profile.profile.profileCoverPictureUrl}
             alt="project img"
             className="border-4 border-transparent rounded-lg object-cover object-center hover:cursor-pointer hover:border-green"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
