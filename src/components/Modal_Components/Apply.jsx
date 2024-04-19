@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { Alert } from "@material-tailwind/react";
 
 const Apply = ({ projectTitle, projectRolesNeeded, projectId }) => {
   const [selectedRole, setSelectedRole] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     console.log('Selected role:', selectedRole);
@@ -11,6 +13,7 @@ const Apply = ({ projectTitle, projectRolesNeeded, projectId }) => {
   const handleRoleChange = (e) => {
     setSelectedRole(e.target.value);
     setError('');
+    setSuccess(false);
   };
 
   const handleSubmit = async (e) => {
@@ -36,7 +39,8 @@ const Apply = ({ projectTitle, projectRolesNeeded, projectId }) => {
         throw new Error(errorData.message || 'Failed to submit application');
       }
 
-      alert('You have successfully applied for the role');
+      setSuccess(true);
+      setSelectedRole('');
     } catch (error) {
       setError(error.message || 'Error submitting application');
     }
@@ -51,7 +55,6 @@ const Apply = ({ projectTitle, projectRolesNeeded, projectId }) => {
         <div className="flex flex-row justify-center">
           <div>
             <label htmlFor="roleSelect">Roles needed:</label>
-            {/* Добавляем классы Tailwind для изменения фона выпадающего списка */}
             <select
               id="roleSelect"
               value={selectedRole}
@@ -67,7 +70,8 @@ const Apply = ({ projectTitle, projectRolesNeeded, projectId }) => {
             </select>
           </div>
         </div>
-        {error && <div className="text-red">{error}</div>}
+        {error && <Alert color="red">{error}</Alert>}
+        {success && <Alert color="green">You have successfully applied for the role</Alert>}
         <div className="flex flex-row w-full justify-end items-end">
           <button type="submit" className="btn-primary text-black w-[30%]">
             Submit
