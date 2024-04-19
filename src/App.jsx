@@ -11,8 +11,8 @@ import ProjectsList from './components/Project/ProjectsList.jsx';
 import Project from './components/Project/Project.jsx';
 import CreateProject from './components/Project/CreateProject.jsx';
 import UserProjects from './components/Project/UserProjects.jsx';
-import Notification from './components/Notification/Notification.jsx';
-import Messaging from './components/Notification/Messaging.jsx';
+import ApplyForRole from './components/UserActions/ApplyForRole.jsx';
+import Messaging from './components/UserActions/Messaging.jsx';
 import Search from './components/Search/SearchBar.jsx';
 import SearchResults from './components/Search/SearchResults.jsx';
 import ProtectedRoute from './ProtectedRoute';
@@ -37,7 +37,7 @@ function App() {
           <Route path="/user-projects" element={<ProtectedRoute element={<UserProjects />} />} />
           <Route path="/create-project" element={<ProtectedRoute element={<CreateProject />} />} />
           <Route path="/messaging" element={<ProtectedRoute element={<Messaging />} />} />
-          <Route path="/notification" element={<ProtectedRoute element={<Notification />} />} />
+          <Route path="/roleapplications" element={<ProtectedRoute element={<ApplyForRole />} />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

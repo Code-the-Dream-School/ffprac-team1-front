@@ -46,7 +46,7 @@ const Nav = () => {
               <Link to="/messaging">Messaging</Link>
             </div>*/}
             <div className="pr-4">
-              <Link to="/notification">Role Applications</Link>
+              <Link to="/roleapplications">Role Applications</Link>
             </div> 
             <div className="pr-4">
               <Link to="/profile">Profile</Link>

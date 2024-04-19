@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { fetchUserProfile, fetchProjects } from '../../util/fetchData';
 import { Card } from "@material-tailwind/react";
 
-
-const Notification = () => {
+const ApplyForRole = () => {
   const [profile, setProfile] = useState('');
   const [projects, setProjects] = useState([]);
+  const [applicantFirstName, setApplicantFirstName] = useState('');
+  const [applicantLastName, setApplicantLastName] = useState('');
+  const [applicantContacts, setApplicantContacts] = useState('');
+  const [applicantEmail, setApplicantEmail] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +35,46 @@ const Notification = () => {
   const handleDecline = (projectId, applicantId) => {
   };
 
- 
+  useEffect(() => {
+    const fetchApplicant = async (userId) => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/v1/profiles/${userId}`,
+          {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: 'include',
+          },
+        );
+        const { firstName, lastName, contacts, email } = response.data.profile;
+        setApplicantFirstName(firstName);
+        setApplicantLastName(lastName);
+        setApplicantContacts(contacts);
+        setApplicantEmail(email);
+        if (response.status === 200) {
+        }
+      } catch (error) {
+        console.error(
+          'Error fetching applicant profile:',
+          error.response ? error.response.data : error.message,
+        );
+      }
+    };
+
+    const fetchDataForApplicants = () => {
+      if (ownProjects) {
+        ownProjects.forEach(project => {
+          if (project.applicants) {
+            project.applicants.forEach(applicant => {
+                fetchApplicant(applicant.user);
+            });
+          }
+        });
+      }
+    };
+
+    fetchDataForApplicants();
+  }, [ownProjects]);
+
   return (
     <div className="flex justify-center mt-8">
       <Card className="w-full max-w-4xl bg-black overflow-scroll">
@@ -67,17 +110,16 @@ const Notification = () => {
                           {project.title}
                         </td>
                         <td className="p-4 bg-black">
-                          {applicant.user}
-                          {/* {firstName} {lastName} */}
+                        {applicantFirstName} {applicantLastName}
                         </td>
                         <td className="p-4">
                           {applicant.role}
                         </td>
                         <td className="p-4 bg-black">
-                          {/* Email: {profile.profile.email}
-                          {contacts && (
+                           <a href='mailto:' >Email: {applicantEmail}</a>
+                         {applicantContacts && (
                             <>
-                              {Object.entries(contacts)
+                              {Object.entries(applicantContacts)
                                 .filter(([key, value]) => value !== null)
                                 .map(([key, value]) => (
                                   <div key={key}>
@@ -85,7 +127,7 @@ const Notification = () => {
                                   </div>
                                 ))}
                             </>
-                          )} */}
+                          )}
                         </td>
                         <td className="p-4 bg-black">
                           <div className="flex justify-between space-x-2">
@@ -106,4 +148,4 @@ const Notification = () => {
   );
 };
 
-export default Notification;
+export default ApplyForRole;
