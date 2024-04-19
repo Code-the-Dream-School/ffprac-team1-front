@@ -44,10 +44,10 @@ const Nav = () => {
             </div>
             {/* <div className="pr-4">
               <Link to="/messaging">Messaging</Link>
-            </div>
+            </div>*/}
             <div className="pr-4">
-              <Link to="/notification">Notification</Link>
-            </div> */}
+              <Link to="/notification">Role Applications</Link>
+            </div> 
             <div className="pr-4">
               <Link to="/profile">Profile</Link>
             </div>
