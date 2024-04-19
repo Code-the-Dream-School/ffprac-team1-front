@@ -1,29 +1,23 @@
 import React, { useState, useEffect } from 'react';
 
-
 const Apply = ({ projectTitle, projectRolesNeeded, projectId }) => {
-
-  const [selectedRoles, setSelectedRoles] = useState([]);
+  const [selectedRole, setSelectedRole] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    console.log('Selected roles:', selectedRoles);
-  }, [selectedRoles]);
+    console.log('Selected role:', selectedRole);
+  }, [selectedRole]);
 
-  const handleRoleToggle = (role) => {
-    setSelectedRoles((prevSelectedRoles) => {
-      if (prevSelectedRoles.includes(role)) {
-        return prevSelectedRoles.filter((selectedRole) => selectedRole !== role);
-      } else {
-        return [...prevSelectedRoles, role];
-      }
-    });
+  const handleRoleChange = (e) => {
+    setSelectedRole(e.target.value);
+    setError('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (selectedRoles.length === 0) {
-      alert('Please select one role');
+    if (!selectedRole) {
+      setError('Please select a role');
       return;
     }
 
@@ -33,57 +27,49 @@ const Apply = ({ projectTitle, projectRolesNeeded, projectId }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          role: selectedRoles
-        }),
-        withCredentials: 'include', 
+        body: JSON.stringify({ role: selectedRole }),
+        credentials: 'include',
       });
 
       if (!response.ok) {
-        throw new Error('Failed to submit application');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to submit application');
       }
 
       alert('You have successfully applied for the role');
     } catch (error) {
-      console.error('Error submitting application:', error.message);
+      setError(error.message || 'Error submitting application');
     }
   };
 
   return (
     <div className="h-fit overflow-scrolling">
       <header className="text-center text-xl pb-6 font-bold text-green">
-        {' '}
-        Apply for the {projectTitle} project as:{' '}
+        Apply for the {projectTitle} project as:
       </header>
       <form className="w-full h-[90%] py-6 flex flex-col" onSubmit={handleSubmit}>
         <div className="flex flex-row justify-center">
           <div>
-            <label>Roles needed:</label>
-            <ul>
+            <label htmlFor="roleSelect">Roles needed:</label>
+            {/* Добавляем классы Tailwind для изменения фона выпадающего списка */}
+            <select
+              id="roleSelect"
+              value={selectedRole}
+              onChange={handleRoleChange}
+              className="bg-black text-white border-none px-4 py-2 rounded-md"
+            >
+              <option value="">Select a role</option>
               {projectRolesNeeded.map((role) => (
-                <li key={role}>
-                  <input
-                    type="checkbox"
-                    id={`role_${role}`}
-                    value={role}
-                    onChange={() => {
-                      handleRoleToggle(role);
-                    }}
-                    checked={selectedRoles.includes(role)}
-                  />
-                  <label htmlFor={`role_${role}`}>{role}</label>
-                </li>
+                <option key={role} value={role}>
+                  {role}
+                </option>
               ))}
-            </ul>
+            </select>
           </div>
         </div>
+        {error && <div className="text-red">{error}</div>}
         <div className="flex flex-row w-full justify-end items-end">
-          <button
-            type="submit"
-            variant="gradient"
-            color="green"
-            className="btn-primary text-black w-[30%] "
-          >
+          <button type="submit" className="btn-primary text-black w-[30%]">
             Submit
           </button>
         </div>
