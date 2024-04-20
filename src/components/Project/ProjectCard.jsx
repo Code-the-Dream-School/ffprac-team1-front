@@ -14,7 +14,7 @@ import {
 
 
 const ProjectCard = ({ project, profile }) => {
-  const { _id, title, status, description, technologies, rolesNeeded, likeCount, createdBy, projectPictureUrl, projectCoverPictureUrl } = project;
+  const { _id, title, status, description, technologies, rolesNeeded, likeCount, createdBy, projectPictureUrl, projectCoverPictureUrl, participants, participatingProjects } = project;
   const { isLoggedIn } = useAuth(); 
 
   const renderTechnologies = technologies => {
@@ -47,6 +47,8 @@ const ProjectCard = ({ project, profile }) => {
         projectCreator: createdBy,
         projectImage: projectPictureUrl,
         projectCoverImage: projectCoverPictureUrl,
+        projectParticipants: participants,
+        participateInProject: participatingProjects,
         profile: profile
          }}>
 
@@ -59,7 +61,7 @@ const ProjectCard = ({ project, profile }) => {
            <div className=" flex flex-row">
             <img
                 className="h-10 w-10 rounded-full"
-                src="https://source.unsplash.com/a-rubik-cube-is-shown-on-a-white-background-fd6K_OFlnRA"
+                src={projectPictureUrl}
                 alt="project logo"
             />
             <Typography variant="h3" className="text-xs font-[Jura] text-gray pl-4 font-medium">

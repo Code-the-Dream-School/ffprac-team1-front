@@ -26,17 +26,18 @@ const Project = () => {
       projectCreator,
       projectImage,
       projectCoverImage,
+      projectParticipants,
+      participateInProject,
       profile,
     },
   } = useLocation();
-
-  console.log(projectRolesNeeded);
 
   const [likes, setLikes] = useState(projectLikes);
   const [creatorFirstName, setCreatorFirstName] = useState('');
   const [creatorLastName, setCreatorLastName] = useState('');
   const [projectPictureUrl, setProjectPictureUrl] = useState('');
   const [projectCoverPictureUrl, setProjectCoverPictureUrl] = useState('');
+  const [participantsData, setParticipantsData] = useState([]);
 
   const handleLikeClick = async () => {
     try {
@@ -75,6 +76,31 @@ const Project = () => {
   }, [isLoggedIn, projectCreator]);
 
   useEffect(() => {
+    const fetchParticipantsData = async () => {
+      try {
+        if (!projectParticipants) return; // Проверяем, существует ли projectParticipants
+        const participantsRequests = projectParticipants.map(async participant => {
+          const response = await axios.get(
+            `http://localhost:8000/api/v1/profiles/${participant.user}`,
+            {
+              headers: { 'Content-Type': 'application/json' },
+              withCredentials: 'include',
+            },
+          );
+          return response.data.profile;
+        });
+  
+        const participantsData = await Promise.all(participantsRequests);
+        setParticipantsData(participantsData);
+      } catch (error) {
+        console.error('Error fetching participants data:', error);
+      }
+    };
+  
+    fetchParticipantsData();
+  }, [projectParticipants]);
+
+  useEffect(() => {
     const fetchProjectPicture = async () => {
       try {
         const response = await axios.get(`http://localhost:8000/api/v1/projects/${projectId}`, {
@@ -107,6 +133,29 @@ const Project = () => {
         ))}
       </div>
     );
+  };
+
+  const renderParticipants = () => {
+    return participantsData.map((participant, index) => {
+      const role = projectRolesNeeded[index];
+      return (
+        <div key={index} className="py-4 flex flex-row">
+          <Tooltip content={`${participant.firstName} ${participant.lastName}`}>
+            <Avatar
+              size="sm"
+              variant="circular"
+              alt={`${participant.firstName} ${participant.lastName}`}
+              src={participant.profilePictureUrl}
+              className="border-2 border-gray h-10 w-10 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
+            />
+          </Tooltip>
+          <div className="pl-4">
+            <header>{`${participant.firstName} ${participant.lastName}`}</header>
+            <p className="font-sans font-extralight italic text-[11px] text-blue">{role}</p>
+          </div>
+        </div>
+      );
+    });
   };
 
   const imageButton = () => {
@@ -230,7 +279,7 @@ const Project = () => {
                         size="sm"
                         variant="circular"
                         alt="{profile.profile._id}"
-                        src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+                        src={profile.profile.profilePictureUrl}
                         className="border-2 border-gray h-12 w-12 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
                       />
                     </Tooltip>
@@ -240,7 +289,7 @@ const Project = () => {
                         size="sm"
                         variant="circular"
                         alt="User"
-                        src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+                        src="{participant.profilePictureUrl}"
                         className="border-2 border-gray h-12 w-12 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
                       />
                     </Tooltip>
@@ -251,65 +300,34 @@ const Project = () => {
                         ? `${profile.profile.firstName} ${profile.profile.lastName}`
                         : `${creatorFirstName} ${creatorLastName}`}
                     </header>
-                    <p className="font-sans font-extralight italic text-[11px] text-blue">
-                      {' '}
-                      Project Manager
-                    </p>
                   </div>
                 </div>
               </div>
               <div className="my-1 py-4 px-8 border border-transparent rounded-lg bg-gray/5">
                 <h3 className="text-lg text-green/80">Team:</h3>
                 <div className="py-4 flex flex-row">
-                  <Tooltip content="Tania Andrew">
-                    <Avatar
-                      size="sm"
-                      variant="circular"
-                      alt="tania andrew"
-                      src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-                      className="border-2 border-gray h-10 w-10 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
-                    />
-                  </Tooltip>
-                  <div className="pl-4">
-                    <header>Tania Andrew</header>
-                    <p className="font-sans font-extralight italic text-[11px] text-blue">
-                      {' '}
-                      Full Stack Developer
-                    </p>
-                  </div>
-                </div>
-                <div className="py-4 flex flex-row">
-                  <Tooltip content="Tania Andrew">
-                    <Avatar
-                      size="sm"
-                      variant="circular"
-                      alt="tania andrew"
-                      src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-                      className="border-2 border-gray h-10 w-10 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
-                    />
-                  </Tooltip>
-                  <div className="pl-4">
-                    <header>Tania Andrew</header>
-                    <p className="font-sans font-extralight italic text-[11px] text-blue">
-                      {' '}
-                      Designer
-                    </p>
-                  </div>
+                  {projectParticipants && projectParticipants.length > 0 ? (
+                    <div className="pl-4">
+                      <header>{renderParticipants()}</header>
+                    </div>
+                  ) : (
+                    <p>No team members yet.</p>
+                  )}
                 </div>
               </div>
               {isLoggedIn && profile.profile._id !== projectCreator && (
                 <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5 flex flex-col items-center">
-                    {' '}
-                    <Modal
-                      openModalButton="Apply"
-                      modalBody={
-                        <Apply
-                          projectId={projectId}
-                          projectTitle={projectTitle}
-                          projectRolesNeeded={projectRolesNeeded}
-                        />
-                      }
-                    />
+                  {' '}
+                  <Modal
+                    openModalButton="Apply"
+                    modalBody={
+                      <Apply
+                        projectId={projectId}
+                        projectTitle={projectTitle}
+                        projectRolesNeeded={projectRolesNeeded}
+                      />
+                    }
+                  />
                 </div>
               )}
             </>
