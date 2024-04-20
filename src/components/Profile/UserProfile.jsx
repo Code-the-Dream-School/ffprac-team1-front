@@ -154,7 +154,7 @@ const Profile = () => {
                <div className="w-full mt-2">
               <Modal
                 buttonClassName={''}
-                openModalButton={<EditIcon />}
+                openModalButton={<EditIcon openModalButtonText={"Edit Profile"} />}
                 modalBody={<EditProfile profileData={profile} onSave={handleProfileUpdate} />}
               />
               {/* <div className="font-sans font-extralight text-xs italic pb-2 pr-2">
