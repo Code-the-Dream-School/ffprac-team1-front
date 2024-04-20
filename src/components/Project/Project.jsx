@@ -28,6 +28,7 @@ const Project = () => {
       profile,
     },
   } = useLocation();
+  
 
   const [likes, setLikes] = useState(projectLikes);
   const [creatorFirstName, setCreatorFirstName] = useState('');
@@ -44,6 +45,7 @@ const Project = () => {
     }
   };
 
+
   useEffect(() => {
     const fetchCreator = async () => {
       try {
@@ -55,6 +57,7 @@ const Project = () => {
             withCredentials: 'include',
           },
         );
+
         setCreatorFirstName(response.data.profile.firstName);
         setCreatorLastName(response.data.profile.lastName);
         if (response.status === 200) {
@@ -114,7 +117,7 @@ const Project = () => {
           variant="circular"
           alt="project logo"
           src={projectImage}
-          className="border-4 border-transparent h-36 w-36 rounded-full bject-cover object-center hover:cursor-pointer hover:border-green"
+          className="border-4 border-blue/50 h-36 w-36 rounded-full bject-cover object-center hover:cursor-pointer hover:border-green"
         />
       </Tooltip>
     );
@@ -123,12 +126,11 @@ const Project = () => {
   const coverImageButton = () => {
     return (
       <Tooltip content="Upload Image" className="bg-blue/10" placement="right-end">
-        <div style={{ width: '65vw', height: '30vh' }}>
+        <div  className="w-full">
           <img
             src={projectCoverImage}
             alt="project img"
-            className="border-4 border-transparent rounded-lg object-cover object-center hover:cursor-pointer hover:border-green"
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            className="object-cover  w-[100vw] h-64  rounded-t-2xl  object-center hover:cursor-pointer hover:opacity-80"
           />
         </div>
       </Tooltip>
@@ -136,68 +138,70 @@ const Project = () => {
   };
 
   return (
-    <div className="contanier-primary px-64 flex flex-col text-gray">
+    <div className="contanier-primary xl:px-60 flex flex-col text-gray">
       <Modal
         buttonClassName={''}
         openModalButton={coverImageButton()}
         modalBody={<UploadImage projectId={projectId} isCoverImage={true}/>}
       />{' '}
-      <div className="p-10">
+      <div className="py-10">
         <div className="flex flex-row">
           <div className="flex flex-col w-1/2">
-            <div className="text-2xl font-medium pb-4">{projectTitle} </div>
+            <div className="text-2xl font-medium pb-4 pl-4">{projectTitle} </div>
             <Modal
-              buttonClassName={''}
+              buttonClassName={'pl-4'}
               openModalButton={imageButton()}
               modalBody={<UploadImage projectId={projectId} isCoverImage={false} />}
             />{' '}
           </div>
           <div className="flex flex-col w-1/2 items-end">
-            <div className="flex items-center justify-between mt-7">
-              <h2 className="text-[20px] font-semibold text-right text-blue mr-2">
+            <div className="flex items-center justify-between mt-7 sm:mr-8 md:mr-4">
+              <h2 className="text-[20px] font-semibold text-right text-blue">
                 Project Status:
                 <p className="font-sans text-[15px] font-medium pb-3">{projectStatus}</p>
               </h2>
-              {isLoggedIn && profile.profile._id === projectCreator && (
-                <div>
-                  <Modal
-                    openModalButton={<EditIcon />}
-                    modalBody={
-                      <EditProject
-                        projectId={projectId}
-                        projectTitle={projectTitle}
-                        projectDesc={projectDesc}
-                        projectRolesNeeded={projectRolesNeeded}
-                      />
-                    }
-                  />
-                </div>
-              )}
             </div>
-            <div className="pt-2">
+            <div className="pt-2 sm:mr-8 md:mr-4">
               {isLoggedIn ? (
                 <IconButton
                   variant="outlined"
-                  className="text-blue rounded-lg bg-blue mr-4"
+                  className="text-blue rounded-lg bg-blue mr-2"
                   onClick={handleLikeClick}
                 >
                   <i className="fas fa-heart fa-xl text-black" />
-                  {likes}
+                  <p className="text-black">{likes}</p>
                 </IconButton>
               ) : (
                 <IconButton
                   variant="outlined"
-                  className="text-blue rounded-lg bg-blue mr-4"
+                  className=" rounded-lg bg-blue mr-4 text-black"
                   onClick={handleLoginPrompt}
                 >
-                  <i className="fas fa-heart fa-xl text-black" />
-                  {likes}
+                  <i className="fas fa-heart fa-xl" />
+                  <p className="text-black">{likes}</p>
                 </IconButton>
               )}
               {/* <IconButton variant="outlined" className="text-blue rounded-lg bg-blue">
               <i className="fas fa-thumbs-up fa-xl text-black" />
             </IconButton> */}
             </div>
+            <div className="pt-6 pr-2 sm:mr-8 md:mr-4">
+              {isLoggedIn && profile.profile._id === projectCreator && (
+                  <div>
+                    <Modal
+                      openModalButton={<EditIcon openModalButtonText={"Edit Project"} />}
+                      modalBody={
+                        <EditProject
+                          projectId={projectId}
+                          projectTitle={projectTitle}
+                          projectDesc={projectDesc}
+                          projectRolesNeeded={projectRolesNeeded}
+                        />
+                      }
+                    />
+                  </div>
+                )}
+              </div>
           </div>
         </div>
         {/* <hr className="my-3 text-grey/80"></hr> */}
@@ -211,8 +215,13 @@ const Project = () => {
             <ul>{renderProjectTechnologies(projectTechnologies)}</ul>
             {projectStatus !== 'In Progress' && projectStatus !== 'Completed' && (
               <div>
-                <h3 className="pt-4 text-lg text-green/80">Roles Needed:</h3>
-                <p>{projectRolesNeeded.join(', ')}</p>
+                <h3 className="pt-4 text-lg text-green/80 pb-2">Roles Needed:</h3>
+                {/* <p>{projectRolesNeeded.join(', ')}</p> */}
+                { projectRolesNeeded.map((role, index) => (
+                  <div key={ index }> 
+                    <p className="pl-2"> { role }</p>
+                  </div>
+                ))}
               </div>
             )}
           </div>
