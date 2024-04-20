@@ -30,7 +30,8 @@ const ApplyForRole = () => {
         const applicantsRequests = ownProjects.flatMap(project =>
           project.applicants.map(applicant =>
             axios
-              .get(`http://localhost:8000/api/v1/profiles/${applicant.user}`, {
+              .get(`http://localhost:8000/api/v1/profiles/${applicant.user}`, 
+              {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: 'include',
               })
@@ -38,6 +39,7 @@ const ApplyForRole = () => {
                 ...response.data.profile,
                 projectId: project._id,
                 userId: applicant.user,
+                // applicantId: applicant._id,
               })),
           ),
         );
@@ -53,12 +55,40 @@ const ApplyForRole = () => {
     fetchApplicantsData();
   }, [ownProjects]);
 
-  const handleApprove = (projectId, applicantId) => {
-    // Implement approve logic here
+
+  const handleApprove = async (projectId, applicantId) => {
+    try {
+      const response = await axios.post(`http://localhost:8000/api/v1/projects/${projectId}/approve/${applicantId}`, 
+      {},
+      {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: 'include',
+      });
+      console.log(response.data);
+    
+    } catch (error) {
+      console.error('Error approving applicant:', error);
+      if (error.response) {
+        console.error('Server response:', error.response.data);
+      }
+    }
   };
 
-  const handleDecline = (projectId, applicantId) => {
-    // Implement decline logic here
+  const handleDecline = async (projectId, applicantId) => {
+    try {
+      const response = await axios.post(`http://localhost:8000/api/v1/projects/${projectId}/reject/${applicantId}`, 
+      {},
+      {
+        withCredentials: 'include',
+      });
+      console.log(response.data);
+    
+    } catch (error) {
+      console.error('Error declining applicant:', error);
+      if (error.response) {
+        console.error('Server response:', error.response.data);
+      }
+    }
   };
 
   return (
@@ -105,10 +135,10 @@ const ApplyForRole = () => {
                         </td>
                         <td className="p-4 bg-black">
                           <div className="flex justify-between space-x-2">
-                            <button onClick={() => handleApprove(project._id, applicant.user)}>
+                            <button onClick={() => handleApprove(project._id, applicant._id)}>
                               Approve
                             </button>
-                            <button onClick={() => handleDecline(project._id, applicant.user)}>
+                            <button onClick={() => handleDecline(project._id, applicant._id)}>
                               Decline
                             </button>
                           </div>
