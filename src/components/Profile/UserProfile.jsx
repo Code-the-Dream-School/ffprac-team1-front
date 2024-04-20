@@ -21,6 +21,42 @@ const Profile = () => {
   const [profileCoverPictureUrl, setProfileCoverPictureUrl] = useState('');
  
 
+    const [screenSize, setScreenSize] = useState({
+      width: window.innerWidth,
+    });
+
+    const [coruselItems, setCoruselItems] = useState();
+
+
+    useEffect(() => {
+      const handleResize = () => {
+        setScreenSize({
+          width: window.innerWidth,
+        });
+      };
+
+      window.addEventListener('resize', handleResize);
+
+      if (screenSize.width > 1700){
+        setCoruselItems(5)
+      } 
+      if ( screenSize.width < 1700) {
+        setCoruselItems(4)
+      } 
+      if ( screenSize.width < 1480) {
+        setCoruselItems(3)
+      }
+      if ( screenSize.width < 950) {
+        setCoruselItems(2)
+      }
+  
+      // Clean up the event listener when the component unmounts
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }, [screenSize]);
+
+
   useEffect(() => {
     const fetchUserProfileData = async () => {
       try {
@@ -60,7 +96,7 @@ const Profile = () => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: coruselItems,
     slidesToScroll: 1,
   };
   
@@ -73,7 +109,7 @@ const Profile = () => {
           variant="circular"
           alt="profile picture"
           src={profile.profile.profilePictureUrl}
-          className="border-4 border-transparent h-36 w-36 rounded-full bject-cover object-center hover:cursor-pointer hover:border-green"
+          className="border-4 border-transparent h-36 w-36 rounded-full bject-cover object-center hover:cursor-pointer hover:border-green hover:opacity-80"
         />
       </Tooltip>
     );
@@ -81,46 +117,46 @@ const Profile = () => {
 
   const coverImageButton = () => {
     return (
-      <Tooltip content="Upload Image" className="bg-blue/10" placement="right-end">
-        <div style={{ width: '65vw', height: '30vh' }}>
+      <Tooltip content="Upload Image"  className="bg-blue/10" placement="right-end">
+        <div className="w-full" >  
           <img
             src={profile.profile.profileCoverPictureUrl}
-            alt="profile cover picture"
-            className="border-4 border-transparent rounded-lg object-cover object-center hover:cursor-pointer hover:border-green"
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
+            alt="profile cover picture "
+            className="object-cover h-64  w-[100vw] border-1 border-transparent rounded-t-2xl  object-center hover:cursor-pointer hover:opacity-80" />
+            {/* <div className="absolute inset-0 pt-100 bg-transparent object-cover h-64  w-[100vw] border-1 border-transparent rounded-t-2xl  object-center
+            hover:bg-black/30"></div> */}
         </div>
+        
       </Tooltip>
     );
   };
 
   return (
-    <div className="contanier-primary px-64 flex flex-col text-gray">
+    <div className="contanier-primary flex flex-col text-gray xl:px-60">
       <div className="flex flex-col w-full border border-transparent rounded-lg bg-gray/5">
       <Modal
         buttonClassName={''}
         openModalButton={coverImageButton()}
         modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={true}/>}
       />{' '}
-        <div className="px-8 pb-8">
+        <div className="px-8 pb-4 pt-4 w-[100vw]">
         <Modal
               buttonClassName={''}
               openModalButton={imageButton()}
               modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={false}/>}
             />{' '}
-          <div className="flex flex-row pt-4">
-            <div className="flex flex-col w-1/2">
+          <div className="flex flex-row w-[100vw] pt-4">
+            <div className="flex flex-col w-full">
               <div className="text-2xl font-bold  pb-1">
                 {profile.profile.firstName + ' ' + profile.profile.lastName}{' '}
               </div>
               {/* <div className="font-sans font-extralight text-sm text-blue italic pb-2">{profile.profile.title} </div> */}
-            </div>
-            <div className="flex flex-col w-1/2 items-end">
+               <div className="w-full mt-2">
               <Modal
                 buttonClassName={''}
                 openModalButton={<EditIcon />}
                 modalBody={<EditProfile profileData={profile} onSave={handleProfileUpdate} />}
-              />{' '}
+              />
               {/* <div className="font-sans font-extralight text-xs italic pb-2 pr-2">
                 Looking for:{' '}
               </div>
@@ -132,6 +168,7 @@ const Profile = () => {
                   {profile.profile.lookingFor[1]}{' '}
                 </div>
               </div> */}
+            </div>
             </div>
           </div>
         </div>
@@ -164,7 +201,7 @@ const Profile = () => {
             </div>
           </div>
           <div className="mt-4">
-            <Slider {...settings}>
+            <Slider {...settings} {... settings.slideshow=1}>
               {profile.profile.ownProjects.map((project, index) => (
                 <div key={index} className="flex justify-center">
                   <div className="mx-6">
