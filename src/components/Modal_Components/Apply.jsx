@@ -7,7 +7,7 @@ const Apply = ({ projectTitle, projectRolesNeeded, projectId }) => {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    console.log('Selected role:', selectedRole);
+    // console.log('Selected role:', selectedRole);
   }, [selectedRole]);
 
   const handleRoleChange = (e) => {

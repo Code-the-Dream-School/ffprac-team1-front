@@ -64,7 +64,7 @@ const ApplyForRole = () => {
         headers: { 'Content-Type': 'application/json' },
         withCredentials: 'include',
       });
-      console.log(response.data);
+      // console.log(response.data);
     
     } catch (error) {
       console.error('Error approving applicant:', error);
@@ -96,7 +96,7 @@ const ApplyForRole = () => {
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <Card className="w-full max-w-4xl bg-black overflow-scroll">
+        <Card className="w-full max-w-5xl bg-black overflow-scroll">
           <table className="w-full min-w-max table-auto text-white">
             <thead>
               <tr>
