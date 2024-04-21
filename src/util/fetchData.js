@@ -64,6 +64,17 @@ export const fetchProjects = async (search, page, limit) => {
   }
 };
 
+export const fetchSearchSuggestions = async (query) => {
+  try {
+    const response = await axios.get(`http://localhost:8000/api/v1/projects/suggestions?q=${query}`);
+    // console.log(response.data)
+    return response.data; 
+  } catch (error) {
+    console.error('Error fetching search suggestions:', error);
+    return [];
+  }
+};
+
 export const likeProject = async projectId => {
   try {
     const response = await fetch(`http://localhost:8000/api/v1/projects/${projectId}/like`, {
@@ -154,4 +165,5 @@ export default {
   updateProfile,
   fetchProfile,
   createProject,
+  fetchSearchSuggestions,
 };
