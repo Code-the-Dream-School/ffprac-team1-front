@@ -13,7 +13,6 @@ const EditProject = ({
 
   const [projectTitle, setProjectTitle] = useState(initialProjectTitle);
   const [projectDesc, setProjectDesc] = useState(initialProjectDesc);
-  const [projectRolesNeeded, setProjectRolesNeeded] = useState(initialProjectRolesNeeded);
   const [selectedRoles, setSelectedRoles] = useState(initialProjectRolesNeeded);
 
   const allRoles = [
@@ -27,35 +26,9 @@ const EditProject = ({
     'DevOps Engineer',
     'Quality Assurance Engineer',
   ];
-  const allFrontEndTechnologies = [
-    'HTML/CSS',
-    'JavaScript',
-    'TypeScript',
-    'React',
-    'Angular',
-    'Vue.js',
-    'Svelte',
-    'Next.js',
-    'Redux',
-    'Bootstrap',
-    'Tailwind CSS',
-    'SASS/LESS',
-  ];
-
-  const allBackEndTechnologies = [
-    'Node.js',
-    'Express.js',
-    'Deno',
-    'NestJS',
-    'AdonisJS',
-    'Koa.js',
-    'Sails.js',
-    'Meteor.js',
-    'Hapi.js',
-    'LoopBack',
-    'Feathers.js',
-    'Socket.io',
-  ];
+  const allFrontEndTechnologies = ["HTML/CSS", "JavaScript", "TypeScript", "React", "Angular", "Vue.js", "Svelte", "Next.js", "Redux", "Bootstrap", "Tailwind CSS", "SASS/LESS"];
+  const allBackEndTechnologies = [ "Node.js", "Express.js", "Django", "Ruby on Rails", "Java", "PHP Laravel", "Kotlin", "Go", "C#" ];
+  const allDesignTechnologies = ["Adobe XD", "Sketch", "Figma", "InVision", "Photoshop", "Illustrator"];
 
   const [frontEnd, setFrontEnd] = useState([]);
   const [selectedFrontEnd, setSelectedFrontEnd] = useState('');
@@ -65,18 +38,22 @@ const EditProject = ({
   const [selectedBackEnd, setSelectedBackEnd] = useState('');
   const [backEndList, setBackEndList] = useState(allBackEndTechnologies);
 
+  const [design, setDesign] = useState([]);
+  const [selectedDesign, setSelectedDesign] = useState('');
+  const [designList, setDesignList] = useState(allDesignTechnologies);
+
   const handleChange = e => {
     const { name, value } = e.target;
     if (name === 'projectTitle') {
       setProjectTitle(value);
     } else if (name === 'projectDesc') {
       setProjectDesc(value);
-    } else if (name === 'projectRolesNeeded') {
-      setProjectRolesNeeded(value);
     } else if (name === 'selectedFrontEnd') {
       setSelectedFrontEnd(value);
     } else if (name === 'selectedBackEnd') {
       setSelectedBackEnd(value);
+    } else if (name === 'selectedDesign') {
+      setSelectedDesign(value);
     }
   };
 
@@ -107,11 +84,20 @@ const EditProject = ({
     }
   };
 
+  const handleAddDesign = () => {
+    if (selectedDesign.trim() !== '') {
+      setDesign(prevDesign => [...prevDesign, selectedDesign]);
+      setDesignList(prevList => prevList.filter(item => item !== selectedDesign));
+      setSelectedDesign('');
+    }
+  };
   const removeItem = param => {
     setFrontEnd(prevFrontEnd => prevFrontEnd.filter(item => item !== param));
     setFrontEndList(prevList => [...prevList, param]);
     setBackEnd(prevBackEnd => prevBackEnd.filter(item => item !== param));
     setBackEndList(prevList => [...prevList, param]);
+    setDesign(prevDesign => prevDesign.filter(item => item !== param));
+    setDesignList(prevList => [...prevList, param]);
   };
 
   const handleSubmit = async e => {
@@ -124,9 +110,10 @@ const EditProject = ({
       technologies: {
         frontend: frontEnd,
         backend: backEnd,
+        design: design,
       },
     };
-    console.log('Data being sent to backend:', updatedProject);
+    console.log('Data being sent to backend:', updatedProject); 
 
     try {
       const response = await fetch(`http://localhost:8000/api/v1/projects/${projectId}`, {
@@ -232,6 +219,42 @@ const EditProject = ({
             </div>
             <div className="flex flex-row mt-2">
               {backEnd.map((item, index) => (
+                <div className="flex flex-row" key={index}>
+                  <div>{item}</div>
+                  <XCircleIcon
+                    onClick={() => removeItem(item)}
+                    strokeWidth="1"
+                    className="h-5 w-5 stroke-blue/50 hover:stroke-blue hover:cursor-pointer"
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="mt-10 flex flex-row bg-black">
+              <select
+                name="selectedDesign"
+                value={selectedDesign}
+                onChange={handleChange}
+                className="bg-black z-10 text-white outline-none"
+              >
+                <option value="">Select a design technology</option>
+                {designList
+                  .filter(item => !design.includes(item))
+                  .map((item, index) => (
+                    <option value={item} key={index}>
+                      {item}
+                    </option>
+                  ))}
+              </select>
+              <button
+                type="button"
+                onClick={handleAddDesign}
+                className="ml-2 px-4 py-1 bg-green text-black rounded-md"
+              >
+                Add
+              </button>
+            </div>
+            <div className="flex flex-row mt-2">
+              {design.map((item, index) => (
                 <div className="flex flex-row" key={index}>
                   <div>{item}</div>
                   <XCircleIcon
