@@ -32,6 +32,7 @@ const EditProject = ({
   const allProjectManagement = ["Jira", "Trello", "Asana", "Confluence", "Linear"];
   const allDevOps = ["Docker", "AWS", "Azure", "GCP", "Jenkins", "GitHub Actions", "GitLab CI/CD"];
   const allQualityAssurance = ["Selenium", "Jest", "Mocha", "Chai", "Cypress", "Postman", "JMeter"];
+  const allDatabase = ["SQL", "NoSQL", "PostgreSQL", "MySQL", "SQLite", "MongoDB", "Cassandra"];
 
   const [frontEnd, setFrontEnd] = useState([]);
   const [selectedFrontEnd, setSelectedFrontEnd] = useState('');
@@ -57,6 +58,10 @@ const EditProject = ({
   const [selectedQualityAssurance, setSelectedQualityAssurance] = useState('');
   const [qualityAssuranceList, setQualityAssuranceList] = useState(allQualityAssurance);
 
+  const [database, setDatabase] = useState([]);
+  const [selectedDatabase, setSelectedDatabase] = useState('');
+  const [databaseList, setDatabaseList] = useState(allDatabase);
+
   const handleChange = e => {
     const { name, value } = e.target;
     if (name === 'projectTitle') {
@@ -75,6 +80,8 @@ const EditProject = ({
       setSelectedDevOps(value);
     } else if (name === 'selectedQualityAssurance') {
       setSelectedQualityAssurance(value);
+    } else if (name === 'selectedDatabase') {
+      setSelectedDatabase(value);
     } 
   };
 
@@ -137,6 +144,14 @@ const EditProject = ({
     }
   };
 
+  const handleAddDatabase = () => {
+    if (selectedDatabase.trim() !== '') {
+      setDatabase(prevDatabase => [...prevDatabase, selectedDatabase]);
+      setDatabaseList(prevList => prevList.filter(item => item !== selectedDatabase));
+      setSelectedDatabase('');
+    }
+  };
+
   const removeItem = param => {
     setFrontEnd(prevFrontEnd => prevFrontEnd.filter(item => item !== param));
     setFrontEndList(prevList => [...prevList, param]);
@@ -150,6 +165,8 @@ const EditProject = ({
     setDevOpsList(prevList => [...prevList, param]);
     setQualityAssurance(prevQualityAssurance => prevQualityAssurance.filter(item => item !== param));
     setQualityAssuranceList(prevList => [...prevList, param]);
+    setDatabase(prevDatabase => prevDatabase.filter(item => item !== param));
+    setDatabaseList(prevList => [...prevList, param]);
   };
 
   const handleSubmit = async e => {
@@ -166,6 +183,7 @@ const EditProject = ({
         projectManagement: projectManagement,
         devOps: devOps, 
         qualityAssurance: qualityAssurance,
+        database: database,
       },
     };
     console.log('Data being sent to backend:', updatedProject); 
@@ -418,6 +436,42 @@ const EditProject = ({
             </div>
             <div className="flex flex-row mt-2">
               {qualityAssurance.map((item, index) => (
+                <div className="flex flex-row" key={index}>
+                  <div>{item}</div>
+                  <XCircleIcon
+                    onClick={() => removeItem(item)}
+                    strokeWidth="1"
+                    className="h-5 w-5 stroke-blue/50 hover:stroke-blue hover:cursor-pointer"
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="mt-10 flex flex-row bg-black">
+              <select
+                name="selectedDatabase"
+                value={selectedDatabase}
+                onChange={handleChange}
+                className="bg-black z-10 text-white outline-none"
+              >
+                <option value="">Select a Database technology</option>
+                {databaseList
+                  .filter(item => !database.includes(item))
+                  .map((item, index) => (
+                    <option value={item} key={index}>
+                      {item}
+                    </option>
+                  ))}
+              </select>
+              <button
+                type="button"
+                onClick={handleAddDatabase}
+                className="ml-2 px-4 py-1 bg-green text-black rounded-md"
+              >
+                Add
+              </button>
+            </div>
+            <div className="flex flex-row mt-2">
+              {database.map((item, index) => (
                 <div className="flex flex-row" key={index}>
                   <div>{item}</div>
                   <XCircleIcon
