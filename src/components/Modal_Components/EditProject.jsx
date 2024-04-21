@@ -30,7 +30,8 @@ const EditProject = ({
   const allBackEndTechnologies = [ "Node.js", "Express.js", "Django", "Ruby on Rails", "Java", "PHP Laravel", "Kotlin", "Go", "C#" ];
   const allDesignTechnologies = ["Adobe XD", "Sketch", "Figma", "InVision", "Photoshop", "Illustrator"];
   const allProjectManagement = ["Jira", "Trello", "Asana", "Confluence", "Linear"];
-  const allDevOps = ["Docker", "AWS", "Azure", "GCP", "Jenkins", "GitHub Actions", "GitLab CI/CD"]
+  const allDevOps = ["Docker", "AWS", "Azure", "GCP", "Jenkins", "GitHub Actions", "GitLab CI/CD"];
+  const allQualityAssurance = ["Selenium", "Jest", "Mocha", "Chai", "Cypress", "Postman", "JMeter"];
 
   const [frontEnd, setFrontEnd] = useState([]);
   const [selectedFrontEnd, setSelectedFrontEnd] = useState('');
@@ -52,6 +53,10 @@ const EditProject = ({
   const [selectedDevOps, setSelectedDevOps] = useState('');
   const [devOpsList, setDevOpsList] = useState(allDevOps);
 
+  const [qualityAssurance, setQualityAssurance] = useState([]);
+  const [selectedQualityAssurance, setSelectedQualityAssurance] = useState('');
+  const [qualityAssuranceList, setQualityAssuranceList] = useState(allQualityAssurance);
+
   const handleChange = e => {
     const { name, value } = e.target;
     if (name === 'projectTitle') {
@@ -68,6 +73,8 @@ const EditProject = ({
       setSelectedProjectManagement(value);
     } else if (name === 'selectedDevOps') {
       setSelectedDevOps(value);
+    } else if (name === 'selectedQualityAssurance') {
+      setSelectedQualityAssurance(value);
     } 
   };
 
@@ -122,6 +129,14 @@ const EditProject = ({
     }
   };
 
+  const handleAddQualityAssurance = () => {
+    if (selectedQualityAssurance.trim() !== '') {
+      setQualityAssurance(prevQualityAssurance => [...prevQualityAssurance, selectedQualityAssurance]);
+      setQualityAssuranceList(prevList => prevList.filter(item => item !== selectedQualityAssurance));
+      setSelectedQualityAssurance('');
+    }
+  };
+
   const removeItem = param => {
     setFrontEnd(prevFrontEnd => prevFrontEnd.filter(item => item !== param));
     setFrontEndList(prevList => [...prevList, param]);
@@ -133,6 +148,8 @@ const EditProject = ({
     setProjectManagementList(prevList => [...prevList, param]);
     setDevOps(prevDevOps => prevDevOps.filter(item => item !== param));
     setDevOpsList(prevList => [...prevList, param]);
+    setQualityAssurance(prevQualityAssurance => prevQualityAssurance.filter(item => item !== param));
+    setQualityAssuranceList(prevList => [...prevList, param]);
   };
 
   const handleSubmit = async e => {
@@ -148,6 +165,7 @@ const EditProject = ({
         design: design,
         projectManagement: projectManagement,
         devOps: devOps, 
+        qualityAssurance: qualityAssurance,
       },
     };
     console.log('Data being sent to backend:', updatedProject); 
@@ -364,6 +382,42 @@ const EditProject = ({
             </div>
             <div className="flex flex-row mt-2">
               {devOps.map((item, index) => (
+                <div className="flex flex-row" key={index}>
+                  <div>{item}</div>
+                  <XCircleIcon
+                    onClick={() => removeItem(item)}
+                    strokeWidth="1"
+                    className="h-5 w-5 stroke-blue/50 hover:stroke-blue hover:cursor-pointer"
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="mt-10 flex flex-row bg-black">
+              <select
+                name="selectedQualityAssurance"
+                value={selectedQualityAssurance}
+                onChange={handleChange}
+                className="bg-black z-10 text-white outline-none"
+              >
+                <option value="">Select a Quality Assurance technology</option>
+                {qualityAssuranceList
+                  .filter(item => !qualityAssurance.includes(item))
+                  .map((item, index) => (
+                    <option value={item} key={index}>
+                      {item}
+                    </option>
+                  ))}
+              </select>
+              <button
+                type="button"
+                onClick={handleAddQualityAssurance}
+                className="ml-2 px-4 py-1 bg-green text-black rounded-md"
+              >
+                Add
+              </button>
+            </div>
+            <div className="flex flex-row mt-2">
+              {qualityAssurance.map((item, index) => (
                 <div className="flex flex-row" key={index}>
                   <div>{item}</div>
                   <XCircleIcon
