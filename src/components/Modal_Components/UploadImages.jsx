@@ -1,8 +1,8 @@
 import React from 'react';
 import projectImageUpload from './projectImageUpload';
 
-const UploadImage = ({ projectId, isCoverImage }) => {
-  const { file, handleChange, handleSubmit } = projectImageUpload(projectId, isCoverImage);
+const UploadImage = ({ projectId, isCoverImage, closeModal }) => {
+  const { file, handleChange, handleSubmit } = projectImageUpload(projectId, isCoverImage, closeModal);
 
 
   return (

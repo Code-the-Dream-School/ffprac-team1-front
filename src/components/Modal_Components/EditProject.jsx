@@ -8,6 +8,7 @@ const EditProject = ({
   projectTitle: initialProjectTitle,
   projectDesc: initialProjectDesc,
   projectRolesNeeded: initialProjectRolesNeeded,
+  closeModal
 }) => {
   const navigate = useNavigate();
 
@@ -132,7 +133,8 @@ const EditProject = ({
       });
 
       if (response.ok) {
-        navigate(`/profile`);
+        closeModal();
+        navigate(`/projects/${projectId}`);
       } else {
         throw new Error('Failed to update project');
       }
