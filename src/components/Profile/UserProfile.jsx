@@ -132,7 +132,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="contanier-primary flex flex-col text-gray xl:px-60">
+    <div className="contanier-primary flex flex-col text-gray xl:px-60 pb-10">
       <div className="flex flex-col w-full border border-transparent rounded-lg bg-gray/5">
       <Modal
         buttonClassName={''}

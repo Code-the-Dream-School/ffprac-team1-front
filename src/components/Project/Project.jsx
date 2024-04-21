@@ -196,7 +196,7 @@ const Project = () => {
         openModalButton={coverImageButton()}
         modalBody={<UploadImage projectId={projectId} isCoverImage={true} />}
       />{' '}
-      <div className="py-10">
+      <div className="pt-10">
         <div className="flex flex-row">
           <div className="flex flex-col w-1/2">
             <div className="text-2xl font-medium pb-4 pl-4">{projectTitle} </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './components/Layout/LandingPage.jsx';
 import Nav from './components/Layout/Nav.jsx';
+import Footer from './components/Layout/Footer.jsx';
 import Login from './components/Authentification/Login.jsx';
 import Register from './components/Authentification/Registration.jsx';
 import Profile from './components/Profile/UserProfile.jsx';
@@ -39,6 +40,7 @@ function App() {
           <Route path="/messaging" element={<ProtectedRoute element={<Messaging />} />} />
           <Route path="/roleapplications" element={<ProtectedRoute element={<ApplyForRole />} />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </AuthProvider>
   );
