@@ -216,6 +216,7 @@ const Profile = () => {
                         createdBy: profile.profile._id,
                         projectPictureUrl: project.projectPictureUrl,
                         projectCoverPictureUrl: project.projectCoverPictureUrl,
+                        participants: project.participants,
                       }}
                       profile={profile}
                     />
@@ -231,10 +232,21 @@ const Profile = () => {
             </div> */}
         </div>
       </div>
-      {/* <div className="mt-4 mb-1 py-4 px-8 border border-transparent rounded-lg bg-gray/5">
-        <h3 className="text-lg text-green/80">Projects you are involved in:</h3>
+      <div className="mt-4 mb-1 py-4 px-8 border border-transparent rounded-lg bg-gray/5">
+        <h3 className="text-lg text-green/80">Projects you participate in:</h3>
+        
         <div className="py-4 flex flex-row"></div>
-      </div> */}
+        <div className="mx-6">
+  {profile.profile.participatingProjects.map((project, index) => {
+    return (
+      <div key={index} className="flex justify-center">
+        {project.project} {project.role}
+        
+      </div>
+    );
+  })}
+</div>
+      </div>
     </div>
   );
 };
