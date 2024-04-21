@@ -106,11 +106,20 @@ const EditProject = ({
   const handleSubmit = async e => {
     e.preventDefault();
 
+    const updatedTechnologies = { ...technologies };
+
+    for (const techType in updatedTechnologies) {
+      if (
+        updatedTechnologies.hasOwnProperty(techType) &&
+        updatedTechnologies[techType].length === 0
+      ) {
+        delete updatedTechnologies[techType];
+      }
+    }
     const updatedProject = {
       ...projectData,
-      technologies: technologies,
+      technologies: updatedTechnologies,
     };
-    console.log('Data being sent to backend:', updatedProject);
 
     try {
       const response = await fetch(`http://localhost:8000/api/v1/projects/${projectId}`, {
