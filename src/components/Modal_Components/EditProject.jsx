@@ -30,6 +30,7 @@ const EditProject = ({
   const allBackEndTechnologies = [ "Node.js", "Express.js", "Django", "Ruby on Rails", "Java", "PHP Laravel", "Kotlin", "Go", "C#" ];
   const allDesignTechnologies = ["Adobe XD", "Sketch", "Figma", "InVision", "Photoshop", "Illustrator"];
   const allProjectManagement = ["Jira", "Trello", "Asana", "Confluence", "Linear"];
+  const allDevOps = ["Docker", "AWS", "Azure", "GCP", "Jenkins", "GitHub Actions", "GitLab CI/CD"]
 
   const [frontEnd, setFrontEnd] = useState([]);
   const [selectedFrontEnd, setSelectedFrontEnd] = useState('');
@@ -47,6 +48,10 @@ const EditProject = ({
   const [selectedProjectManagement, setSelectedProjectManagement] = useState('');
   const [projectManagementList, setProjectManagementList] = useState(allProjectManagement);
 
+  const [devOps, setDevOps] = useState([]);
+  const [selectedDevOps, setSelectedDevOps] = useState('');
+  const [devOpsList, setDevOpsList] = useState(allDevOps);
+
   const handleChange = e => {
     const { name, value } = e.target;
     if (name === 'projectTitle') {
@@ -61,7 +66,9 @@ const EditProject = ({
       setSelectedDesign(value);
     } else if (name === 'selectedProjectManagement') {
       setSelectedProjectManagement(value);
-    }    
+    } else if (name === 'selectedDevOps') {
+      setSelectedDevOps(value);
+    } 
   };
 
   const handleChanges = e => {
@@ -107,6 +114,14 @@ const EditProject = ({
     }
   };
 
+  const handleAddDevOps = () => {
+    if (selectedDevOps.trim() !== '') {
+      setDevOps(prevDevOps => [...prevDevOps, selectedDevOps]);
+      setDevOpsList(prevList => prevList.filter(item => item !== selectedDevOps));
+      setSelectedDevOps('');
+    }
+  };
+
   const removeItem = param => {
     setFrontEnd(prevFrontEnd => prevFrontEnd.filter(item => item !== param));
     setFrontEndList(prevList => [...prevList, param]);
@@ -116,6 +131,8 @@ const EditProject = ({
     setDesignList(prevList => [...prevList, param]);
     setProjectManagement(prevProjectManagement => prevProjectManagement.filter(item => item !== param));
     setProjectManagementList(prevList => [...prevList, param]);
+    setDevOps(prevDevOps => prevDevOps.filter(item => item !== param));
+    setDevOpsList(prevList => [...prevList, param]);
   };
 
   const handleSubmit = async e => {
@@ -130,6 +147,7 @@ const EditProject = ({
         backend: backEnd,
         design: design,
         projectManagement: projectManagement,
+        devOps: devOps, 
       },
     };
     console.log('Data being sent to backend:', updatedProject); 
@@ -310,6 +328,42 @@ const EditProject = ({
             </div>
             <div className="flex flex-row mt-2">
               {projectManagement.map((item, index) => (
+                <div className="flex flex-row" key={index}>
+                  <div>{item}</div>
+                  <XCircleIcon
+                    onClick={() => removeItem(item)}
+                    strokeWidth="1"
+                    className="h-5 w-5 stroke-blue/50 hover:stroke-blue hover:cursor-pointer"
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="mt-10 flex flex-row bg-black">
+              <select
+                name="selectedDevOps"
+                value={selectedDevOps}
+                onChange={handleChange}
+                className="bg-black z-10 text-white outline-none"
+              >
+                <option value="">Select a devOps technology</option>
+                {devOpsList
+                  .filter(item => !devOps.includes(item))
+                  .map((item, index) => (
+                    <option value={item} key={index}>
+                      {item}
+                    </option>
+                  ))}
+              </select>
+              <button
+                type="button"
+                onClick={handleAddDevOps}
+                className="ml-2 px-4 py-1 bg-green text-black rounded-md"
+              >
+                Add
+              </button>
+            </div>
+            <div className="flex flex-row mt-2">
+              {devOps.map((item, index) => (
                 <div className="flex flex-row" key={index}>
                   <div>{item}</div>
                   <XCircleIcon
