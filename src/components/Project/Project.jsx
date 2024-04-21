@@ -11,7 +11,7 @@ import { likeProject } from '../../util/fetchData.js';
 import EditProject from '../Modal_Components/EditProject.jsx';
 import EditIcon from '../Modal_Components/EditIcon.jsx';
 import Apply from '../Modal_Components/Apply.jsx';
-import { fetchUserProfile } from '../../util/fetchData';
+import { fetchUserProfile, fetchProject } from '../../util/fetchData';
 
 const Project = () => {
   const { isLoggedIn } = useAuth();
