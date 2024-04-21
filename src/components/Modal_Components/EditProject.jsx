@@ -29,6 +29,7 @@ const EditProject = ({
   const allFrontEndTechnologies = ["HTML/CSS", "JavaScript", "TypeScript", "React", "Angular", "Vue.js", "Svelte", "Next.js", "Redux", "Bootstrap", "Tailwind CSS", "SASS/LESS"];
   const allBackEndTechnologies = [ "Node.js", "Express.js", "Django", "Ruby on Rails", "Java", "PHP Laravel", "Kotlin", "Go", "C#" ];
   const allDesignTechnologies = ["Adobe XD", "Sketch", "Figma", "InVision", "Photoshop", "Illustrator"];
+  const allProjectManagement = ["Jira", "Trello", "Asana", "Confluence", "Linear"];
 
   const [frontEnd, setFrontEnd] = useState([]);
   const [selectedFrontEnd, setSelectedFrontEnd] = useState('');
@@ -42,6 +43,10 @@ const EditProject = ({
   const [selectedDesign, setSelectedDesign] = useState('');
   const [designList, setDesignList] = useState(allDesignTechnologies);
 
+  const [projectManagement, setProjectManagement] = useState([]);
+  const [selectedProjectManagement, setSelectedProjectManagement] = useState('');
+  const [projectManagementList, setProjectManagementList] = useState(allProjectManagement);
+
   const handleChange = e => {
     const { name, value } = e.target;
     if (name === 'projectTitle') {
@@ -54,7 +59,9 @@ const EditProject = ({
       setSelectedBackEnd(value);
     } else if (name === 'selectedDesign') {
       setSelectedDesign(value);
-    }
+    } else if (name === 'selectedProjectManagement') {
+      setSelectedProjectManagement(value);
+    }    
   };
 
   const handleChanges = e => {
@@ -91,6 +98,15 @@ const EditProject = ({
       setSelectedDesign('');
     }
   };
+
+  const handleAddProjectManagement = () => {
+    if (selectedProjectManagement.trim() !== '') {
+      setProjectManagement(prevProjectManagement => [...prevProjectManagement, selectedProjectManagement]);
+      setProjectManagementList(prevList => prevList.filter(item => item !== selectedProjectManagement));
+      setSelectedProjectManagement('');
+    }
+  };
+
   const removeItem = param => {
     setFrontEnd(prevFrontEnd => prevFrontEnd.filter(item => item !== param));
     setFrontEndList(prevList => [...prevList, param]);
@@ -98,6 +114,8 @@ const EditProject = ({
     setBackEndList(prevList => [...prevList, param]);
     setDesign(prevDesign => prevDesign.filter(item => item !== param));
     setDesignList(prevList => [...prevList, param]);
+    setProjectManagement(prevProjectManagement => prevProjectManagement.filter(item => item !== param));
+    setProjectManagementList(prevList => [...prevList, param]);
   };
 
   const handleSubmit = async e => {
@@ -111,6 +129,7 @@ const EditProject = ({
         frontend: frontEnd,
         backend: backEnd,
         design: design,
+        projectManagement: projectManagement,
       },
     };
     console.log('Data being sent to backend:', updatedProject); 
@@ -255,6 +274,42 @@ const EditProject = ({
             </div>
             <div className="flex flex-row mt-2">
               {design.map((item, index) => (
+                <div className="flex flex-row" key={index}>
+                  <div>{item}</div>
+                  <XCircleIcon
+                    onClick={() => removeItem(item)}
+                    strokeWidth="1"
+                    className="h-5 w-5 stroke-blue/50 hover:stroke-blue hover:cursor-pointer"
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="mt-10 flex flex-row bg-black">
+              <select
+                name="selectedProjectManagement"
+                value={selectedProjectManagement}
+                onChange={handleChange}
+                className="bg-black z-10 text-white outline-none"
+              >
+                <option value="">Select a project management technology</option>
+                {projectManagementList
+                  .filter(item => !projectManagement.includes(item))
+                  .map((item, index) => (
+                    <option value={item} key={index}>
+                      {item}
+                    </option>
+                  ))}
+              </select>
+              <button
+                type="button"
+                onClick={handleAddProjectManagement}
+                className="ml-2 px-4 py-1 bg-green text-black rounded-md"
+              >
+                Add
+              </button>
+            </div>
+            <div className="flex flex-row mt-2">
+              {projectManagement.map((item, index) => (
                 <div className="flex flex-row" key={index}>
                   <div>{item}</div>
                   <XCircleIcon
