@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { updateProfile } from '../../util/fetchData';
-const EditProfile = ({ profileData, onSave }) => {
+
+const EditProfile = ({ profileData, onSave, closeModal }) => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState({
     firstName: '',
@@ -25,9 +26,9 @@ const EditProfile = ({ profileData, onSave }) => {
         about: profileData.profile.about || '',
         offer: profileData.profile.offer || '',
         contacts: {
-          linkedIn: profileData.profile.contacts?.linkedIn || null,
-          github: profileData.profile.contacts?.github || null,
-          portfolioWebsite: profileData.profile.contacts?.portfolioWebsite || null,
+          linkedIn: profileData.profile.contacts?.linkedIn || '',
+          github: profileData.profile.contacts?.github || '',
+          portfolioWebsite: profileData.profile.contacts?.portfolioWebsite || '',
         },
       });
     }
@@ -36,7 +37,7 @@ const EditProfile = ({ profileData, onSave }) => {
     const { name, value } = e.target;
     if (name.startsWith("contacts.")) {
       const fieldName = name.split(".")[1];
-      const updatedValue = value.trim() === "" ? null : value;
+      const updatedValue = value.trim() === "" ? "" : value;
       setProfile(prev => ({
         ...prev,
         contacts: {
@@ -82,6 +83,8 @@ const EditProfile = ({ profileData, onSave }) => {
         await updateProfile(profileDetails);
         setSuccess('Profile updated successfully!');
         onSave();
+        closeModal();
+        navigate(`/profile`);
     } catch (error) {
       setError('We could not update your profile. Try again later please.');
       console.error('Error updating profile:', error);
