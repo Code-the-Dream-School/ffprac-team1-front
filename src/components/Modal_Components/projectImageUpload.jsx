@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-const projectImageUpload = (projectId, isCover = false) => {
+const projectImageUpload = (projectId, isCover = false, closeModal) => {
   const [file, setFile] = useState();
 
   const handleChange = (e) => {
@@ -20,7 +20,8 @@ const projectImageUpload = (projectId, isCover = false) => {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response.data);
+        closeModal();
+        navigate(`/projects/${projectId}`);
         if (typeof onSuccess === 'function') {
           onSuccess(isCover ? response.data.projectCoverPictureUrl : response.data.projectPictureUrl);
         }

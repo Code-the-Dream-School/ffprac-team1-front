@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Alert } from "@material-tailwind/react";
 
-const Apply = ({ projectTitle, projectRolesNeeded, projectId }) => {
+const Apply = ({ projectTitle, projectRolesNeeded, projectId, closeModal }) => {
   const [selectedRole, setSelectedRole] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -41,6 +41,8 @@ const Apply = ({ projectTitle, projectRolesNeeded, projectId }) => {
 
       setSuccess(true);
       setSelectedRole('');
+      closeModal();
+      navigate(`/projects/${projectId}`);
     } catch (error) {
       setError(error.message || 'Error submitting application');
     }
