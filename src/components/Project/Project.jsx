@@ -201,7 +201,7 @@ const Project = () => {
               />
             }
           />
-          <div className="py-10">
+          <div className="pt-10">
             <div className="flex flex-row">
               <div className="flex flex-col w-1/2">
                 <div className="text-2xl font-medium pb-4 pl-4">{project.project.title}</div>
