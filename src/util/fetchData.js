@@ -72,7 +72,7 @@ export const fetchProject = async (projectId) => {
     return response.data;
   } catch (error) {
     console.error('Error fetching project:', error);
-    throw error; // Можно перебросить ошибку для обработки в компонентах, использующих эту функцию
+    throw error;
   }
 };
 
