@@ -1,61 +1,125 @@
-import React, { useState } from "react";
-import { Input, Textarea } from "@material-tailwind/react";
+import React, { useState } from 'react';
+import { Input, Textarea } from '@material-tailwind/react';
 import { XCircleIcon } from '@heroicons/react/24/outline';
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
+const EditProject = ({
+  projectId,
+  projectTitle: initialProjectTitle,
+  projectDesc: initialProjectDesc,
+  projectRolesNeeded: initialProjectRolesNeeded,
+  closeModal
+}) => {
+  const navigate = useNavigate();
 
-const EditProject = ({ projectId, projectTitle: initialProjectTitle, projectDesc: initialProjectDesc, projectRolesNeeded: initialProjectRolesNeeded }) => {
-  const navigate = useNavigate()
+  const allRoles = [
+    'Mentor',
+    'Frontend Developer',
+    'Backend Developer',
+    'Fullstack Developer',
+    'Team Lead',
+    'UI/UX Designer',
+    'Project Manager',
+    'DevOps Engineer',
+    'Quality Assurance Engineer',
+  ];
 
-  const [projectTitle, setProjectTitle] = useState(initialProjectTitle);
-  const [projectDesc, setProjectDesc] = useState(initialProjectDesc);
-  const [projectRolesNeeded, setProjectRolesNeeded] = useState(initialProjectRolesNeeded);
-  
-  const [frontEnd, setFrontEnd] = useState([]);
-  const [selectedFrontEnd, setSelectedFrontEnd] = useState("");
-  const [frontEndList, setFrontEndList] = useState([" ", "HTML/CSS", "JavaScript", "TypeScript", "React", "Angular", "Vue.js", "Svelte", "Next.js", "Redux", "Bootstrap", "Tailwind CSS", "SASS/LESS"]);
+  const [projectData, setProjectData] = useState({
+    title: initialProjectTitle,
+    description: initialProjectDesc,
+    rolesNeeded: initialProjectRolesNeeded,
+  });
 
-  const handleChange = (e) => {
+  const [technologies, setTechnologies] = useState({
+    frontend: [],
+    backend: [],
+    design: [],
+    projectManagement: [],
+    devOps: [],
+    qualityAssurance: [],
+    database: [],
+  });
+
+  const availableTechnologies = {
+    frontend: [
+      'HTML/CSS',
+      'JavaScript',
+      'TypeScript',
+      'React',
+      'Angular',
+      'Vue.js',
+      'Svelte',
+      'Next.js',
+      'Redux',
+      'Bootstrap',
+      'Tailwind CSS',
+      'SASS/LESS',
+    ],
+    backend: [
+      'Node.js',
+      'Express.js',
+      'Django',
+      'Ruby on Rails',
+      'Java',
+      'PHP Laravel',
+      'Kotlin',
+      'Go',
+      'C#',
+    ],
+    design: ['Adobe XD', 'Sketch', 'Figma', 'InVision', 'Photoshop', 'Illustrator'],
+    projectManagement: ['Jira', 'Trello', 'Asana', 'Confluence', 'Linear'],
+    devOps: ['Docker', 'AWS', 'Azure', 'GCP', 'Jenkins', 'GitHub Actions', 'GitLab CI/CD'],
+    qualityAssurance: ['Selenium', 'Jest', 'Mocha', 'Chai', 'Cypress', 'Postman', 'JMeter'],
+    database: ['SQL', 'NoSQL', 'PostgreSQL', 'MySQL', 'SQLite', 'MongoDB', 'Cassandra'],
+  };
+
+  const handleProjectChange = e => {
     const { name, value } = e.target;
-    if (name === "projectTitle") {
-      setProjectTitle(value);
-    } else if (name === "projectDesc") {
-      setProjectDesc(value);
-    } else if (name === "projectRolesNeeded") {
-      setProjectRolesNeeded(value);
-    } else if (name.startsWith("technologies")) {
-      const [, technologyKey] = name.split(".");
-      setTechnologies((prevTechnologies) => ({
-        ...prevTechnologies,
-        [technologyKey]: value,
-      }));
-    } else {
-      setSelectedFrontEnd(value);
-    }
+    setProjectData(prevData => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
-  
-
-  const handleAddFrontEnd = () => {
-    if (selectedFrontEnd.trim() !== "") {
-      setFrontEnd((prevFrontEnd) => [...prevFrontEnd, selectedFrontEnd]);
-      setFrontEndList((prevList) => prevList.filter((item) => item !== selectedFrontEnd));
-      setSelectedFrontEnd("");
-    }
+  const handleRoleChange = roleName => {
+    setProjectData(prevData => ({
+      ...prevData,
+      rolesNeeded: prevData.rolesNeeded.includes(roleName)
+        ? prevData.rolesNeeded.filter(role => role !== roleName)
+        : [...prevData.rolesNeeded, roleName],
+    }));
   };
 
-  const removeItem = (param) => {
-    setFrontEnd((prevFrontEnd) => prevFrontEnd.filter((item) => item !== param));
-    setFrontEndList((prevList) => [...prevList, param]);
+  const handleTechnologyChange = (e, techType) => {
+    const { value } = e.target;
+    setTechnologies(prevTech => ({
+      ...prevTech,
+      [techType]: value !== '' ? [...prevTech[techType], value] : prevTech[techType],
+    }));
   };
 
-  const handleSubmit = async (e) => {
+  const removeTechnology = (techType, technology) => {
+    setTechnologies(prevTech => ({
+      ...prevTech,
+      [techType]: prevTech[techType].filter(tech => tech !== technology),
+    }));
+  };
+
+  const handleSubmit = async e => {
     e.preventDefault();
 
+    const updatedTechnologies = { ...technologies };
+
+    for (const techType in updatedTechnologies) {
+      if (
+        updatedTechnologies.hasOwnProperty(techType) &&
+        updatedTechnologies[techType].length === 0
+      ) {
+        delete updatedTechnologies[techType];
+      }
+    }
     const updatedProject = {
-      title: projectTitle,
-      description: projectDesc,
-      rolesNeeded: projectRolesNeeded,
-      // frontEnd
+      ...projectData,
+      technologies: updatedTechnologies,
     };
 
     try {
@@ -65,12 +129,13 @@ const EditProject = ({ projectId, projectTitle: initialProjectTitle, projectDesc
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(updatedProject),
-        credentials: 'include' 
+        credentials: 'include',
       });
 
       if (response.ok) {
-        navigate(`/profile`);
-        } else {
+        closeModal();
+        navigate(`/projects/${projectId}`);
+      } else {
         throw new Error('Failed to update project');
       }
     } catch (error) {
@@ -84,44 +149,84 @@ const EditProject = ({ projectId, projectTitle: initialProjectTitle, projectDesc
       <form className="w-full h-[90%] py-6 flex flex-col" onSubmit={handleSubmit}>
         <div className="flex flex-row justify-center">
           <div className="w-[60%] flex flex-col">
-            <Input label="Project Title" name="projectTitle" className="text-gray" value={projectTitle} onChange={handleChange} />
+            <Input
+              label="Project Title"
+              name="title"
+              className="text-gray"
+              value={projectData.title}
+              onChange={handleProjectChange}
+            />
             <div className="mt-10">
-              <Textarea label="About Project" name="projectDesc" className="text-gray" value={projectDesc} onChange={handleChange} />
-            </div>
-            <div className="mt-10 pb-10 flex flex-row bg-black">
-              <select name="selectedFrontEnd" value={selectedFrontEnd} onChange={handleChange} className="bg-black z-10 text-white outline-none">
-                <option value="">Select a technology</option>
-                {frontEndList.map((item, index) => (
-                  <option value={item} key={index}>{item}</option>
-                ))}
-              </select>
-              <button type="button" onClick={handleAddFrontEnd} className="ml-2 px-4 py-1 bg-green text-white rounded-md">Add</button>
+              <Textarea
+                label="About Project"
+                name="description"
+                className="text-gray"
+                value={projectData.description}
+                onChange={handleProjectChange}
+              />
             </div>
             <div>
-              {frontEnd.map((item, index) => (
-                <div className="flex flex-row" key={index}>
-                  <div>{item}</div>
-                  <XCircleIcon onClick={() => removeItem(item)} strokeWidth="1" className="h-5 w-5 stroke-blue/50 hover:stroke-blue hover:cursor-pointer" />
+              <h2 className="text-blue mt-5">Select technologies:</h2>
+              {Object.entries(availableTechnologies).map(([techType, techList]) => (
+                <div key={techType} className="mt-3 flex flex-row bg-black">
+                  <select
+                    name={`selected${techType.charAt(0).toUpperCase() + techType.slice(1)}`}
+                    value={''}
+                    onChange={e => handleTechnologyChange(e, techType)}
+                    className="bg-black z-10 text-white outline-none"
+                  >
+                    <option value="">{techType}</option>
+                    {techList
+                      .filter(tech => !technologies[techType].includes(tech))
+                      .map((tech, index) => (
+                        <option value={tech} key={index}>
+                          {tech}
+                        </option>
+                      ))}
+                  </select>
                 </div>
               ))}
             </div>
-            <div>
-              <Textarea label="Roles needed" name="projectRolesNeeded" className="text-gray" value={projectRolesNeeded} onChange={handleChange} />
+            <div className="flex flex-row mt-2">
+              {Object.entries(technologies).map(([techType, techArray]) =>
+                techArray.map((tech, index) => (
+                  <div className="flex flex-row items-center mr-1" key={`${techType}-${index}`}>
+                    <div>{tech}</div>
+                    <XCircleIcon
+                      onClick={() => removeTechnology(techType, tech)}
+                      strokeWidth="1"
+                      className="h-5 w-5 stroke-blue/50 hover:stroke-blue hover:cursor-pointer ml-1"
+                    />
+                  </div>
+                )),
+              )}
+            </div>
+            <h2 className="text-blue mt-5">Select roles:</h2>
+            <div className="mt-2 pb-10 grid grid-cols-2">
+              {allRoles.map((role, index) => (
+                <label key={index} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    name={role}
+                    value={role}
+                    checked={projectData.rolesNeeded.includes(role)}
+                    onChange={() => handleRoleChange(role)}
+                    className="mr-2"
+                  />
+                  {role}
+                </label>
+              ))}
             </div>
           </div>
         </div>
         <div className="flex flex-row w-full justify-end items-end">
-          <button
-            variant="gradient"
-            color="green"
-            // onClick={""}
-            className="btn-primary text-black w-[30%] "
-          >Submit
+          <button variant="gradient" color="green" className="btn-primary text-black w-[30%] ">
+            Submit
           </button>
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
 export default EditProject;

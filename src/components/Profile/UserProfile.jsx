@@ -19,43 +19,40 @@ const Profile = () => {
   const [success, setSuccess] = useState('');
   const [profilePictureUrl, setProfilePictureUrl] = useState('');
   const [profileCoverPictureUrl, setProfileCoverPictureUrl] = useState('');
- 
 
-    const [screenSize, setScreenSize] = useState({
-      width: window.innerWidth,
-    });
+  const [screenSize, setScreenSize] = useState({
+    width: window.innerWidth,
+  });
 
-    const [coruselItems, setCoruselItems] = useState();
+  const [coruselItems, setCoruselItems] = useState();
 
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize({
+        width: window.innerWidth,
+      });
+    };
 
-    useEffect(() => {
-      const handleResize = () => {
-        setScreenSize({
-          width: window.innerWidth,
-        });
-      };
+    window.addEventListener('resize', handleResize);
 
-      window.addEventListener('resize', handleResize);
+    if (screenSize.width > 1700) {
+      setCoruselItems(5);
+    }
+    if (screenSize.width < 1700) {
+      setCoruselItems(4);
+    }
+    if (screenSize.width < 1480) {
+      setCoruselItems(3);
+    }
+    if (screenSize.width < 950) {
+      setCoruselItems(2);
+    }
 
-      if (screenSize.width > 1700){
-        setCoruselItems(5)
-      } 
-      if ( screenSize.width < 1700) {
-        setCoruselItems(4)
-      } 
-      if ( screenSize.width < 1480) {
-        setCoruselItems(3)
-      }
-      if ( screenSize.width < 950) {
-        setCoruselItems(2)
-      }
-  
-      // Clean up the event listener when the component unmounts
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-    }, [screenSize]);
-
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [screenSize]);
 
   useEffect(() => {
     const fetchUserProfileData = async () => {
@@ -87,7 +84,6 @@ const Profile = () => {
     }
   };
 
-
   if (!profile) {
     return <div>Loading...</div>;
   }
@@ -99,7 +95,6 @@ const Profile = () => {
     slidesToShow: coruselItems,
     slidesToScroll: 1,
   };
-  
 
   const imageButton = () => {
     return (
@@ -117,16 +112,16 @@ const Profile = () => {
 
   const coverImageButton = () => {
     return (
-      <Tooltip content="Upload Image"  className="bg-blue/10" placement="right-end">
-        <div className="w-full" >  
+      <Tooltip content="Upload Image" className="bg-blue/10" placement="right-end">
+        <div className="w-full">
           <img
             src={profile.profile.profileCoverPictureUrl}
             alt="profile cover picture "
-            className="object-cover h-64  w-[100vw] border-1 border-transparent rounded-t-2xl  object-center hover:cursor-pointer hover:opacity-80" />
-            {/* <div className="absolute inset-0 pt-100 bg-transparent object-cover h-64  w-[100vw] border-1 border-transparent rounded-t-2xl  object-center
+            className="object-cover h-64  w-[100vw] border-1 border-transparent rounded-t-2xl  object-center hover:cursor-pointer hover:opacity-80"
+          />
+          {/* <div className="absolute inset-0 pt-100 bg-transparent object-cover h-64  w-[100vw] border-1 border-transparent rounded-t-2xl  object-center
             hover:bg-black/30"></div> */}
         </div>
-        
       </Tooltip>
     );
   };
@@ -134,30 +129,30 @@ const Profile = () => {
   return (
     <div className="contanier-primary flex flex-col text-gray xl:px-60 pb-10">
       <div className="flex flex-col w-full border border-transparent rounded-lg bg-gray/5">
-      <Modal
-        buttonClassName={''}
-        openModalButton={coverImageButton()}
-        modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={true}/>}
-      />{' '}
-        <div className="px-8 pb-4 pt-4 w-[100vw]">
         <Modal
-              buttonClassName={''}
-              openModalButton={imageButton()}
-              modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={false}/>}
-            />{' '}
+          buttonClassName={''}
+          openModalButton={coverImageButton()}
+          modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={true} />}
+        />{' '}
+        <div className="px-8 pb-4 pt-4 w-[100vw]">
+          <Modal
+            buttonClassName={''}
+            openModalButton={imageButton()}
+            modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={false} />}
+          />{' '}
           <div className="flex flex-row w-[100vw] pt-4">
             <div className="flex flex-col w-full">
               <div className="text-2xl font-bold  pb-1">
                 {profile.profile.firstName + ' ' + profile.profile.lastName}{' '}
               </div>
               {/* <div className="font-sans font-extralight text-sm text-blue italic pb-2">{profile.profile.title} </div> */}
-               <div className="w-full mt-2">
-              <Modal
-                buttonClassName={''}
-                openModalButton={<EditIcon openModalButtonText={"Edit Profile"} />}
-                modalBody={<EditProfile profileData={profile} onSave={handleProfileUpdate} />}
-              />
-              {/* <div className="font-sans font-extralight text-xs italic pb-2 pr-2">
+              <div className="w-full mt-2">
+                <Modal
+                  buttonClassName={''}
+                  openModalButton={<EditIcon openModalButtonText={'Edit Profile'} />}
+                  modalBody={<EditProfile profileData={profile} onSave={handleProfileUpdate} />}
+                />
+                {/* <div className="font-sans font-extralight text-xs italic pb-2 pr-2">
                 Looking for:{' '}
               </div>
               <div className="flex flex-row items-end">
@@ -168,7 +163,7 @@ const Profile = () => {
                   {profile.profile.lookingFor[1]}{' '}
                 </div>
               </div> */}
-            </div>
+              </div>
             </div>
           </div>
         </div>
@@ -184,9 +179,19 @@ const Profile = () => {
         </div>
         <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5">
           <h3 className="text-lg text-green/80">Contacts:</h3>
-          <p>LinkedIn: <a href={profile.profile.contacts.linkedIn}>{profile.profile.contacts.linkedIn}</a></p>
-          <p>GitHub: <a href={profile.profile.contacts.github}>{profile.profile.contacts.github}</a></p>
-          <p>Portfolio Website: <a href={profile.profile.contacts.portfolioWebsite}>{profile.profile.contacts.portfolioWebsite}</a></p>
+          <p>
+            LinkedIn:{' '}
+            <a href={profile.profile.contacts.linkedIn}>{profile.profile.contacts.linkedIn}</a>
+          </p>
+          <p>
+            GitHub: <a href={profile.profile.contacts.github}>{profile.profile.contacts.github}</a>
+          </p>
+          <p>
+            Portfolio Website:{' '}
+            <a href={profile.profile.contacts.portfolioWebsite}>
+              {profile.profile.contacts.portfolioWebsite}
+            </a>
+          </p>
         </div>
         <div className="mt-4 mb-1 py-4 px-8 border border-transparent rounded-lg bg-gray/5">
           <div className="flex flex-row w-full justify-between">
@@ -201,7 +206,7 @@ const Profile = () => {
             </div>
           </div>
           <div className="mt-4">
-            <Slider {...settings} {... settings.slideshow=1}>
+            <Slider {...settings} {...(settings.slideshow = 1)}>
               {profile.profile.ownProjects.map((project, index) => (
                 <div key={index} className="flex justify-center">
                   <div className="mx-6">
@@ -217,6 +222,7 @@ const Profile = () => {
                         projectPictureUrl: project.projectPictureUrl,
                         projectCoverPictureUrl: project.projectCoverPictureUrl,
                         participants: project.participants,
+                        likeCount: project.likeCount,
                       }}
                       profile={profile}
                     />
@@ -234,18 +240,17 @@ const Profile = () => {
       </div>
       <div className="mt-4 mb-1 py-4 px-8 border border-transparent rounded-lg bg-gray/5">
         <h3 className="text-lg text-green/80">Projects you participate in:</h3>
-        
+
         <div className="py-4 flex flex-row"></div>
         <div className="mx-6">
-  {profile.profile.participatingProjects.map((project, index) => {
-    return (
-      <div key={index} className="flex justify-center">
-        {project.project} {project.role}
-        
-      </div>
-    );
-  })}
-</div>
+          {profile.profile.participatingProjects.map((project, index) => {
+            return (
+              <div key={index} className="flex justify-center">
+                {project.project} {project.role}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
