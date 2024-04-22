@@ -96,6 +96,10 @@ const Profile = () => {
     slidesToScroll: 1,
   };
 
+  const handleModalClose = () => {
+    window.location.reload();
+  };
+
   const imageButton = () => {
     return (
       <Tooltip content="Upload Image" className="bg-blue/10" placement="right-end">
@@ -150,7 +154,7 @@ const Profile = () => {
                 <Modal
                   buttonClassName={''}
                   openModalButton={<EditIcon openModalButtonText={'Edit Profile'} />}
-                  modalBody={<EditProfile profileData={profile} onSave={handleProfileUpdate} />}
+                  modalBody={<EditProfile profileData={profile} onSave={handleProfileUpdate} closeModal={handleModalClose}/>}
                 />
                 {/* <div className="font-sans font-extralight text-xs italic pb-2 pr-2">
                 Looking for:{' '}
@@ -179,19 +183,26 @@ const Profile = () => {
         </div>
         <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5">
           <h3 className="text-lg text-green/80">Contacts:</h3>
-          <p>
-            LinkedIn:{' '}
-            <a href={profile.profile.contacts.linkedIn}>{profile.profile.contacts.linkedIn}</a>
-          </p>
-          <p>
-            GitHub: <a href={profile.profile.contacts.github}>{profile.profile.contacts.github}</a>
-          </p>
-          <p>
-            Portfolio Website:{' '}
-            <a href={profile.profile.contacts.portfolioWebsite}>
-              {profile.profile.contacts.portfolioWebsite}
-            </a>
-          </p>
+          {profile.profile.contacts.linkedIn && (
+            <p>
+              LinkedIn:{' '}
+              <a href={profile.profile.contacts.linkedIn}>{profile.profile.contacts.linkedIn}</a>
+            </p>
+          )}
+          {profile.profile.contacts.github && (
+            <p>
+              GitHub:{' '}
+              <a href={profile.profile.contacts.github}>{profile.profile.contacts.github}</a>
+            </p>
+          )}
+          {profile.profile.contacts.portfolioWebsite && (
+            <p>
+              Portfolio Website:{' '}
+              <a href={profile.profile.contacts.portfolioWebsite}>
+                {profile.profile.contacts.portfolioWebsite}
+              </a>
+            </p>
+          )}
         </div>
         <div className="mt-4 mb-1 py-4 px-8 border border-transparent rounded-lg bg-gray/5">
           <div className="flex flex-row w-full justify-between">
