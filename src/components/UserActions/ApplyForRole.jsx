@@ -92,7 +92,7 @@ const ApplyForRole = () => {
   };
 
   return (
-    <div className="flex justify-center mt-8">
+    <div className="flex justify-center mt-8 min-h-[80vh]">
       {loading ? (
         <div>Loading...</div>
       ) : (

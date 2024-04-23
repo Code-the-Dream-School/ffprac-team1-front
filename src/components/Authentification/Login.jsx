@@ -57,7 +57,8 @@ const Login = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto">
+    <div className="max-w-md mx-auto min-h-[83vh]">
+      <div className="text-2xl text-center text-green/80 pb-10 pt-[30%] xl:pt-[50%]">Sign In</div>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <input
@@ -85,7 +86,7 @@ const Login = () => {
         {errors.form && <div className="text-red-500">{errors.form}</div>}
         <h6 className="text-center">
           Don't have an account? 
-          <span className="font-bold text-blue underline hover:cursor-pointer" onClick={openRegistrationModal}>
+          <span className="font-bold text-blue underline hover:cursor-pointer pl-2" onClick={openRegistrationModal}>
             Sign Up
           </span>
         </h6>
