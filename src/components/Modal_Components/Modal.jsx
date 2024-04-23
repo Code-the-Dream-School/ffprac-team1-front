@@ -26,15 +26,10 @@ const Modal = ({ openModalButton, modalBody, buttonClassName }) =>  {
         handler={handleOpen}
         className="border border-black rounded-3xl bg-black h-[96%]"
       >
-        <div className=" h-full bg-black border border-blue/30 rounded-2xl px-8 pt-8 pb-4">
-          <button
-              variant="text"
-              color="red"
-              onClick={() => handleOpen(null)}
-              className="btn-secondary text-black w-[15%] mr-8"
-            >
-              <span>Cancel</span>
-            </button>
+        <div className=" h-full bg-black border border-blue/30 rounded-2xl px-8 pt-8 pb-4 ">
+          <div className="text-right pb-2">
+              <i className="fas fa-xmark fa-xl text-green/70 pr-2 hover:text-blue/60 hover:cursor-pointer"  onClick={() => handleOpen(null)}/>
+            </div>
           <DialogBody>
             { modalBody }
           </DialogBody>
