@@ -37,8 +37,8 @@ const SearchResults = ({profile}) => {
   }, [search]);
 
   return (
-    <div className="m-5">
-      <Search className="w-2/4 mx-auto block" centered />
+    <div className="m-5 md:contanier-primary md:mx-36 min-h-[78vh]">
+      <Search className="lg:w-2/4 mx-auto block" centered />
       {search ? (
         <h2 className="pt-[6vh] pb-[10vh]">Search Results: {search}</h2>
       ) : (

@@ -34,7 +34,7 @@ const ProjectCard = ({ project, profile }) => {
     );
   };
   return (
-    <Card className="max-w-[13rem] min-w-[13rem] overflow-hidden bg-gray/10 rounded-xl border border-transparent hover:border-blue/30 mb-6 mr-8 p-4">
+    <Card className="max-w-[13rem] min-w-[13rem] overflow-hidden bg-gray/10 rounded-xl border border-transparent hover:border-blue/30 mb-6 mr-8 p-4 min-h-[330px]">
       <Link to={`/projects/${_id}`} 
       state={{ 
         projectId: _id, 
