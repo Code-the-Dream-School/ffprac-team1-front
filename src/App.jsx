@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './components/Layout/LandingPage.jsx';
 import Nav from './components/Layout/Nav.jsx';
 import Footer from './components/Layout/Footer.jsx';
+import AboutPage from './components/Layout/AboutPage.jsx';
 import Login from './components/Authentification/Login.jsx';
 import Register from './components/Authentification/Registration.jsx';
 import Profile from './components/Profile/UserProfile.jsx';
@@ -26,6 +27,7 @@ function App() {
         <Nav />
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/about" element={<AboutPage/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/search" element={<Search />} />
