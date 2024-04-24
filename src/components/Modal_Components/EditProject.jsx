@@ -144,19 +144,29 @@ const EditProject = ({
   };
 
   return (
-    <div className="h-fit overflow-scrolling">
+    <div className="max-h-[700px] overflow-y-auto">
       <header className="text-center text-xl pb-6 font-bold text-green"> Edit your project</header>
       <form className="w-full h-[90%] py-6 flex flex-col" onSubmit={handleSubmit}>
         <div className="flex flex-row justify-center">
           <div className="w-[60%] flex flex-col">
-            <Input
+            {/* <Input
               label="Project Title"
               name="title"
               className="text-gray"
               value={projectData.title}
               onChange={handleProjectChange}
-            />
-            <div className="mt-10">
+            /> */}
+
+            <label className="text-lg text-green/85">Project Title</label>
+              <input
+                type="text"
+                name="Project Name"
+                placeholder=""
+                value={projectData.title}
+                onChange={handleProjectChange}
+                className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent modal-input"
+              />
+            {/* <div className="mt-10">
               <Textarea
                 label="About Project"
                 name="description"
@@ -164,18 +174,27 @@ const EditProject = ({
                 value={projectData.description}
                 onChange={handleProjectChange}
               />
-            </div>
+            </div> */}
+
+            <label className="text-lg text-green/85">About Project</label>
+              <textarea
+                name="About Project"
+                value={projectData.description}
+                onChange={handleProjectChange}
+                className="w-full min-h-fit bg-gray/5 text-white/80 p-4 rounded border border-transparent modal-input"
+              />
+
             <div>
-              <h2 className="text-blue mt-5">Select technologies:</h2>
+              <h2 className="ext-lg text-green/85 mt-5">Select technologies:</h2>
               {Object.entries(availableTechnologies).map(([techType, techList]) => (
                 <div key={techType} className="mt-3 flex flex-row bg-black">
                   <select
                     name={`selected${techType.charAt(0).toUpperCase() + techType.slice(1)}`}
                     value={''}
                     onChange={e => handleTechnologyChange(e, techType)}
-                    className="bg-black z-10 text-white outline-none"
+                    className="bg-black z-10 text-white outline-none "
                   >
-                    <option value="">{techType}</option>
+                    <option value="" className="bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">{techType}</option>
                     {techList
                       .filter(tech => !technologies[techType].includes(tech))
                       .map((tech, index) => (
@@ -187,7 +206,7 @@ const EditProject = ({
                 </div>
               ))}
             </div>
-            <div className="flex flex-row mt-2">
+            <div className="flex flex-row mt-8 mb-4 flex-wrap">
               {Object.entries(technologies).map(([techType, techArray]) =>
                 techArray.map((tech, index) => (
                   <div className="flex flex-row items-center mr-1" key={`${techType}-${index}`}>
@@ -201,7 +220,7 @@ const EditProject = ({
                 )),
               )}
             </div>
-            <h2 className="text-blue mt-5">Select roles:</h2>
+            <h2 className="ext-lg text-green/85 mt-5">Select roles:</h2>
             <div className="mt-2 pb-10 grid grid-cols-2">
               {allRoles.map((role, index) => (
                 <label key={index} className="flex items-center">
@@ -211,7 +230,7 @@ const EditProject = ({
                     value={role}
                     checked={projectData.rolesNeeded.includes(role)}
                     onChange={() => handleRoleChange(role)}
-                    className="mr-2"
+                    className="mr-2 h-4 w-4 cursor-pointer checkbox border-blue/60 checked:border-greenDark [--chkbg:theme(colors.greenDark)] [--chkfg:black]"
                   />
                   {role}
                 </label>
@@ -219,7 +238,10 @@ const EditProject = ({
             </div>
           </div>
         </div>
-        <div className="flex flex-row w-full justify-end items-end">
+
+        
+
+        <div className="flex flex-row w-full justify-center items-center pt-8">
           <button variant="gradient" color="green" className="btn-primary text-black w-[30%] ">
             Submit
           </button>
