@@ -116,7 +116,7 @@ import axios from "axios";
               </div> */}
               <div className=" mt-6 pb-10 flex flex-row bg-black">
                 <select label="Roles Needed" value={rolesNeededList.toString()} onChange={handleSelectChange} 
-                className="w-full bg-gray/5 p-2 border border-transparent focus:outline-none focus:border-blue/40">
+                className="w-full bg-gray/5 p-2 border border-transparent focus:outline-none focus:border-blue/40 rounded border border-transparent">
                   {rolesNeededList.map((item, index) => (
                     <option value={item} key={index}  className="bg-black h-full w-full z-10">{item}</option>
                   ))}
