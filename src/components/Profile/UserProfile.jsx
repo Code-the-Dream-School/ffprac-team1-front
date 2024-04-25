@@ -6,7 +6,7 @@ import Modal from '../Modal_Components/Modal.jsx';
 import CreateProject from '../Modal_Components/CreateProject.jsx';
 import EditIcon from '../Modal_Components/EditIcon.jsx';
 import EditProfile from '../Profile/EditProfile.jsx';
-import { fetchUserProfile } from '../../util/fetchData';
+import { fetchUserProfile, fetchProject } from '../../util/fetchData';
 import Slider from 'react-slick';
 import UploadProfileImage from '../Modal_Components/UploadProfileImages.jsx';
 import 'slick-carousel/slick/slick.css';
@@ -19,6 +19,7 @@ const Profile = () => {
   const [success, setSuccess] = useState('');
   const [profilePictureUrl, setProfilePictureUrl] = useState('');
   const [profileCoverPictureUrl, setProfileCoverPictureUrl] = useState('');
+  const [participatingProjectsList, setParticipatingProjectsList] = useState(null);
 
   const [screenSize, setScreenSize] = useState({
     width: window.innerWidth,
@@ -62,6 +63,26 @@ const Profile = () => {
         setError('');
         setProfilePictureUrl(userProfile.profilePictureUrl);
         setProfileCoverPictureUrl(userProfile.profileCoverPictureUrl);
+
+        let participatingProjectsData = [];
+
+        if (
+          userProfile.profile.participatingProjects &&
+          userProfile.profile.participatingProjects.length > 0
+        ) {
+          for (const participatingProject of userProfile.profile.participatingProjects) {
+            // console.log('Fetching project:', participatingProject.project);
+            const project = await fetchProject(participatingProject.project);
+            // console.log('Fetched project:', project.project.title);
+            participatingProjectsData.push({
+              title: project.project.title,
+              role: participatingProject.role,
+            });
+          }
+          setParticipatingProjectsList(participatingProjectsData);
+        } else {
+          setParticipatingProjectsList([{ title: 'No participating projects found.', role: '' }]);
+        }
       } catch (error) {
         console.error('Error fetching user profile:', error);
         setError('The profile is unavailable. Try again later please');
@@ -154,7 +175,13 @@ const Profile = () => {
                 <Modal
                   buttonClassName={''}
                   openModalButton={<EditIcon openModalButtonText={'Edit Profile'} />}
-                  modalBody={<EditProfile profileData={profile} onSave={handleProfileUpdate} closeModal={handleModalClose}/>}
+                  modalBody={
+                    <EditProfile
+                      profileData={profile}
+                      onSave={handleProfileUpdate}
+                      closeModal={handleModalClose}
+                    />
+                  }
                 />
                 {/* <div className="font-sans font-extralight text-xs italic pb-2 pr-2">
                 Looking for:{' '}
@@ -254,13 +281,12 @@ const Profile = () => {
 
         <div className="py-4 flex flex-row"></div>
         <div className="mx-6">
-          {profile.profile.participatingProjects.map((project, index) => {
-            return (
+          {participatingProjectsList &&
+            participatingProjectsList.map((project, index) => (
               <div key={index} className="flex justify-center">
-                {project.project} {project.role}
+               - {project.title} - {project.role} 
               </div>
-            );
-          })}
+            ))}
         </div>
       </div>
     </div>
