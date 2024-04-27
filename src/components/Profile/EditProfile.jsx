@@ -92,78 +92,78 @@ const EditProfile = ({ profileData, onSave, closeModal }) => {
   };
   return (
     <div className="max-h-[700px] overflow-y-auto p-4 rounded-lg">
-    <form onSubmit={handleSubmit} className="p-4 rounded-lg ">
+    <form onSubmit={handleSubmit} className="px-4 rounded-lg ">
       <div className="space-y-6">
-        <h1 className="pb-10 text-xl text-white/85">Edit your profile</h1>
+        <h1 className="pb-10 text-xl font-bold text-green/85 text-center">Edit your profile</h1>
         {error && <div className="text-red-500">{error}</div>}
         {success && <div className="text-green/85">{success}</div>}
-        <label className="pb-4 text-xl text-green/85">First Name</label>
+        <label className="text-lg text-green/85">First Name</label>
         <input
           type="text"
           name="firstName"
           value={profile.firstName}
           onChange={handleChange}
-          className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent"
+          className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent modal-input"
         />
-        <label className="pb-4 text-xl text-green/85">Last Name</label>
+        <label className="text-lg text-green/85 mt-4">Last Name</label>
         <input
           type="text"
           name="lastName"
           value={profile.lastName}
           onChange={handleChange}
-          className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent"
+          className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent modal-input"
         />
-        <label className="pb-4 text-xl text-green/85">About</label>
+        <label className="text-lg text-green/85">About</label>
         <textarea
           name="about"
           value={profile.about}
           onChange={handleChange}
-          className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent"
+          className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent modal-input"
         />
-        <label className="pb-4 text-xl text-green/85">What can I bring to the table?</label>
+        <label className="pb-4 text-lg text-green/85">What can I bring to the table?</label>
         <textarea
           name="offer"
           value={profile.offer}
           onChange={handleChange}
-          className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent"
+          className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent modal-input"
         />
-        <div className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent">
-          <h2 className="bg-green-600 text-xl text-green/85">Contacts</h2>
+        <div className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent modal-input">
+          <h2 className="bg-green-600 text-lg text-green/85">Contacts</h2>
             <p className="text-sm text-white/30">Please enter URLs in the following format:</p>
             <div className="space-y-4 bg-gray/700 p-3 rounded">
-              <label className="text-green/85">LinkedIn</label>
+              <label className="text-lg text-green/85">LinkedIn</label>
               <input
                 type="text"
                 name="contacts.linkedIn"
                 placeholder="http://www.linkedin.com/in/yourusername"
                 value={profile.contacts.linkedIn}
                 onChange={handleChange}
-                className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent"
+                className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent modal-input"
               />
-              <label className="text-green/85">GitHub</label>
+              <label className="text-lg text-green/85">GitHub</label>
               <input
                 type="text"
                 name="contacts.github"
                 placeholder="http://github.com/yourusername"
                 value={profile.contacts.github}
                 onChange={handleChange}
-                className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent"
+                className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent modal-input"
               />
-              <label className="text-green/85">Portfolio Website</label>
+              <label className="text-lg text-green/85">Portfolio Website</label>
               <input
                 type="text"
                 name="contacts.portfolioWebsite"
                 placeholder="http://yourwebsite.com"
                 value={profile.contacts.portfolioWebsite}
                 onChange={handleChange}
-                className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent"
+                className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent modal-input"
               />
             </div>
           </div>
         <div className="flex justify-center pt-4 ">
             <button
               type="submit"
-              className="text-white btn-secondary text-black w-[15%] mr-8"
+              className="btn-primary text-black w-[25%] mr-8"
             >
               Save Changes
             </button>

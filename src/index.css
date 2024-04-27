@@ -20,6 +20,9 @@
   .search-area {
     @apply w-full rounded-md pt-0.5 pl-4 pb-0.5 border-2 ring-2 ring-blue text-black focus:outline-none focus:ring-2 focus:ring-blue  focus:border-transparent;
   }
+  .modal-input{
+    @apply !mt-2 !mb-4 focus:outline-none focus:border-blue/40;
+  }
 }
 
 @layer base {
@@ -36,7 +39,20 @@ body {
   height: 100vh;
 }
 
-.overflow-scrolling {
+/* .overflow-scrolling {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
-}
+} */
+
+::-webkit-scrollbar {
+
+  width: 7px;
+  height: 10px;
+  background-color: #d4ff9d,
+  
+  }
+  
+  ::-webkit-scrollbar-thumb {
+  background-color: rgb(143, 214, 232, 0.1);
+  border-radius: 10px;
+  }
