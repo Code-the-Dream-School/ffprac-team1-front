@@ -31,9 +31,6 @@ const Nav = () => {
       {!isLoggedIn ? (
           <>
             <div className="pr-4">
-              <Link to="/About">About</Link>
-            </div>
-            <div className="pr-4">
               <Link to="/register">Join Now</Link>
             </div>
             <div className="pr-4">
