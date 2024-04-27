@@ -40,9 +40,6 @@ const Nav = () => {
         ) : (
           <>
             <div className="pr-4">
-              <Link to="/About">About</Link>
-            </div>
-            <div className="pr-4">
               <Link to="/projects-list">Browse projects</Link>
             </div>
             {/* <div className="pr-4">

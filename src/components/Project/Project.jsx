@@ -28,6 +28,7 @@ const Project = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        if (!isLoggedIn) return;
         const projectData = await fetchProject(projectId);
         setProject(projectData);
         setLikes(projectData.project.likeCount);
@@ -37,7 +38,7 @@ const Project = () => {
     };
 
     fetchData();
-  }, [projectId]);
+  }, [projectId, isLoggedIn]);
 
   useEffect(() => {
     const fetchUserProfileData = async () => {
@@ -52,7 +53,7 @@ const Project = () => {
     };
 
     fetchUserProfileData();
-  }, []);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const fetchParticipantsData = async () => {
