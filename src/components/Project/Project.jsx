@@ -24,7 +24,7 @@ const Project = () => {
   const [creatorLastName, setCreatorLastName] = useState('');
   const [creatorProfilePictureUrl, setCreatorProfilePictureUrl] = useState('');
   const [error, setError] = useState(null);
-  const isCurrentUserProject = 
+  const isCurrentUserProject =
     profile && project && profile.profile._id === project.project.createdBy;
 
   useEffect(() => {
@@ -178,10 +178,36 @@ const Project = () => {
           <div className="pl-4">
             <header>{`${participant.firstName} ${participant.lastName}`}</header>
             <p className="font-sans font-extralight italic text-[11px] text-blue">{role}</p>
+            {isCurrentUserProject && (
+              <IconButton
+                onClick={() => removeParticipant(participant._id)}
+                size="sm"
+                color="blue"
+                className="ml-2"
+              >
+                <i className="fas fa-trash"></i>
+              </IconButton>
+            )}
           </div>
         </div>
       );
     });
+  };
+
+  const removeParticipant = async participantId => {
+    try {
+      await axios.delete(
+        `http://localhost:8000/api/v1/projects/${projectId}/participants/${participantId}`,
+        {
+          withCredentials: true,
+        },
+      );
+      setParticipantsData(
+        participantsData.filter(participant => participant._id !== participantId),
+      );
+    } catch (error) {
+      console.error('Ошибка при удалении участника:', error);
+    }
   };
 
   const handleModalClose = () => {
@@ -192,27 +218,27 @@ const Project = () => {
     <div className="container-primary xl:px-60 flex flex-col text-gray">
       {project && (
         <>
-        {isCurrentUserProject ? (
-                  <Modal
-                    buttonClassName={'pl-4'}
-                    openModalButton={coverImageButton()}
-                    modalBody={
-                      <UploadImage
-                        projectId={projectId}
-                        isCoverImage={false}
-                        closeModal={handleModalClose}
-                      />
-                    }
-                  />
-                ) : (
-                  <div className="w-full">
-                    <img
-            src={project.project.projectCoverPictureUrl}
-            alt="project img"
-            className="object-cover  w-[100vw] h-64  rounded-t-2xl  object-center hover:cursor-pointer hover:opacity-80"
-          />
-                  </div>
-                )}
+          {isCurrentUserProject ? (
+            <Modal
+              buttonClassName={'pl-4'}
+              openModalButton={coverImageButton()}
+              modalBody={
+                <UploadImage
+                  projectId={projectId}
+                  isCoverImage={false}
+                  closeModal={handleModalClose}
+                />
+              }
+            />
+          ) : (
+            <div className="w-full">
+              <img
+                src={project.project.projectCoverPictureUrl}
+                alt="project img"
+                className="object-cover  w-[100vw] h-64  rounded-t-2xl  object-center hover:cursor-pointer hover:opacity-80"
+              />
+            </div>
+          )}
           <div className="pt-10">
             <div className="flex flex-row">
               <div className="flex flex-col w-1/2">
