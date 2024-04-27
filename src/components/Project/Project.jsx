@@ -24,11 +24,12 @@ const Project = () => {
   const [creatorLastName, setCreatorLastName] = useState('');
   const [creatorProfilePictureUrl, setCreatorProfilePictureUrl] = useState('');
   const [error, setError] = useState(null);
+  const isCurrentUserProject = 
+    profile && project && profile.profile._id === project.project.createdBy;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!isLoggedIn) return;
         const projectData = await fetchProject(projectId);
         setProject(projectData);
         setLikes(projectData.project.likeCount);
@@ -38,7 +39,7 @@ const Project = () => {
     };
 
     fetchData();
-  }, [projectId, isLoggedIn]);
+  }, [projectId]);
 
   useEffect(() => {
     const fetchUserProfileData = async () => {
@@ -186,37 +187,59 @@ const Project = () => {
   const handleModalClose = () => {
     window.location.reload();
   };
-  
+
   return (
     <div className="container-primary xl:px-60 flex flex-col text-gray">
       {project && (
         <>
-          <Modal
-            buttonClassName={''}
-            openModalButton={coverImageButton()}
-            modalBody={
-              <UploadImage
-                projectId={projectId}
-                isCoverImage={true}
-                closeModal={handleModalClose}
-              />
-            }
+        {isCurrentUserProject ? (
+                  <Modal
+                    buttonClassName={'pl-4'}
+                    openModalButton={coverImageButton()}
+                    modalBody={
+                      <UploadImage
+                        projectId={projectId}
+                        isCoverImage={false}
+                        closeModal={handleModalClose}
+                      />
+                    }
+                  />
+                ) : (
+                  <div className="w-full">
+                    <img
+            src={project.project.projectCoverPictureUrl}
+            alt="project img"
+            className="object-cover  w-[100vw] h-64  rounded-t-2xl  object-center hover:cursor-pointer hover:opacity-80"
           />
+                  </div>
+                )}
           <div className="pt-10">
             <div className="flex flex-row">
               <div className="flex flex-col w-1/2">
                 <div className="text-2xl font-medium pb-4 pl-4">{project.project.title}</div>
-                <Modal
-                  buttonClassName={'pl-4'}
-                  openModalButton={imageButton()}
-                  modalBody={
-                    <UploadImage
-                      projectId={projectId}
-                      isCoverImage={false}
-                      closeModal={handleModalClose}
+                {isCurrentUserProject ? (
+                  <Modal
+                    buttonClassName={'pl-4'}
+                    openModalButton={imageButton()}
+                    modalBody={
+                      <UploadImage
+                        projectId={projectId}
+                        isCoverImage={false}
+                        closeModal={handleModalClose}
+                      />
+                    }
+                  />
+                ) : (
+                  <div className="w-full">
+                    <img
+                      size="sm"
+                      variant="circular"
+                      alt="project logo"
+                      src={project.project.projectPictureUrl}
+                      className="border-4 border-blue/50 h-36 w-36 rounded-full bject-cover object-center hover:cursor-pointer hover:border-green"
                     />
-                  }
-                />
+                  </div>
+                )}
               </div>
               <div className="flex flex-col w-1/2 items-end">
                 <div className="flex items-center justify-between mt-7 sm:mr-8 md:mr-4">
@@ -243,7 +266,7 @@ const Project = () => {
                       className=" rounded-lg bg-blue mr-4 text-black"
                       onClick={handleLoginPrompt}
                     >
-                      <i className="fas fa-heart fa-xl" />
+                      <i className="fas fa-heart fa-xl text-black" />
                       <p className="text-black">{likes}</p>
                     </IconButton>
                   )}
