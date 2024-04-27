@@ -244,30 +244,32 @@ const Profile = () => {
             </div>
           </div>
           <div className="mt-4">
-            <Slider {...settings} {...(settings.slideshow = 1)}>
-              {profile.profile.ownProjects.map((project, index) => (
-                <div key={index} className="flex justify-center">
-                  <div className="mx-6">
-                    <ProjectCard
-                      project={{
-                        _id: project._id,
-                        title: project.title,
-                        status: project.status,
-                        description: project.description,
-                        technologies: project.technologies,
-                        rolesNeeded: project.rolesNeeded,
-                        createdBy: profile.profile._id,
-                        projectPictureUrl: project.projectPictureUrl,
-                        projectCoverPictureUrl: project.projectCoverPictureUrl,
-                        participants: project.participants,
-                        likeCount: project.likeCount,
-                      }}
-                      profile={profile}
-                    />
+            {profile.profile.ownProjects.length > 0 && (
+              <Slider {...settings} {...(settings.slideshow = 1)}>
+                {profile.profile.ownProjects.map((project, index) => (
+                  <div key={index} className="flex justify-center">
+                    <div className="mx-6">
+                      <ProjectCard
+                        project={{
+                          _id: project._id,
+                          title: project.title,
+                          status: project.status,
+                          description: project.description,
+                          technologies: project.technologies,
+                          rolesNeeded: project.rolesNeeded,
+                          createdBy: profile.profile._id,
+                          projectPictureUrl: project.projectPictureUrl,
+                          projectCoverPictureUrl: project.projectCoverPictureUrl,
+                          participants: project.participants,
+                          likeCount: project.likeCount,
+                        }}
+                        profile={profile}
+                      />
+                    </div>
                   </div>
-                </div>
-              ))}
-            </Slider>
+                ))}
+              </Slider>
+            )}
           </div>
           {/* <div className="py-4 flex flex-row">
             < ProjectCard /> */}
@@ -284,7 +286,7 @@ const Profile = () => {
           {participatingProjectsList &&
             participatingProjectsList.map((project, index) => (
               <div key={index} className="flex justify-center">
-               - {project.title} - {project.role} 
+                - {project.title} - {project.role}
               </div>
             ))}
         </div>
