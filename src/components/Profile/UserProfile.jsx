@@ -53,6 +53,7 @@ const Profile = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, [screenSize]);
+  
   useEffect(() => {
     const fetchUserProfileData = async () => {
       try {
@@ -121,10 +122,6 @@ const Profile = () => {
     slidesToScroll: 4,
   };
 
-  const handleModalClose = () => {
-    window.location.reload();
-  };
-
   const imageButton = () => {
     return (
       <Tooltip content="Upload Image" className="bg-blue/10" placement="right-end">
@@ -155,19 +152,25 @@ const Profile = () => {
     );
   };
 
+  const handleModalClose = () => {
+    window.location.reload();
+  };
+
   return (
     <div className="contanier-primary flex flex-col text-gray xl:px-60 pb-10">
       <div className="flex flex-col w-full border border-transparent rounded-lg bg-gray/5">
         <Modal
           buttonClassName={''}
           openModalButton={coverImageButton()}
-          modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={true} />}
+          modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={true} closeModal={handleModalClose}
+          />}
         />{' '}
         <div className="px-8 pb-4 pt-4 w-[100vw]">
           <Modal
             buttonClassName={''}
             openModalButton={imageButton()}
-            modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={false} />}
+            modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={false} closeModal={handleModalClose}
+            />}
           />{' '}
           <div className="flex flex-row w-[100vw] pt-4">
             <div className="flex flex-col w-full">

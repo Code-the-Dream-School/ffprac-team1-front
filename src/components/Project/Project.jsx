@@ -24,8 +24,7 @@ const Project = () => {
   const [creatorLastName, setCreatorLastName] = useState('');
   const [creatorProfilePictureUrl, setCreatorProfilePictureUrl] = useState('');
   const [error, setError] = useState(null);
-  const isCurrentUserProject =
-    profile && project && profile.profile._id === project.project.createdBy;
+  const isCurrentUserProject = profile && project && profile.profile._id === project.project.createdBy;
   const [participants, setParticipants] = useState('');
   const [isUserParticipant, setIsUserParticipant] = useState('');
 

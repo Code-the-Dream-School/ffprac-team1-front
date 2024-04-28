@@ -1,8 +1,8 @@
 import React from 'react';
 import profileImageUpload from './profileImageUpload';
 
-const UploadProfileImage = ({ profileId, isCoverImage}) => {
-  const { file, handleChange, handleSubmit } = profileImageUpload(profileId, isCoverImage);
+const UploadProfileImage = ({ profileId, isCoverImage, closeModal }) => {
+  const { file, handleChange, handleSubmit } = profileImageUpload(profileId, isCoverImage, closeModal);
 
   return (
     <>

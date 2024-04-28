@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-const profileImageUpload = (profileId, isCover = false) => {
+const profileImageUpload = (profileId, isCover = false, closeModal) => {
   const [file, setFile] = useState();
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     const image = e.target.files[0];
     setFile(image);
   };
 
-  const handleSubmit = (onSuccess) => {
+  const handleSubmit = onSuccess => {
     const formData = new FormData();
     formData.append(isCover ? 'coverProfilePicture' : 'profilePicture', file);
     axios
@@ -19,13 +19,16 @@ const profileImageUpload = (profileId, isCover = false) => {
         },
         withCredentials: true,
       })
-      .then((response) => {
-        console.log(response.data);
+      .then(response => {
+        closeModal();
+        navigate(`/profile`);
         if (typeof onSuccess === 'function') {
-            onSuccess(isCover ? response.data.profileCoverPictureUrl : response.data.profilePictureUrl);
+          onSuccess(
+            isCover ? response.data.profileCoverPictureUrl : response.data.profilePictureUrl,
+          );
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
       });
   };
