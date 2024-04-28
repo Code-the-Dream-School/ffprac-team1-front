@@ -167,6 +167,27 @@ export const createProject = async ( { title, description, rolesNeeded } ) => {
   }
  };
 
+ export const updateProject = async (projectId, updatedProject) => {
+  try {
+    const response = await fetch(`http://localhost:8000/api/v1/projects/${projectId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedProject),
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to update project');
+    }
+
+    return true;
+  } catch (error) {
+    throw new Error('Failed to update project. Please try again later.');
+  }
+};
+
  export const applyForProject = async (projectId, selectedRole) => {
   try {
     const response = await fetch(`http://localhost:8000/api/v1/projects/${projectId}/apply`, {
@@ -200,6 +221,7 @@ export default {
   updateProfile,
   fetchProfile,
   createProject,
+  updateProject,
   fetchSearchSuggestions,
   applyForProject
 };

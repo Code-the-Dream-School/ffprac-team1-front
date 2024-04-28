@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Input, Textarea } from '@material-tailwind/react';
 import { XCircleIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
+import { updateProject } from '../../util/fetchData';
 
 const EditProject = ({
   projectId,
   projectTitle: initialProjectTitle,
   projectDesc: initialProjectDesc,
   projectRolesNeeded: initialProjectRolesNeeded,
-  closeModal
+  closeModal,
 }) => {
   const navigate = useNavigate();
   const [error, setError] = useState('');
@@ -124,21 +124,10 @@ const EditProject = ({
     };
 
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/projects/${projectId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedProject),
-        credentials: 'include',
-      });
+      await updateProject(projectId, updatedProject);
 
-      if (response.ok) {
-        closeModal();
-        navigate(`/projects/${projectId}`);
-      } else {
-        throw new Error('Failed to update project');
-      }
+      closeModal();
+      navigate(`/projects/${projectId}`);
     } catch (error) {
       console.error('Error updating project:', error.message);
       setError('Failed to update project. Please try again later.');
@@ -151,41 +140,22 @@ const EditProject = ({
       <form className="w-full h-[90%] py-6 flex flex-col" onSubmit={handleSubmit}>
         <div className="flex flex-row justify-center">
           <div className="w-[60%] flex flex-col">
-            {/* <Input
-              label="Project Title"
+            <label className="text-lg text-green/85">Project Title</label>
+            <input
+              type="text"
               name="title"
-              className="text-gray"
+              placeholder=""
               value={projectData.title}
               onChange={handleProjectChange}
-            /> */}
-
-            <label className="text-lg text-green/85">Project Title</label>
-              <input
-                type="text"
-                name="title"
-                placeholder=""
-                value={projectData.title}
-                onChange={handleProjectChange}
-                className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent modal-input"
-              />
-            {/* <div className="mt-10">
-              <Textarea
-                label="About Project"
-                name="description"
-                className="text-gray"
-                value={projectData.description}
-                onChange={handleProjectChange}
-              />
-            </div> */}
-
+              className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent modal-input"
+            />
             <label className="text-lg text-green/85">About Project</label>
-              <textarea
-                name="description"
-                value={projectData.description}
-                onChange={handleProjectChange}
-                className="w-full min-h-fit bg-gray/5 text-white/80 p-4 rounded border border-transparent modal-input"
-              />
-
+            <textarea
+              name="description"
+              value={projectData.description}
+              onChange={handleProjectChange}
+              className="w-full min-h-fit bg-gray/5 text-white/80 p-4 rounded border border-transparent modal-input"
+            />
             <div>
               <h2 className="ext-lg text-green/85 mt-5">Select technologies:</h2>
               {Object.entries(availableTechnologies).map(([techType, techList]) => (
@@ -196,7 +166,12 @@ const EditProject = ({
                     onChange={e => handleTechnologyChange(e, techType)}
                     className="bg-black z-10 text-white outline-none "
                   >
-                    <option value="" className="bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">{techType}</option>
+                    <option
+                      value=""
+                      className="bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+                    >
+                      {techType}
+                    </option>
                     {techList
                       .filter(tech => !technologies[techType].includes(tech))
                       .map((tech, index) => (
