@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { createProject } from '../../util/fetchData';
 import { XCircleIcon } from '@heroicons/react/24/outline';
 
-
 const CreateProject = ({ closeModal }) => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
