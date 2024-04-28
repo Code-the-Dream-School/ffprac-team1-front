@@ -12,8 +12,7 @@ const UploadProfileImage = ({ profileId, isCoverImage, closeModal, currentProfil
         <header className="text-center text-ld pb-6 font-bold text-gray"> Image preview</header>
         <img
           src={file ? URL.createObjectURL(file) : isCoverImage ? currentProfileCoverPictureUrl : currentProfilePictureUrl}
-          className="h-56 w-56 rounded-full object-cover object-center bg-black"
-          alt="Preview"
+          className={isCoverImage ? "h-56 w-full rounded-lg object-cover object-center bg-black" : "h-56 w-56 rounded-full object-cover object-center bg-black"}
         />
       </div>
       <button
