@@ -11,6 +11,7 @@ const EditProject = ({
   closeModal
 }) => {
   const navigate = useNavigate();
+  const [error, setError] = useState('');
 
   const allRoles = [
     'Mentor',
@@ -140,6 +141,7 @@ const EditProject = ({
       }
     } catch (error) {
       console.error('Error updating project:', error.message);
+      setError('Failed to update project. Please try again later.');
     }
   };
 
@@ -160,7 +162,7 @@ const EditProject = ({
             <label className="text-lg text-green/85">Project Title</label>
               <input
                 type="text"
-                name="Project Name"
+                name="title"
                 placeholder=""
                 value={projectData.title}
                 onChange={handleProjectChange}
@@ -178,7 +180,7 @@ const EditProject = ({
 
             <label className="text-lg text-green/85">About Project</label>
               <textarea
-                name="About Project"
+                name="description"
                 value={projectData.description}
                 onChange={handleProjectChange}
                 className="w-full min-h-fit bg-gray/5 text-white/80 p-4 rounded border border-transparent modal-input"
@@ -238,6 +240,7 @@ const EditProject = ({
             </div>
           </div>
         </div>
+        {error && <div className="text-red-500 text-center">{error}</div>}
         <div className="flex flex-row w-full justify-center items-center pt-8">
           <button variant="gradient" color="green" className="btn-primary text-black w-[30%] ">
             Submit
