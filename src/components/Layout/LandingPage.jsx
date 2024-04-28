@@ -1,6 +1,6 @@
 import React from 'react';
-import Search from '../Search/SearchBar.jsx';
-import Login from '../Authentification/Login.jsx';
+import Search from '../Search/SearchBar';
+import Login from '../Authentification/Login';
 
 const LandingPage = () => (
   <div className="flex flex-wrap flex-col xl:flex-row items-center min-h-[83vh] bg-black ">
@@ -20,7 +20,6 @@ const LandingPage = () => (
     </div>
     <div className="xl:basis-1/2 invisible xl:visible">
       <div className="xl:w-3/5 mx-auto  px-8">
-        {/* <h1 className="text-center text-xl pb-6">Sign In</h1> */}
         <Login />
       </div>
     </div>
