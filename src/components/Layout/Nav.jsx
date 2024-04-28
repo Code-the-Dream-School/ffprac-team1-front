@@ -22,7 +22,7 @@ const Nav = () => {
   return (
     <div className="bg-black p-4 flex flex-row justify-between">
       <div className="flex flex-row items-center pl-2">
-        <img src="./images/logo.svg" alt="logo" />
+        <img src="../images/logo.svg" alt="logo" />
         <Link to="/" className="text-2xl pl-2 font-bold">
           DevConnexion
         </Link>
