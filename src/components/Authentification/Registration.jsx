@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { register } from '../../util/fetchData';
 import { useAuth } from '../../AuthContext';
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: ""
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
   });
 
   const { loginUser } = useAuth();
@@ -17,9 +17,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-
-
-  const handleChange = (e) => {
+  const handleChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: '' });
   };
@@ -30,40 +28,36 @@ const Register = () => {
 
   const validateForm = () => {
     let tempErrors = {};
-    if (!formData.firstName) tempErrors.firstName = "First name is required";
-    if (!formData.lastName) tempErrors.lastName = "Last name is required";
+    if (!formData.firstName) tempErrors.firstName = 'First name is required';
+    if (!formData.lastName) tempErrors.lastName = 'Last name is required';
     if (!formData.email) {
-      tempErrors.email = "Email is required";
+      tempErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      tempErrors.email = "Invalid email format";
+      tempErrors.email = 'Invalid email format';
     }
     if (!formData.password) {
-      tempErrors.password = "Password is required";
+      tempErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
-      tempErrors.password = "Password must be at least 6 characters long";
+      tempErrors.password = 'Password must be at least 6 characters long';
     }
 
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = async e => {
     e.preventDefault();
     if (!validateForm()) return;
 
     try {
       const result = await register(formData);
       if (result.status === 200) {
-        setSuccessMessage("Registration successful!");
+        setSuccessMessage('Registration successful!');
         loginUser(true);
-        setTimeout(() => navigate("/profile"), 1000);
+        setTimeout(() => navigate('/profile'), 1000);
       }
     } catch (error) {
-      let errorMessage = "An error occurred";
-      if (error.response) {
-        errorMessage = error.response.data.message || errorMessage;
-      }
-      setErrors({ form: errorMessage });
+      setErrors({ ...errors, form: error.error });
     }
   };
 
@@ -110,20 +104,22 @@ const Register = () => {
         <div>
           <label>Password</label>
           <input
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? 'text' : 'password'}
             name="password"
             value={formData.password}
             onChange={handleChange}
             className="input-area w-full"
           />
           <button type="button" onClick={handleShowPassword} className="text-xs">
-            {showPassword ? "Hide" : "Show"}
+            {showPassword ? 'Hide' : 'Show'}
           </button>
           {errors.password && <div className="text-red-500">{errors.password}</div>}
         </div>
         {errors.form && <div className="text-red-500">{errors.form}</div>}
         {successMessage && <div className="text-green-500">{successMessage}</div>}
-        <button type="submit" className="btn-primary">Sign Up</button>
+        <button type="submit" className="btn-primary">
+          Sign Up
+        </button>
       </form>
     </div>
   );
