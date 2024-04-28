@@ -49,12 +49,10 @@ const Profile = () => {
       setCoruselItems(2);
     }
 
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, [screenSize]);
-
   useEffect(() => {
     const fetchUserProfileData = async () => {
       try {
@@ -71,11 +69,19 @@ const Profile = () => {
           userProfile.profile.participatingProjects.length > 0
         ) {
           for (const participatingProject of userProfile.profile.participatingProjects) {
-            // console.log('Fetching project:', participatingProject.project);
             const project = await fetchProject(participatingProject.project);
-            // console.log('Fetched project:', project.project.title);
             participatingProjectsData.push({
+              _id: project.project._id,
               title: project.project.title,
+              status: project.project.status,
+              description: project.project.description,
+              technologies: project.project.technologies,
+              rolesNeeded: project.project.rolesNeeded,
+              createdBy: project.project.createdBy,
+              projectPictureUrl: project.project.projectPictureUrl,
+              projectCoverPictureUrl: project.project.projectCoverPictureUrl,
+              participants: project.project.participants,
+              likeCount: project.project.likeCount,
               role: participatingProject.role,
             });
           }
@@ -280,16 +286,34 @@ const Profile = () => {
       </div>
       <div className="mt-4 mb-1 py-4 px-8 border border-transparent rounded-lg bg-gray/5">
         <h3 className="text-lg text-green/80">Projects you participate in:</h3>
-
-        <div className="py-4 flex flex-row"></div>
-        <div className="mx-6">
-          {participatingProjectsList &&
-            participatingProjectsList.map((project, index) => (
+        {participatingProjectsList && participatingProjectsList.length > 0 ? (
+          <Slider {...settings} >
+            {participatingProjectsList.map((project, index) => (
               <div key={index} className="flex justify-center">
-                - {project.title} - {project.role}
+                <div className="mx-6">
+                  <ProjectCard
+                    project={{
+                      _id: project._id,
+                      title: project.title,
+                      status: project.status,
+                      description: project.description,
+                      technologies: project.technologies,
+                      rolesNeeded: project.rolesNeeded,
+                      createdBy: profile.profile._id,
+                      projectPictureUrl: project.projectPictureUrl,
+                      projectCoverPictureUrl: project.projectCoverPictureUrl,
+                      participants: project.participants,
+                      likeCount: project.likeCount,
+                    }}
+                    profile={profile}
+                  />
+                </div>
               </div>
             ))}
-        </div>
+          </Slider>
+        ) : (
+          <p>No participating projects found.</p>
+        )}
       </div>
     </div>
   );

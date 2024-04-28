@@ -26,6 +26,8 @@ const Project = () => {
   const [error, setError] = useState(null);
   const isCurrentUserProject =
     profile && project && profile.profile._id === project.project.createdBy;
+  const [participants, setParticipants] = useState('');
+  const [isUserParticipant, setIsUserParticipant] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,6 +35,14 @@ const Project = () => {
         const projectData = await fetchProject(projectId);
         setProject(projectData);
         setLikes(projectData.project.likeCount);
+        const participantsData = projectData.project.participants;
+        setParticipants(participantsData);
+        if (profile && profile.profile) {
+          const isUserParticipant = participantsData.some(
+            participant => participant.user === profile.profile._id,
+          );
+          setIsUserParticipant(isUserParticipant);
+        }
       } catch (error) {
         console.error('Error in component:', error);
       }
@@ -40,6 +50,19 @@ const Project = () => {
 
     fetchData();
   }, [projectId]);
+
+  useEffect(() => {
+    const checkUserParticipant = () => {
+      if (profile && project && project.project && project.project.participants) {
+        const isUserParticipant = project.project.participants.some(
+          participant => participant.user === profile.profile._id,
+        );
+        setIsUserParticipant(isUserParticipant);
+      }
+    };
+
+    checkUserParticipant();
+  }, [profile, project]);
 
   useEffect(() => {
     const fetchUserProfileData = async () => {
@@ -162,37 +185,39 @@ const Project = () => {
   };
 
   const renderParticipants = () => {
-    return participantsData.map((participant, index) => {
-      const role = project.project.rolesNeeded[index];
-      return (
-        <div key={index} className="py-4 flex flex-row">
-          <Tooltip content={`${participant.firstName} ${participant.lastName}`}>
-            <Avatar
+  if (!participantsData || !project || !project.project) return null;
+
+  return participantsData.map((participant, index) => {
+    const role = project.project.participants.map(participant => participant.role)[index];
+    return (
+      <div key={index} className="py-4 flex flex-row">
+        <Tooltip content={`${participant.firstName} ${participant.lastName}`}>
+          <Avatar
+            size="sm"
+            variant="circular"
+            alt={`${participant.firstName} ${participant.lastName}`}
+            src={participant.profilePictureUrl}
+            className="border-2 border-gray h-10 w-10 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
+          />
+        </Tooltip>
+        <div className="pl-4">
+          <header>{`${participant.firstName} ${participant.lastName}`}</header>
+          <p className="font-sans font-extralight italic text-[11px] text-blue">{role}</p>
+          {isCurrentUserProject && (
+            <IconButton
+              onClick={() => removeParticipant(participant._id)}
               size="sm"
-              variant="circular"
-              alt={`${participant.firstName} ${participant.lastName}`}
-              src={participant.profilePictureUrl}
-              className="border-2 border-gray h-10 w-10 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
-            />
-          </Tooltip>
-          <div className="pl-4">
-            <header>{`${participant.firstName} ${participant.lastName}`}</header>
-            <p className="font-sans font-extralight italic text-[11px] text-blue">{role}</p>
-            {isCurrentUserProject && (
-              <IconButton
-                onClick={() => removeParticipant(participant._id)}
-                size="sm"
-                color="blue"
-                className="ml-2"
-              >
-                <i className="fas fa-trash"></i>
-              </IconButton>
-            )}
-          </div>
+              color="blue"
+              className="ml-2"
+            >
+              <i className="fas fa-trash"></i>
+            </IconButton>
+          )}
         </div>
-      );
-    });
-  };
+      </div>
+    );
+  });
+};
 
   const removeParticipant = async participantId => {
     try {
@@ -400,6 +425,7 @@ const Project = () => {
                 </div>
               )}
               {isLoggedIn &&
+                !isUserParticipant &&
                 project.project.status !== 'In Progress' &&
                 project.project.status !== 'Completed' && (
                   <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5 flex flex-col items-center">
@@ -411,12 +437,17 @@ const Project = () => {
                           projectId={projectId}
                           projectTitle={project.project.title}
                           projectRolesNeeded={project.project.rolesNeeded}
-                          closeModal={handleModalClose}
+                          participants={project.project.participants}
                         />
                       }
                     />
                   </div>
                 )}
+              {/* {isLoggedIn && isUserParticipant && (
+  <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5 flex flex-col items-center">
+    <p>You are already a participant in this project.</p>
+  </div>
+)} */}
 
               {!isLoggedIn && (
                 <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5 flex flex-col items-center ">
