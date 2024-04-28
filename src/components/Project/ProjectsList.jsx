@@ -6,11 +6,18 @@ import { fetchProfile } from '../../util/fetchData.js';
 const ProjectsList = () => {
   const { isLoggedIn } = useAuth();
   const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProfileData = async () => {
-      const profileData = await fetchProfile();
-      setProfile(profileData);
+      try {
+        const profileData = await fetchProfile();
+        setProfile(profileData);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching profile data:', error);
+        setLoading(false);
+      }
     };
 
     if (isLoggedIn) {
@@ -19,7 +26,15 @@ const ProjectsList = () => {
   }, [isLoggedIn]);
 
   return (
-    <div>{isLoggedIn ? <SearchResults profile={profile} /> : <div>You need to login.</div>}</div>
+    <div>
+      {loading ? (
+        <div>Loading...</div>
+      ) : isLoggedIn ? (
+        <SearchResults profile={profile} />
+      ) : (
+        <div>You need to login.</div>
+      )}
+    </div>
   );
 };
 

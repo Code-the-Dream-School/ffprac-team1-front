@@ -20,11 +20,10 @@ const Profile = () => {
   const [profilePictureUrl, setProfilePictureUrl] = useState('');
   const [profileCoverPictureUrl, setProfileCoverPictureUrl] = useState('');
   const [participatingProjectsList, setParticipatingProjectsList] = useState(null);
-
+  const [loading, setLoading] = useState(true);
   const [screenSize, setScreenSize] = useState({
     width: window.innerWidth,
   });
-
   const [coruselItems, setCoruselItems] = useState();
 
   useEffect(() => {
@@ -53,7 +52,7 @@ const Profile = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, [screenSize]);
-  
+
   useEffect(() => {
     const fetchUserProfileData = async () => {
       try {

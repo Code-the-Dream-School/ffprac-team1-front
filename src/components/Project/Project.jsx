@@ -27,6 +27,7 @@ const Project = () => {
   const isCurrentUserProject = profile && project && profile.profile._id === project.project.createdBy;
   const [participants, setParticipants] = useState('');
   const [isUserParticipant, setIsUserParticipant] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,8 +43,10 @@ const Project = () => {
           );
           setIsUserParticipant(isUserParticipant);
         }
+        setLoading(false);
       } catch (error) {
         console.error('Error in component:', error);
+        setLoading(false);
       }
     };
 
@@ -237,6 +240,10 @@ const Project = () => {
   const handleModalClose = () => {
     window.location.reload();
   };
+
+  if (loading) {
+    return <div>Loading project...</div>;
+  }
 
   return (
     <div className="container-primary xl:px-60 flex flex-col text-gray">
