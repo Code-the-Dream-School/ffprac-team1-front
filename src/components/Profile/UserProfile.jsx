@@ -244,7 +244,7 @@ const Profile = () => {
               <Modal
                 openModalButton={'+ Add New Project'}
                 buttonClassName={'btn-primary font-[Jura] min-w-44'}
-                modalBody={<CreateProject />}
+                modalBody={<CreateProject closeModal={handleModalClose}/>}
                 className=""
               />
             </div>
