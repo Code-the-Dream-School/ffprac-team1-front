@@ -210,6 +210,24 @@ export const createProject = async ( { title, description, rolesNeeded } ) => {
   }
 };
 
+export const uploadProfileImage = async (profileId, file, isCover = false) => {
+  try {
+    const formData = new FormData();
+    formData.append(isCover ? 'coverProfilePicture' : 'profilePicture', file);
+
+    const response = await axios.patch(`http://localhost:8000/api/v1/profiles/myProfile`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      withCredentials: true,
+    });
+
+    return isCover ? response.data.profileCoverPictureUrl : response.data.profilePictureUrl;
+  } catch (error) {
+    throw new Error('Error uploading profile image');
+  }
+};
+
 export default {
   register,
   login,
@@ -223,5 +241,6 @@ export default {
   createProject,
   updateProject,
   fetchSearchSuggestions,
-  applyForProject
+  applyForProject,
+  uploadProfileImage
 };
