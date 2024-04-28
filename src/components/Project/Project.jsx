@@ -24,7 +24,8 @@ const Project = () => {
   const [creatorLastName, setCreatorLastName] = useState('');
   const [creatorProfilePictureUrl, setCreatorProfilePictureUrl] = useState('');
   const [error, setError] = useState(null);
-  const isCurrentUserProject = profile && project && profile.profile._id === project.project.createdBy;
+  const isCurrentUserProject =
+    profile && project && profile.profile._id === project.project.createdBy;
   const [participants, setParticipants] = useState('');
   const [isUserParticipant, setIsUserParticipant] = useState('');
   const [loading, setLoading] = useState(true);
@@ -141,7 +142,7 @@ const Project = () => {
           variant="circular"
           alt="project logo"
           src={project.project.projectPictureUrl}
-          className="border-4 border-blue/50 h-36 w-36 rounded-full bject-cover object-center hover:cursor-pointer hover:border-green"
+          className="border-4 border-blue/50 h-36 w-36 rounded-full object-cover object-center hover:cursor-pointer hover:border-green"
         />
       </Tooltip>
     );
@@ -187,39 +188,39 @@ const Project = () => {
   };
 
   const renderParticipants = () => {
-  if (!participantsData || !project || !project.project) return null;
+    if (!participantsData || !project || !project.project) return null;
 
-  return participantsData.map((participant, index) => {
-    const role = project.project.participants.map(participant => participant.role)[index];
-    return (
-      <div key={index} className="py-4 flex flex-row">
-        <Tooltip content={`${participant.firstName} ${participant.lastName}`}>
-          <Avatar
-            size="sm"
-            variant="circular"
-            alt={`${participant.firstName} ${participant.lastName}`}
-            src={participant.profilePictureUrl}
-            className="border-2 border-gray h-10 w-10 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
-          />
-        </Tooltip>
-        <div className="pl-4">
-          <header>{`${participant.firstName} ${participant.lastName}`}</header>
-          <p className="font-sans font-extralight italic text-[11px] text-blue">{role}</p>
-          {isCurrentUserProject && (
-            <IconButton
-              onClick={() => removeParticipant(participant._id)}
+    return participantsData.map((participant, index) => {
+      const role = project.project.participants.map(participant => participant.role)[index];
+      return (
+        <div key={index} className="py-4 flex flex-row">
+          <Tooltip content={`${participant.firstName} ${participant.lastName}`}>
+            <Avatar
               size="sm"
-              color="blue"
-              className="ml-2"
-            >
-              <i className="fas fa-trash"></i>
-            </IconButton>
-          )}
+              variant="circular"
+              alt={`${participant.firstName} ${participant.lastName}`}
+              src={participant.profilePictureUrl}
+              className="border-2 border-gray h-10 w-10 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
+            />
+          </Tooltip>
+          <div className="pl-4">
+            <header>{`${participant.firstName} ${participant.lastName}`}</header>
+            <p className="font-sans font-extralight italic text-[11px] text-blue">{role}</p>
+            {isCurrentUserProject && (
+              <IconButton
+                onClick={() => removeParticipant(participant._id)}
+                size="sm"
+                color="blue"
+                className="ml-2"
+              >
+                <i className="fas fa-trash"></i>
+              </IconButton>
+            )}
+          </div>
         </div>
-      </div>
-    );
-  });
-};
+      );
+    });
+  };
 
   const removeParticipant = async participantId => {
     try {
@@ -295,7 +296,7 @@ const Project = () => {
                       variant="circular"
                       alt="project logo"
                       src={project.project.projectPictureUrl}
-                      className="border-4 border-blue/50 h-36 w-36 rounded-full bject-cover object-center hover:cursor-pointer hover:border-green"
+                      className="border-4 border-blue/50 h-36 w-36 rounded-full object-cover object-center hover:cursor-pointer hover:border-green"
                     />
                   </div>
                 )}
@@ -398,7 +399,7 @@ const Project = () => {
                     </div>
                   ) : (
                     <div className="py-4 flex flex-row">
-                      <Tooltip content="User">
+                      <Tooltip content={`${creatorFirstName} ${creatorLastName}`}>
                         <Avatar
                           size="sm"
                           variant="circular"

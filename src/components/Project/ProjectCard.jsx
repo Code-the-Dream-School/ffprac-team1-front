@@ -12,7 +12,6 @@ import {
   Tooltip,
 } from '@material-tailwind/react';
 
-
 const ProjectCard = ({ project, profile }) => {
   const { _id, title, status, description, technologies, rolesNeeded, likeCount, createdBy, projectPictureUrl, projectCoverPictureUrl, participants, participatingProjects } = project;
   const { isLoggedIn } = useAuth(); 
@@ -60,7 +59,7 @@ const ProjectCard = ({ project, profile }) => {
         >
            <div className=" flex flex-row">
             <img
-                className="h-10 w-10 rounded-full"
+                className="h-10 w-10 rounded-full object-cover"
                 src={projectPictureUrl}
                 alt="project logo"
             />
@@ -137,4 +136,3 @@ const ProjectCard = ({ project, profile }) => {
 };
 
 export default ProjectCard;
-
