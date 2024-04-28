@@ -167,6 +167,28 @@ export const createProject = async ( { title, description, rolesNeeded } ) => {
   }
  };
 
+ export const applyForProject = async (projectId, selectedRole) => {
+  try {
+    const response = await fetch(`http://localhost:8000/api/v1/projects/${projectId}/apply`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ role: selectedRole }),
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to submit application');
+    }
+
+    return true;
+  } catch (error) {
+    throw new Error(error.message || 'Error submitting application');
+  }
+};
+
 export default {
   register,
   login,
@@ -179,4 +201,5 @@ export default {
   fetchProfile,
   createProject,
   fetchSearchSuggestions,
+  applyForProject
 };
