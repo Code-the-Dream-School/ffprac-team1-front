@@ -13,7 +13,6 @@ const UploadImage = ({ projectId, isCoverImage, closeModal, currentProjectPictur
         <img
           src={file ? URL.createObjectURL(file) : isCoverImage ? currentProjectCoverPictureUrl : currentProjectPictureUrl}
           className={isCoverImage ? "h-56 w-full rounded-lg object-cover object-center bg-black" : "h-56 w-56 rounded-full object-cover object-center bg-black"}
-          alt="Preview"
         />
       </div>
       <button

@@ -256,9 +256,9 @@ const Project = () => {
               modalBody={
                 <UploadImage
                   projectId={projectId}
-                  isCoverImage={false}
+                  isCoverImage={true}
                   closeModal={handleModalClose}
-                  currentProjectCoverImageUrl={project.project.projectCoverPictureUrl}
+                  currentProjectCoverPictureUrl={project.project.projectCoverPictureUrl}
                 />
               }
             />
@@ -284,7 +284,7 @@ const Project = () => {
                         projectId={projectId}
                         isCoverImage={false}
                         closeModal={handleModalClose}
-                        currentProjectImageUrl={project.project.projectPictureUrl}
+                        currentProjectPictureUrl={project.project.projectPictureUrl}
                       />
                     }
                   />
