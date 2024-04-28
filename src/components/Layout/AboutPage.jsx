@@ -7,6 +7,9 @@ const AboutPage = () => {
     <div className="contanier-primary flex flex-col text-gray xl:px-60">
         <h2 className="text-center text-2xl text-green/85 pb-8">About Page</h2>
         <div className="border border-transparent rounded-lg bg-gray/5 px-8 py-6 mb-4">
+            <p className="text-xl text-gray">DevConnexion is a platform created to aspire developers, web designers, testers, and other IT professionals to showcase their projects and profiles. Our platform provides a dynamic environment where users can engage with and contribute to a thriving community of tech enthusiasts.</p>
+        </div>
+        <div className="border border-transparent rounded-lg bg-gray/5 px-8 py-6 mb-4">
             <p className="text-xl text-green/85">Mentors:</p>
             <div className="flex flex-row flex-wrap py-6">
                 <div className="flex flex-col pr-10">
@@ -35,8 +38,6 @@ const AboutPage = () => {
                 </div>
             </div>
         </div>
-        
-
         <div className="border border-transparent rounded-lg bg-gray/5 px-8 py-6 mb-4">
             <p className="text-xl text-green/85">Team:</p>
             <div className="flex flex-row flex-wrap py-6">
@@ -46,7 +47,7 @@ const AboutPage = () => {
                             size="sm"
                             variant="circular"
                             alt="{profile.profile._id}"
-                            src="https://res.cloudinary.com/dqhoyu7rj/image/upload/v1713741903/Team_pictures/hdqvanqhfqwklgonox4i.jpg"
+                            src="https://res.cloudinary.com/dqhoyu7rj/image/upload/v1713741903/Team_pictures/n9nbfbo75pcva8jn4yav.jpg"
                             className="border-2 border-gray h-32 min-w-32 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
                         />
                     </Tooltip>
@@ -65,7 +66,7 @@ const AboutPage = () => {
                     <p className="text-center pt-2">Mariya Doronkina</p>
                 </div>
                 <div className="flex flex-col pr-10">
-                    <Tooltip content={`Mariya Doronkina`}>
+                    <Tooltip content={`Daria Sidorko`}>
                         <Avatar
                             size="sm"
                             variant="circular"
@@ -86,7 +87,7 @@ const AboutPage = () => {
                             className="border-2 border-gray h-32 min-w-32 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
                         />
                     </Tooltip>
-                    <p className="text-center pt-2">Anna Solovykho</p>
+                    <p className="text-center pt-2">Anna Solovykh</p>
                 </div>
                 <div className="flex flex-col pr-10">
                     <Tooltip content={`Aigul Yedigeyeva`}>
@@ -94,7 +95,7 @@ const AboutPage = () => {
                             size="sm"
                             variant="circular"
                             alt="{profile.profile._id}"
-                            src="https://res.cloudinary.com/dqhoyu7rj/image/upload/v1713736654/Default_Images/ozh3szm1p8vh4ikxap1y.jpg"
+                            src="https://res.cloudinary.com/dqhoyu7rj/image/upload/v1713741902/Team_pictures/z7ssc7xbmv0cpkugph82.jpg"
                             className="border-2 border-gray h-32 min-w-32 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
                         />
                     </Tooltip>
