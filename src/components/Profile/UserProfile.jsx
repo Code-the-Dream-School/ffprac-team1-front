@@ -118,7 +118,7 @@ const Profile = () => {
     infinite: true,
     speed: 500,
     slidesToShow: coruselItems,
-    slidesToScroll: 4,
+    slidesToScroll: 1,
   };
 
   const imageButton = () => {
@@ -161,15 +161,27 @@ const Profile = () => {
         <Modal
           buttonClassName={''}
           openModalButton={coverImageButton()}
-          modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={true} closeModal={handleModalClose} currentProfileCoverPictureUrl={profile.profile.profileCoverPictureUrl}
-          />}
+          modalBody={
+            <UploadProfileImage
+              profileId={profile.profile._id}
+              isCoverImage={true}
+              closeModal={handleModalClose}
+              currentProfileCoverPictureUrl={profile.profile.profileCoverPictureUrl}
+            />
+          }
         />{' '}
         <div className="px-8 pb-4 pt-4 w-[100vw]">
           <Modal
             buttonClassName={''}
             openModalButton={imageButton()}
-            modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={false} closeModal={handleModalClose} currentProfilePictureUrl={profile.profile.profilePictureUrl}
-            />}
+            modalBody={
+              <UploadProfileImage
+                profileId={profile.profile._id}
+                isCoverImage={false}
+                closeModal={handleModalClose}
+                currentProfilePictureUrl={profile.profile.profilePictureUrl}
+              />
+            }
           />{' '}
           <div className="flex flex-row w-[100vw] pt-4">
             <div className="flex flex-col w-full">
@@ -244,7 +256,7 @@ const Profile = () => {
               <Modal
                 openModalButton={'+ Add New Project'}
                 buttonClassName={'btn-primary font-[Jura] min-w-44'}
-                modalBody={<CreateProject closeModal={handleModalClose}/>}
+                modalBody={<CreateProject closeModal={handleModalClose} />}
                 className=""
               />
             </div>
@@ -278,9 +290,9 @@ const Profile = () => {
                     ))}
                   </Slider>
                 ) : (
-                  profile.profile.ownProjects.map((project, index) => (
-                    <div key={index} className="flex justify-center">
-                      <div className="mx-6">
+                  <div className="flex justify-center overflow-x-auto">
+                    {profile.profile.ownProjects.map((project, index) => (
+                      <div key={index} className="mx-4">
                         <ProjectCard
                           project={{
                             _id: project._id,
@@ -298,13 +310,11 @@ const Profile = () => {
                           profile={profile}
                         />
                       </div>
-                    </div>
-                  ))
+                    ))}
+                  </div>
                 )}
               </div>
-            ) : (
-              null
-            )}
+            ) : null}
           </div>
         </div>
       </div>
@@ -341,28 +351,30 @@ const Profile = () => {
                   ))}
                 </Slider>
               ) : (
-                participatingProjectsList.map((project, index) => (
-                  <div key={index} className="flex justify-center">
-                    <div className="mx-6">
-                      <ProjectCard
-                        project={{
-                          _id: project._id,
-                          title: project.title,
-                          status: project.status,
-                          description: project.description,
-                          technologies: project.technologies,
-                          rolesNeeded: project.rolesNeeded,
-                          createdBy: profile.profile._id,
-                          projectPictureUrl: project.projectPictureUrl,
-                          projectCoverPictureUrl: project.projectCoverPictureUrl,
-                          participants: project.participants,
-                          likeCount: project.likeCount,
-                        }}
-                        profile={profile}
-                      />
+                <div className="flex justify-center overflow-x-auto">
+                  {participatingProjectsList.map((project, index) => (
+                    <div key={index} className="flex justify-center">
+                      <div className="mx-6">
+                        <ProjectCard
+                          project={{
+                            _id: project._id,
+                            title: project.title,
+                            status: project.status,
+                            description: project.description,
+                            technologies: project.technologies,
+                            rolesNeeded: project.rolesNeeded,
+                            createdBy: profile.profile._id,
+                            projectPictureUrl: project.projectPictureUrl,
+                            projectCoverPictureUrl: project.projectCoverPictureUrl,
+                            participants: project.participants,
+                            likeCount: project.likeCount,
+                          }}
+                          profile={profile}
+                        />
+                      </div>
                     </div>
-                  </div>
-                ))
+                  ))}
+                </div>
               )}
             </div>
           ) : (
