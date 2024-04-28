@@ -12,6 +12,7 @@ import EditProject from '../Modal_Components/EditProject.jsx';
 import EditIcon from '../Modal_Components/EditIcon.jsx';
 import Apply from '../Modal_Components/Apply.jsx';
 import { fetchUserProfile, fetchProject } from '../../util/fetchData';
+import { TrashIcon } from '@heroicons/react/24/outline';
 
 const Project = () => {
   const { isLoggedIn } = useAuth();
@@ -206,17 +207,18 @@ const Project = () => {
           <div className="pl-4">
             <header>{`${participant.firstName} ${participant.lastName}`}</header>
             <p className="font-sans font-extralight italic text-[11px] text-blue">{role}</p>
-            {isCurrentUserProject && (
-              <IconButton
+          </div>
+          {isCurrentUserProject && (
+              <TrashIcon  
                 onClick={() => removeParticipant(participant._id)}
                 size="sm"
                 color="blue"
-                className="ml-2"
+                strokeWidth="1"
+                className="h-5 w-5 ml-2 mb-2 mt-2 stroke-blue/50 inline hover:stroe-blue hover:cursor-pointer"
               >
                 <i className="fas fa-trash"></i>
-              </IconButton>
+              </TrashIcon>
             )}
-          </div>
         </div>
       );
     });
