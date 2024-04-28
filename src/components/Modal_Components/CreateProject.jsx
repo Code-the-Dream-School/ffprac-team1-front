@@ -90,12 +90,10 @@ import axios from "axios";
         <form className="w-full h-[90%] py-6 flex flex-col">
           <div className="flex flex-row justify-center">
             <div className="w-[60%] flex flex-col">
-              {/* <Input label="Project Name" name="title"
-              value={formData.title} className="text-gray" onChange={ handleChange }/> */}
               <label className="text-lg text-green/85">Project Name</label>
-              <input
+               <input
                 type="text"
-                name="Project Name"
+                name="title"
                 placeholder=""
                 value={formData.title}
                 onChange={handleChange}
@@ -104,16 +102,11 @@ import axios from "axios";
 
               <label className="text-lg text-green/85">About Project</label>
               <textarea
-                name="About Project"
+                name="description"
                 value={formData.description}
                 onChange={handleChange}
                 className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent modal-input"
               />
-
-              {/* <div className="mt-10">
-                <Textarea label="About Project"  name="description"
-              value={formData.description}  className="" onChange={ handleChange }/>
-              </div> */}
               <div className=" mt-6 pb-10 flex flex-row bg-black">
                 <select label="Roles Needed" value={rolesNeededList.toString()} onChange={handleSelectChange} 
                 className="w-full bg-gray/5 p-2 border border-transparent focus:outline-none focus:border-blue/40 rounded border border-transparent">

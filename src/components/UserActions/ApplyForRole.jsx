@@ -7,6 +7,8 @@ const ApplyForRole = () => {
   const [profile, setProfile] = useState(null);
   const [applicantsData, setApplicantsData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [declineMessage, setDeclineMessage] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,8 +32,7 @@ const ApplyForRole = () => {
         const applicantsRequests = ownProjects.flatMap(project =>
           project.applicants.map(applicant =>
             axios
-              .get(`http://localhost:8000/api/v1/profiles/${applicant.user}`, 
-              {
+              .get(`http://localhost:8000/api/v1/profiles/${applicant.user}`, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: 'include',
               })
@@ -39,7 +40,6 @@ const ApplyForRole = () => {
                 ...response.data.profile,
                 projectId: project._id,
                 userId: applicant.user,
-                // applicantId: applicant._id,
               })),
           ),
         );
@@ -55,17 +55,20 @@ const ApplyForRole = () => {
     fetchApplicantsData();
   }, [ownProjects]);
 
-
   const handleApprove = async (projectId, applicantId) => {
     try {
-      const response = await axios.post(`http://localhost:8000/api/v1/projects/${projectId}/approve/${applicantId}`, 
-      {},
-      {
-        headers: { 'Content-Type': 'application/json' },
-        withCredentials: 'include',
-      });
-      // console.log(response.data);
-    
+      const response = await axios.post(
+        `http://localhost:8000/api/v1/projects/${projectId}/approve/${applicantId}`,
+        {},
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: 'include',
+        },
+      );
+      const projectName = ownProjects.find(project => project._id === projectId)?.title;
+      const applicant = applicantsData;
+      const applicantName = applicant ? `${applicant.firstName} ${applicant.lastName}` : '';
+      setSuccessMessage(`Applicant successfully added to the project "${projectName}".`);
     } catch (error) {
       console.error('Error approving applicant:', error);
       if (error.response) {
@@ -76,13 +79,17 @@ const ApplyForRole = () => {
 
   const handleDecline = async (projectId, applicantId) => {
     try {
-      const response = await axios.post(`http://localhost:8000/api/v1/projects/${projectId}/reject/${applicantId}`, 
-      {},
-      {
-        withCredentials: 'include',
-      });
-      console.log(response.data);
-    
+      const response = await axios.post(
+        `http://localhost:8000/api/v1/projects/${projectId}/reject/${applicantId}`,
+        {},
+        {
+          withCredentials: 'include',
+        },
+      );
+      const projectName = ownProjects.find(project => project._id === projectId)?.title;
+      const applicant = applicantsData;
+      const applicantName = applicant ? `${applicant.firstName} ${applicant.lastName}` : '';
+      setDeclineMessage(`Applicant has been successfully declined for the project "${projectName}".`);
     } catch (error) {
       console.error('Error declining applicant:', error);
       if (error.response) {
@@ -97,6 +104,12 @@ const ApplyForRole = () => {
         <div>Loading...</div>
       ) : (
         <Card className="w-full max-w-5xl bg-black overflow-scroll">
+          {successMessage && (
+            <div className="bg-green text-black text-center py-2 rounded-md">{successMessage}</div>
+          )}
+          {declineMessage && (
+            <div className="bg-green text-black text-center py-2 rounded-md">{declineMessage}</div>
+          )}
           <table className="w-full min-w-max table-auto text-white">
             <thead>
               <tr>

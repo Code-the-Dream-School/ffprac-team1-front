@@ -6,7 +6,7 @@ import Modal from '../Modal_Components/Modal.jsx';
 import CreateProject from '../Modal_Components/CreateProject.jsx';
 import EditIcon from '../Modal_Components/EditIcon.jsx';
 import EditProfile from '../Profile/EditProfile.jsx';
-import { fetchUserProfile } from '../../util/fetchData';
+import { fetchUserProfile, fetchProject } from '../../util/fetchData';
 import Slider from 'react-slick';
 import UploadProfileImage from '../Modal_Components/UploadProfileImages.jsx';
 import 'slick-carousel/slick/slick.css';
@@ -19,6 +19,7 @@ const Profile = () => {
   const [success, setSuccess] = useState('');
   const [profilePictureUrl, setProfilePictureUrl] = useState('');
   const [profileCoverPictureUrl, setProfileCoverPictureUrl] = useState('');
+  const [participatingProjectsList, setParticipatingProjectsList] = useState(null);
 
   const [screenSize, setScreenSize] = useState({
     width: window.innerWidth,
@@ -48,12 +49,10 @@ const Profile = () => {
       setCoruselItems(2);
     }
 
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, [screenSize]);
-
   useEffect(() => {
     const fetchUserProfileData = async () => {
       try {
@@ -62,6 +61,32 @@ const Profile = () => {
         setError('');
         setProfilePictureUrl(userProfile.profilePictureUrl);
         setProfileCoverPictureUrl(userProfile.profileCoverPictureUrl);
+
+        let participatingProjectsData = [];
+
+        if (
+          userProfile.profile.participatingProjects &&
+          userProfile.profile.participatingProjects.length > 0
+        ) {
+          for (const participatingProject of userProfile.profile.participatingProjects) {
+            const project = await fetchProject(participatingProject.project);
+            participatingProjectsData.push({
+              _id: project.project._id,
+              title: project.project.title,
+              status: project.project.status,
+              description: project.project.description,
+              technologies: project.project.technologies,
+              rolesNeeded: project.project.rolesNeeded,
+              createdBy: project.project.createdBy,
+              projectPictureUrl: project.project.projectPictureUrl,
+              projectCoverPictureUrl: project.project.projectCoverPictureUrl,
+              participants: project.project.participants,
+              likeCount: project.project.likeCount,
+              role: participatingProject.role,
+            });
+          }
+          setParticipatingProjectsList(participatingProjectsData);
+        }
       } catch (error) {
         console.error('Error fetching user profile:', error);
         setError('The profile is unavailable. Try again later please');
@@ -89,11 +114,11 @@ const Profile = () => {
   }
 
   const settings = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: coruselItems,
-    slidesToScroll: 1,
+    slidesToScroll: 4,
   };
 
   const handleModalClose = () => {
@@ -154,7 +179,13 @@ const Profile = () => {
                 <Modal
                   buttonClassName={''}
                   openModalButton={<EditIcon openModalButtonText={'Edit Profile'} />}
-                  modalBody={<EditProfile profileData={profile} onSave={handleProfileUpdate} closeModal={handleModalClose}/>}
+                  modalBody={
+                    <EditProfile
+                      profileData={profile}
+                      onSave={handleProfileUpdate}
+                      closeModal={handleModalClose}
+                    />
+                  }
                 />
                 {/* <div className="font-sans font-extralight text-xs italic pb-2 pr-2">
                 Looking for:{' '}
@@ -217,50 +248,124 @@ const Profile = () => {
             </div>
           </div>
           <div className="mt-4">
-            <Slider {...settings} {...(settings.slideshow = 1)}>
-              {profile.profile.ownProjects.map((project, index) => (
-                <div key={index} className="flex justify-center">
-                  <div className="mx-6">
-                    <ProjectCard
-                      project={{
-                        _id: project._id,
-                        title: project.title,
-                        status: project.status,
-                        description: project.description,
-                        technologies: project.technologies,
-                        rolesNeeded: project.rolesNeeded,
-                        createdBy: profile.profile._id,
-                        projectPictureUrl: project.projectPictureUrl,
-                        projectCoverPictureUrl: project.projectCoverPictureUrl,
-                        participants: project.participants,
-                        likeCount: project.likeCount,
-                      }}
-                      profile={profile}
-                    />
-                  </div>
-                </div>
-              ))}
-            </Slider>
+            {profile.profile.ownProjects.length > 0 ? (
+              <div>
+                {profile.profile.ownProjects.length > 4 ? (
+                  <Slider {...settings}>
+                    {profile.profile.ownProjects.map((project, index) => (
+                      <div key={index} className="flex justify-center">
+                        <div className="mx-6">
+                          <ProjectCard
+                            project={{
+                              _id: project._id,
+                              title: project.title,
+                              status: project.status,
+                              description: project.description,
+                              technologies: project.technologies,
+                              rolesNeeded: project.rolesNeeded,
+                              createdBy: profile.profile._id,
+                              projectPictureUrl: project.projectPictureUrl,
+                              projectCoverPictureUrl: project.projectCoverPictureUrl,
+                              participants: project.participants,
+                              likeCount: project.likeCount,
+                            }}
+                            profile={profile}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </Slider>
+                ) : (
+                  profile.profile.ownProjects.map((project, index) => (
+                    <div key={index} className="flex justify-center">
+                      <div className="mx-6">
+                        <ProjectCard
+                          project={{
+                            _id: project._id,
+                            title: project.title,
+                            status: project.status,
+                            description: project.description,
+                            technologies: project.technologies,
+                            rolesNeeded: project.rolesNeeded,
+                            createdBy: profile.profile._id,
+                            projectPictureUrl: project.projectPictureUrl,
+                            projectCoverPictureUrl: project.projectCoverPictureUrl,
+                            participants: project.participants,
+                            likeCount: project.likeCount,
+                          }}
+                          profile={profile}
+                        />
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            ) : (
+              null
+            )}
           </div>
-          {/* <div className="py-4 flex flex-row">
-            < ProjectCard /> */}
-          {/* <div className="max-w-[13rem] min-w-[12rem] overflow-hidden bg-gray/10 rounded-xl border border-transparent hover:border-blue/30 mb-6 mr-8 p-4">
-            <i className="fa-sharp fa-thin fa-plus fa-2xl text-blue/40 rounded-xl border border-blue/40 hover:border-gray px-3 py-5"></i>
-            </div> */}
         </div>
       </div>
       <div className="mt-4 mb-1 py-4 px-8 border border-transparent rounded-lg bg-gray/5">
-        <h3 className="text-lg text-green/80">Projects you participate in:</h3>
-
-        <div className="py-4 flex flex-row"></div>
-        <div className="mx-6">
-          {profile.profile.participatingProjects.map((project, index) => {
-            return (
-              <div key={index} className="flex justify-center">
-                {project.project} {project.role}
-              </div>
-            );
-          })}
+        <div className="flex flex-row w-full justify-between">
+          <h3 className="text-lg text-green/80">Projects you participate in:</h3>
+        </div>
+        <div className="mt-4">
+          {participatingProjectsList && participatingProjectsList.length > 0 ? (
+            <div className="mt-10">
+              {participatingProjectsList.length > 4 ? (
+                <Slider {...settings}>
+                  {participatingProjectsList.map((project, index) => (
+                    <div key={index} className="flex justify-center">
+                      <div className="mx-6">
+                        <ProjectCard
+                          project={{
+                            _id: project._id,
+                            title: project.title,
+                            status: project.status,
+                            description: project.description,
+                            technologies: project.technologies,
+                            rolesNeeded: project.rolesNeeded,
+                            createdBy: profile.profile._id,
+                            projectPictureUrl: project.projectPictureUrl,
+                            projectCoverPictureUrl: project.projectCoverPictureUrl,
+                            participants: project.participants,
+                            likeCount: project.likeCount,
+                          }}
+                          profile={profile}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </Slider>
+              ) : (
+                participatingProjectsList.map((project, index) => (
+                  <div key={index} className="flex justify-center">
+                    <div className="mx-6">
+                      <ProjectCard
+                        project={{
+                          _id: project._id,
+                          title: project.title,
+                          status: project.status,
+                          description: project.description,
+                          technologies: project.technologies,
+                          rolesNeeded: project.rolesNeeded,
+                          createdBy: profile.profile._id,
+                          projectPictureUrl: project.projectPictureUrl,
+                          projectCoverPictureUrl: project.projectCoverPictureUrl,
+                          participants: project.participants,
+                          likeCount: project.likeCount,
+                        }}
+                        profile={profile}
+                      />
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          ) : (
+            <p>No participating projects found.</p>
+          )}
         </div>
       </div>
     </div>

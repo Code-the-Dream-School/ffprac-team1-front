@@ -24,6 +24,10 @@ const Project = () => {
   const [creatorLastName, setCreatorLastName] = useState('');
   const [creatorProfilePictureUrl, setCreatorProfilePictureUrl] = useState('');
   const [error, setError] = useState(null);
+  const isCurrentUserProject =
+    profile && project && profile.profile._id === project.project.createdBy;
+  const [participants, setParticipants] = useState('');
+  const [isUserParticipant, setIsUserParticipant] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,6 +35,14 @@ const Project = () => {
         const projectData = await fetchProject(projectId);
         setProject(projectData);
         setLikes(projectData.project.likeCount);
+        const participantsData = projectData.project.participants;
+        setParticipants(participantsData);
+        if (profile && profile.profile) {
+          const isUserParticipant = participantsData.some(
+            participant => participant.user === profile.profile._id,
+          );
+          setIsUserParticipant(isUserParticipant);
+        }
       } catch (error) {
         console.error('Error in component:', error);
       }
@@ -38,6 +50,19 @@ const Project = () => {
 
     fetchData();
   }, [projectId]);
+
+  useEffect(() => {
+    const checkUserParticipant = () => {
+      if (profile && project && project.project && project.project.participants) {
+        const isUserParticipant = project.project.participants.some(
+          participant => participant.user === profile.profile._id,
+        );
+        setIsUserParticipant(isUserParticipant);
+      }
+    };
+
+    checkUserParticipant();
+  }, [profile, project]);
 
   useEffect(() => {
     const fetchUserProfileData = async () => {
@@ -52,7 +77,7 @@ const Project = () => {
     };
 
     fetchUserProfileData();
-  }, []);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const fetchParticipantsData = async () => {
@@ -160,62 +185,112 @@ const Project = () => {
   };
 
   const renderParticipants = () => {
-    return participantsData.map((participant, index) => {
-      const role = project.project.rolesNeeded[index];
-      return (
-        <div key={index} className="py-4 flex flex-row">
-          <Tooltip content={`${participant.firstName} ${participant.lastName}`}>
-            <Avatar
+  if (!participantsData || !project || !project.project) return null;
+
+  return participantsData.map((participant, index) => {
+    const role = project.project.participants.map(participant => participant.role)[index];
+    return (
+      <div key={index} className="py-4 flex flex-row">
+        <Tooltip content={`${participant.firstName} ${participant.lastName}`}>
+          <Avatar
+            size="sm"
+            variant="circular"
+            alt={`${participant.firstName} ${participant.lastName}`}
+            src={participant.profilePictureUrl}
+            className="border-2 border-gray h-10 w-10 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
+          />
+        </Tooltip>
+        <div className="pl-4">
+          <header>{`${participant.firstName} ${participant.lastName}`}</header>
+          <p className="font-sans font-extralight italic text-[11px] text-blue">{role}</p>
+          {isCurrentUserProject && (
+            <IconButton
+              onClick={() => removeParticipant(participant._id)}
               size="sm"
-              variant="circular"
-              alt={`${participant.firstName} ${participant.lastName}`}
-              src={participant.profilePictureUrl}
-              className="border-2 border-gray h-10 w-10 rounded-full hover:z-10 hover:border-green hover:cursor-pointer"
-            />
-          </Tooltip>
-          <div className="pl-4">
-            <header>{`${participant.firstName} ${participant.lastName}`}</header>
-            <p className="font-sans font-extralight italic text-[11px] text-blue">{role}</p>
-          </div>
+              color="blue"
+              className="ml-2"
+            >
+              <i className="fas fa-trash"></i>
+            </IconButton>
+          )}
         </div>
+      </div>
+    );
+  });
+};
+
+  const removeParticipant = async participantId => {
+    try {
+      await axios.delete(
+        `http://localhost:8000/api/v1/projects/${projectId}/participants/${participantId}`,
+        {
+          withCredentials: true,
+        },
       );
-    });
+      setParticipantsData(
+        participantsData.filter(participant => participant._id !== participantId),
+      );
+    } catch (error) {
+      console.error('Ошибка при удалении участника:', error);
+    }
   };
 
   const handleModalClose = () => {
     window.location.reload();
   };
-  
+
   return (
     <div className="container-primary xl:px-60 flex flex-col text-gray">
       {project && (
         <>
-          <Modal
-            buttonClassName={''}
-            openModalButton={coverImageButton()}
-            modalBody={
-              <UploadImage
-                projectId={projectId}
-                isCoverImage={true}
-                closeModal={handleModalClose}
+          {isCurrentUserProject ? (
+            <Modal
+              buttonClassName={'pl-4'}
+              openModalButton={coverImageButton()}
+              modalBody={
+                <UploadImage
+                  projectId={projectId}
+                  isCoverImage={false}
+                  closeModal={handleModalClose}
+                />
+              }
+            />
+          ) : (
+            <div className="w-full">
+              <img
+                src={project.project.projectCoverPictureUrl}
+                alt="project img"
+                className="object-cover  w-[100vw] h-64  rounded-t-2xl  object-center hover:cursor-pointer hover:opacity-80"
               />
-            }
-          />
+            </div>
+          )}
           <div className="pt-10">
             <div className="flex flex-row">
               <div className="flex flex-col w-1/2">
                 <div className="text-2xl font-medium pb-4 pl-4">{project.project.title}</div>
-                <Modal
-                  buttonClassName={'pl-4'}
-                  openModalButton={imageButton()}
-                  modalBody={
-                    <UploadImage
-                      projectId={projectId}
-                      isCoverImage={false}
-                      closeModal={handleModalClose}
+                {isCurrentUserProject ? (
+                  <Modal
+                    buttonClassName={'pl-4'}
+                    openModalButton={imageButton()}
+                    modalBody={
+                      <UploadImage
+                        projectId={projectId}
+                        isCoverImage={false}
+                        closeModal={handleModalClose}
+                      />
+                    }
+                  />
+                ) : (
+                  <div className="w-full">
+                    <img
+                      size="sm"
+                      variant="circular"
+                      alt="project logo"
+                      src={project.project.projectPictureUrl}
+                      className="border-4 border-blue/50 h-36 w-36 rounded-full bject-cover object-center hover:cursor-pointer hover:border-green"
                     />
-                  }
-                />
+                  </div>
+                )}
               </div>
               <div className="flex flex-col w-1/2 items-end">
                 <div className="flex items-center justify-between mt-7 sm:mr-8 md:mr-4">
@@ -242,7 +317,7 @@ const Project = () => {
                       className=" rounded-lg bg-blue mr-4 text-black"
                       onClick={handleLoginPrompt}
                     >
-                      <i className="fas fa-heart fa-xl" />
+                      <i className="fas fa-heart fa-xl text-black" />
                       <p className="text-black">{likes}</p>
                     </IconButton>
                   )}
@@ -350,6 +425,7 @@ const Project = () => {
                 </div>
               )}
               {isLoggedIn &&
+                !isUserParticipant &&
                 project.project.status !== 'In Progress' &&
                 project.project.status !== 'Completed' && (
                   <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5 flex flex-col items-center">
@@ -361,12 +437,17 @@ const Project = () => {
                           projectId={projectId}
                           projectTitle={project.project.title}
                           projectRolesNeeded={project.project.rolesNeeded}
-                          closeModal={handleModalClose}
+                          participants={project.project.participants}
                         />
                       }
                     />
                   </div>
                 )}
+              {/* {isLoggedIn && isUserParticipant && (
+  <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5 flex flex-col items-center">
+    <p>You are already a participant in this project.</p>
+  </div>
+)} */}
 
               {!isLoggedIn && (
                 <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5 flex flex-col items-center ">

@@ -238,9 +238,6 @@ const EditProject = ({
             </div>
           </div>
         </div>
-
-        
-
         <div className="flex flex-row w-full justify-center items-center pt-8">
           <button variant="gradient" color="green" className="btn-primary text-black w-[30%] ">
             Submit
