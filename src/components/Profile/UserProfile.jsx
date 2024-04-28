@@ -129,7 +129,7 @@ const Profile = () => {
           variant="circular"
           alt="profile picture"
           src={profile.profile.profilePictureUrl}
-          className="border-4 border-transparent h-36 w-36 rounded-full bject-cover object-center hover:cursor-pointer hover:border-green hover:opacity-80"
+          className="border-4 border-blue/50 h-36 w-36 rounded-full object-cover object-center hover:cursor-pointer hover:border-green"
         />
       </Tooltip>
     );
