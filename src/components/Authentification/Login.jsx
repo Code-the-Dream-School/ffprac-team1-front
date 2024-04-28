@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { login } from "../../util/fetchData";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { login } from '../../util/fetchData';
 import { useAuth } from '../../AuthContext';
-import RegistrationModal from "../Modal_Components/RegistrationModal";
+import RegistrationModal from '../Modal_Components/RegistrationModal';
 
 const Login = () => {
   const { isLoggedIn, loginUser } = useAuth();
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
   const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: '', form: '' });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
     if (!formData.email || !formData.password) {
       setErrors({
         ...errors,
-        email: !formData.email ? "Email is required" : "",
-        password: !formData.password ? "Password is required" : "",
+        email: !formData.email ? 'Email is required' : '',
+        password: !formData.password ? 'Password is required' : '',
       });
       return;
     }
@@ -31,14 +31,11 @@ const Login = () => {
     try {
       const result = await login(formData);
       if (result.status === 200) {
-        loginUser(true)
+        loginUser(true);
         navigate('/profile');
       }
     } catch (error) {
-      setErrors({
-        ...errors,
-        form: error.response?.data?.message || "Invalid email or password",
-      });
+      setErrors({ ...errors, form: error.error });
     }
   };
 
@@ -82,11 +79,16 @@ const Login = () => {
           />
           {errors.password && <div className="text-red-500">{errors.password}</div>}
         </div>
-        <button type="submit" className="btn-primary">Sign In</button>
+        <button type="submit" className="btn-primary">
+          Sign In
+        </button>
         {errors.form && <div className="text-red-500">{errors.form}</div>}
         <h6 className="text-center">
-          Don't have an account? 
-          <span className="font-bold text-blue underline hover:cursor-pointer pl-2" onClick={openRegistrationModal}>
+          Don't have an account?
+          <span
+            className="font-bold text-blue underline hover:cursor-pointer pl-2"
+            onClick={openRegistrationModal}
+          >
             Sign Up
           </span>
         </h6>
