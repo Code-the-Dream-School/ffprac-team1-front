@@ -399,7 +399,7 @@ const Project = () => {
                     </div>
                   ) : (
                     <div className="py-4 flex flex-row">
-                      <Tooltip content="User">
+                      <Tooltip content={`${creatorFirstName} ${creatorLastName}`}>
                         <Avatar
                           size="sm"
                           variant="circular"
