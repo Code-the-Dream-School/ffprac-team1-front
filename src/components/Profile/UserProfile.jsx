@@ -20,11 +20,10 @@ const Profile = () => {
   const [profilePictureUrl, setProfilePictureUrl] = useState('');
   const [profileCoverPictureUrl, setProfileCoverPictureUrl] = useState('');
   const [participatingProjectsList, setParticipatingProjectsList] = useState(null);
-
+  const [loading, setLoading] = useState(true);
   const [screenSize, setScreenSize] = useState({
     width: window.innerWidth,
   });
-
   const [coruselItems, setCoruselItems] = useState();
 
   useEffect(() => {
@@ -53,6 +52,7 @@ const Profile = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, [screenSize]);
+
   useEffect(() => {
     const fetchUserProfileData = async () => {
       try {
@@ -118,11 +118,7 @@ const Profile = () => {
     infinite: true,
     speed: 500,
     slidesToShow: coruselItems,
-    slidesToScroll: 4,
-  };
-
-  const handleModalClose = () => {
-    window.location.reload();
+    slidesToScroll: 1,
   };
 
   const imageButton = () => {
@@ -155,19 +151,37 @@ const Profile = () => {
     );
   };
 
+  const handleModalClose = () => {
+    window.location.reload();
+  };
+
   return (
     <div className="contanier-primary flex flex-col text-gray xl:px-60 pb-10">
       <div className="flex flex-col w-full border border-transparent rounded-lg bg-gray/5">
         <Modal
           buttonClassName={''}
           openModalButton={coverImageButton()}
-          modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={true} />}
+          modalBody={
+            <UploadProfileImage
+              profileId={profile.profile._id}
+              isCoverImage={true}
+              closeModal={handleModalClose}
+              currentProfileCoverPictureUrl={profile.profile.profileCoverPictureUrl}
+            />
+          }
         />{' '}
         <div className="px-8 pb-4 pt-4 w-[100vw]">
           <Modal
             buttonClassName={''}
             openModalButton={imageButton()}
-            modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={false} />}
+            modalBody={
+              <UploadProfileImage
+                profileId={profile.profile._id}
+                isCoverImage={false}
+                closeModal={handleModalClose}
+                currentProfilePictureUrl={profile.profile.profilePictureUrl}
+              />
+            }
           />{' '}
           <div className="flex flex-row w-[100vw] pt-4">
             <div className="flex flex-col w-full">
@@ -242,7 +256,7 @@ const Profile = () => {
               <Modal
                 openModalButton={'+ Add New Project'}
                 buttonClassName={'btn-primary font-[Jura] min-w-44'}
-                modalBody={<CreateProject />}
+                modalBody={<CreateProject closeModal={handleModalClose} />}
                 className=""
               />
             </div>
@@ -276,9 +290,9 @@ const Profile = () => {
                     ))}
                   </Slider>
                 ) : (
-                  profile.profile.ownProjects.map((project, index) => (
-                    <div key={index} className="flex justify-center">
-                      <div className="mx-6">
+                  <div className="flex justify-center overflow-x-auto">
+                    {profile.profile.ownProjects.map((project, index) => (
+                      <div key={index} className="mx-4">
                         <ProjectCard
                           project={{
                             _id: project._id,
@@ -296,13 +310,11 @@ const Profile = () => {
                           profile={profile}
                         />
                       </div>
-                    </div>
-                  ))
+                    ))}
+                  </div>
                 )}
               </div>
-            ) : (
-              null
-            )}
+            ) : null}
           </div>
         </div>
       </div>
@@ -339,28 +351,30 @@ const Profile = () => {
                   ))}
                 </Slider>
               ) : (
-                participatingProjectsList.map((project, index) => (
-                  <div key={index} className="flex justify-center">
-                    <div className="mx-6">
-                      <ProjectCard
-                        project={{
-                          _id: project._id,
-                          title: project.title,
-                          status: project.status,
-                          description: project.description,
-                          technologies: project.technologies,
-                          rolesNeeded: project.rolesNeeded,
-                          createdBy: profile.profile._id,
-                          projectPictureUrl: project.projectPictureUrl,
-                          projectCoverPictureUrl: project.projectCoverPictureUrl,
-                          participants: project.participants,
-                          likeCount: project.likeCount,
-                        }}
-                        profile={profile}
-                      />
+                <div className="flex justify-center overflow-x-auto">
+                  {participatingProjectsList.map((project, index) => (
+                    <div key={index} className="flex justify-center">
+                      <div className="mx-6">
+                        <ProjectCard
+                          project={{
+                            _id: project._id,
+                            title: project.title,
+                            status: project.status,
+                            description: project.description,
+                            technologies: project.technologies,
+                            rolesNeeded: project.rolesNeeded,
+                            createdBy: profile.profile._id,
+                            projectPictureUrl: project.projectPictureUrl,
+                            projectCoverPictureUrl: project.projectCoverPictureUrl,
+                            participants: project.participants,
+                            likeCount: project.likeCount,
+                          }}
+                          profile={profile}
+                        />
+                      </div>
                     </div>
-                  </div>
-                ))
+                  ))}
+                </div>
               )}
             </div>
           ) : (

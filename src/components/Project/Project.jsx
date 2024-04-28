@@ -24,10 +24,10 @@ const Project = () => {
   const [creatorLastName, setCreatorLastName] = useState('');
   const [creatorProfilePictureUrl, setCreatorProfilePictureUrl] = useState('');
   const [error, setError] = useState(null);
-  const isCurrentUserProject =
-    profile && project && profile.profile._id === project.project.createdBy;
+  const isCurrentUserProject = profile && project && profile.profile._id === project.project.createdBy;
   const [participants, setParticipants] = useState('');
   const [isUserParticipant, setIsUserParticipant] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,8 +43,10 @@ const Project = () => {
           );
           setIsUserParticipant(isUserParticipant);
         }
+        setLoading(false);
       } catch (error) {
         console.error('Error in component:', error);
+        setLoading(false);
       }
     };
 
@@ -231,13 +233,17 @@ const Project = () => {
         participantsData.filter(participant => participant._id !== participantId),
       );
     } catch (error) {
-      console.error('Ошибка при удалении участника:', error);
+      console.error('Error:', error);
     }
   };
 
   const handleModalClose = () => {
     window.location.reload();
   };
+
+  if (loading) {
+    return <div>Loading project...</div>;
+  }
 
   return (
     <div className="container-primary xl:px-60 flex flex-col text-gray">
@@ -250,8 +256,9 @@ const Project = () => {
               modalBody={
                 <UploadImage
                   projectId={projectId}
-                  isCoverImage={false}
+                  isCoverImage={true}
                   closeModal={handleModalClose}
+                  currentProjectCoverPictureUrl={project.project.projectCoverPictureUrl}
                 />
               }
             />
@@ -277,6 +284,7 @@ const Project = () => {
                         projectId={projectId}
                         isCoverImage={false}
                         closeModal={handleModalClose}
+                        currentProjectPictureUrl={project.project.projectPictureUrl}
                       />
                     }
                   />
