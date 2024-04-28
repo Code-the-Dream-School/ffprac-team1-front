@@ -1,7 +1,7 @@
 import React from 'react';
 import profileImageUpload from './profileImageUpload';
 
-const UploadProfileImage = ({ profileId, isCoverImage, closeModal }) => {
+const UploadProfileImage = ({ profileId, isCoverImage, closeModal, currentProfilePictureUrl, currentProfileCoverPictureUrl }) => {
   const { file, handleChange, handleSubmit } = profileImageUpload(profileId, isCoverImage, closeModal);
 
   return (
@@ -11,7 +11,7 @@ const UploadProfileImage = ({ profileId, isCoverImage, closeModal }) => {
       <div className="content-center">
         <header className="text-center text-ld pb-6 font-bold text-gray"> Image preview</header>
         <img
-          src={file ? URL.createObjectURL(file) : ''}
+          src={file ? URL.createObjectURL(file) : isCoverImage ? currentProfileCoverPictureUrl : currentProfilePictureUrl}
           className="h-56 w-56 rounded-full object-cover object-center bg-black"
           alt="Preview"
         />

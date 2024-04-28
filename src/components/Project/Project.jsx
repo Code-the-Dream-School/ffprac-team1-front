@@ -233,7 +233,7 @@ const Project = () => {
         participantsData.filter(participant => participant._id !== participantId),
       );
     } catch (error) {
-      console.error('Ошибка при удалении участника:', error);
+      console.error('Error:', error);
     }
   };
 
@@ -258,6 +258,7 @@ const Project = () => {
                   projectId={projectId}
                   isCoverImage={false}
                   closeModal={handleModalClose}
+                  currentProjectCoverImageUrl={project.project.projectCoverPictureUrl}
                 />
               }
             />
@@ -283,6 +284,7 @@ const Project = () => {
                         projectId={projectId}
                         isCoverImage={false}
                         closeModal={handleModalClose}
+                        currentProjectImageUrl={project.project.projectPictureUrl}
                       />
                     }
                   />

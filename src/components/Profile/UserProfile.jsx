@@ -161,14 +161,14 @@ const Profile = () => {
         <Modal
           buttonClassName={''}
           openModalButton={coverImageButton()}
-          modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={true} closeModal={handleModalClose}
+          modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={true} closeModal={handleModalClose} currentProfileCoverPictureUrl={profile.profile.profileCoverPictureUrl}
           />}
         />{' '}
         <div className="px-8 pb-4 pt-4 w-[100vw]">
           <Modal
             buttonClassName={''}
             openModalButton={imageButton()}
-            modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={false} closeModal={handleModalClose}
+            modalBody={<UploadProfileImage profileId={profile.profile._id} isCoverImage={false} closeModal={handleModalClose} currentProfilePictureUrl={profile.profile.profilePictureUrl}
             />}
           />{' '}
           <div className="flex flex-row w-[100vw] pt-4">
