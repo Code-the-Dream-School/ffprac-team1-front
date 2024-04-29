@@ -64,7 +64,7 @@ export const fetchProjects = async (search, page, limit) => {
   }
 };
 
-export const fetchProject = async (projectId) => {
+export const fetchProject = async projectId => {
   try {
     const response = await axios.get(`http://localhost:8000/api/v1/projects/${projectId}`, {
       withCredentials: 'include',
@@ -76,11 +76,13 @@ export const fetchProject = async (projectId) => {
   }
 };
 
-export const fetchSearchSuggestions = async (query) => {
+export const fetchSearchSuggestions = async query => {
   try {
-    const response = await axios.get(`http://localhost:8000/api/v1/projects/suggestions?q=${query}`);
+    const response = await axios.get(
+      `http://localhost:8000/api/v1/projects/suggestions?q=${query}`,
+    );
     // console.log(response.data)
-    return response.data; 
+    return response.data;
   } catch (error) {
     console.error('Error fetching search suggestions:', error);
     return [];
@@ -152,22 +154,24 @@ export const updateProfile = async profileDetails => {
   }
 };
 
-export const createProject = async ( { title, description, rolesNeeded } ) => {
+export const createProject = async ({ title, description, rolesNeeded }) => {
   try {
-   const response = await axios.post(
-    `${API_BASE_URL_PROJECTS}`, 
-    {
-    title,
-    description,
-    rolesNeeded
-   }, { withCredentials: true })
-   return response;
+    const response = await axios.post(
+      `${API_BASE_URL_PROJECTS}`,
+      {
+        title,
+        description,
+        rolesNeeded,
+      },
+      { withCredentials: true },
+    );
+    return response;
   } catch (error) {
-   throw error.response.data;
+    throw error.response.data;
   }
- };
+};
 
- export const updateProject = async (projectId, updatedProject) => {
+export const updateProject = async (projectId, updatedProject) => {
   try {
     const response = await fetch(`http://localhost:8000/api/v1/projects/${projectId}`, {
       method: 'PATCH',
@@ -188,7 +192,7 @@ export const createProject = async ( { title, description, rolesNeeded } ) => {
   }
 };
 
- export const applyForProject = async (projectId, selectedRole) => {
+export const applyForProject = async (projectId, selectedRole) => {
   try {
     const response = await fetch(`http://localhost:8000/api/v1/projects/${projectId}/apply`, {
       method: 'POST',
@@ -215,12 +219,16 @@ export const uploadProfileImage = async (profileId, file, isCover = false) => {
     const formData = new FormData();
     formData.append(isCover ? 'coverProfilePicture' : 'profilePicture', file);
 
-    const response = await axios.patch(`http://localhost:8000/api/v1/profiles/myProfile`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
+    const response = await axios.patch(
+      `http://localhost:8000/api/v1/profiles/myProfile`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true,
       },
-      withCredentials: true,
-    });
+    );
 
     return isCover ? response.data.profileCoverPictureUrl : response.data.profilePictureUrl;
   } catch (error) {
@@ -233,12 +241,16 @@ export const uploadProjectImage = async (projectId, file, isCover = false) => {
     const formData = new FormData();
     formData.append(isCover ? 'coverProjectPicture' : 'projectPicture', file);
 
-    const response = await axios.patch(`http://localhost:8000/api/v1/projects/${projectId}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
+    const response = await axios.patch(
+      `http://localhost:8000/api/v1/projects/${projectId}`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true,
       },
-      withCredentials: true,
-    });
+    );
 
     return isCover ? response.data.projectCoverPictureUrl : response.data.projectPictureUrl;
   } catch (error) {
@@ -246,7 +258,7 @@ export const uploadProjectImage = async (projectId, file, isCover = false) => {
   }
 };
 
-export const fetchParticipantsData = async (project) => {
+export const fetchParticipantsData = async project => {
   try {
     if (!project || !project.participants) return [];
     const participantsRequests = project.participants.map(async participant => {
@@ -268,7 +280,13 @@ export const fetchParticipantsData = async (project) => {
   }
 };
 
-export const fetchCreatorData = async (isLoggedIn, project, setCreatorFirstName, setCreatorLastName, setCreatorProfilePictureUrl) => {
+export const fetchCreatorData = async (
+  isLoggedIn,
+  project,
+  setCreatorFirstName,
+  setCreatorLastName,
+  setCreatorProfilePictureUrl,
+) => {
   try {
     if (!isLoggedIn || !project || !project.project || !project.project.createdBy) return;
     const response = await axios.get(
@@ -282,14 +300,16 @@ export const fetchCreatorData = async (isLoggedIn, project, setCreatorFirstName,
     setCreatorLastName(response.data.profile.lastName);
     setCreatorProfilePictureUrl(response.data.profile.profilePictureUrl);
   } catch (error) {
-    console.error(
-      'Error updating project:',
-      error.response ? error.response.data : error.message,
-    );
+    console.error('Error updating project:', error.response ? error.response.data : error.message);
   }
 };
 
-export const removeParticipant = async (projectId, participantId, setParticipantsData, participantsData) => {
+export const removeParticipant = async (
+  projectId,
+  participantId,
+  setParticipantsData,
+  participantsData,
+) => {
   try {
     await axios.delete(
       `http://localhost:8000/api/v1/projects/${projectId}/participants/${participantId}`,
@@ -297,9 +317,7 @@ export const removeParticipant = async (projectId, participantId, setParticipant
         withCredentials: true,
       },
     );
-    setParticipantsData(
-      participantsData.filter(participant => participant._id !== participantId),
-    );
+    setParticipantsData(participantsData.filter(participant => participant._id !== participantId));
   } catch (error) {
     console.error('Error:', error);
   }
@@ -339,7 +357,13 @@ export const fetchApplicantsData = async (ownProjects, setApplicantsData, setLoa
   }
 };
 
-export const approveApplicant = async (projectId, applicantId, ownProjects, applicantsData, setSuccessMessage) => {
+export const approveApplicant = async (
+  projectId,
+  applicantId,
+  ownProjects,
+  applicantsData,
+  setSuccessMessage,
+) => {
   try {
     const response = await axios.post(
       `http://localhost:8000/api/v1/projects/${projectId}/approve/${applicantId}`,
@@ -361,7 +385,13 @@ export const approveApplicant = async (projectId, applicantId, ownProjects, appl
   }
 };
 
-export const declineApplicant = async (projectId, applicantId, ownProjects, applicantsData, setDeclineMessage) => {
+export const declineApplicant = async (
+  projectId,
+  applicantId,
+  ownProjects,
+  applicantsData,
+  setDeclineMessage,
+) => {
   try {
     const response = await axios.post(
       `http://localhost:8000/api/v1/projects/${projectId}/reject/${applicantId}`,
@@ -403,5 +433,5 @@ export default {
   removeParticipant,
   fetchApplicantsData,
   approveApplicant,
-  declineApplicant
+  declineApplicant,
 };
