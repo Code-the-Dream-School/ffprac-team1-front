@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tooltip } from '@material-tailwind/react';
-import ProjectCard from '../Project/ProjectCard.jsx';
-import Modal from '../Modal_Components/Modal.jsx';
-import CreateProject from '../Modal_Components/CreateProject.jsx';
-import EditIcon from '../Modal_Components/EditIcon.jsx';
-import EditProfile from '../Profile/EditProfile.jsx';
+import ProjectCard from '../Project/ProjectCard';
+import Modal from '../Modal_Components/Modal';
+import CreateProject from '../Modal_Components/CreateProject';
+import EditIcon from '../Modal_Components/EditIcon';
+import EditProfile from '../Profile/EditProfile';
 import { fetchUserProfile, fetchProject } from '../../util/fetchData';
 import Slider from 'react-slick';
-import UploadProfileImage from '../Modal_Components/UploadProfileImages.jsx';
+import UploadProfileImage from '../Modal_Components/UploadProfileImages';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
