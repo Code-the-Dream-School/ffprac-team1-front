@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../AuthContext';
-import SearchResults from '../Search/SearchResults.jsx';
-import { fetchProfile } from '../../util/fetchData.js';
+import SearchResults from '../Search/SearchResults';
+import { fetchProfile } from '../../util/fetchData';
 
 const ProjectsList = () => {
   const { isLoggedIn } = useAuth();
