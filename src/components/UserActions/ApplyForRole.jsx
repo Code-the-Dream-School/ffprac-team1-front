@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { fetchUserProfile, fetchProjects } from '../../util/fetchData';
+import {
+  fetchUserProfile,
+  fetchProjects,
+  fetchApplicantsData,
+  approveApplicant,
+  declineApplicant,
+} from '../../util/fetchData';
 import { Card } from '@material-tailwind/react';
 
 const ApplyForRole = () => {
@@ -26,76 +31,15 @@ const ApplyForRole = () => {
   const ownProjects = profile?.userProfile?.profile?.ownProjects;
 
   useEffect(() => {
-    const fetchApplicantsData = async () => {
-      if (ownProjects) {
-        setLoading(true);
-        const applicantsRequests = ownProjects.flatMap(project =>
-          project.applicants.map(applicant =>
-            axios
-              .get(`http://localhost:8000/api/v1/profiles/${applicant.user}`, {
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: 'include',
-              })
-              .then(response => ({
-                ...response.data.profile,
-                projectId: project._id,
-                userId: applicant.user,
-              })),
-          ),
-        );
-        const results = await Promise.all(applicantsRequests);
-        const newData = results.reduce((acc, curr) => {
-          acc[curr.userId] = curr;
-          return acc;
-        }, {});
-        setApplicantsData(newData);
-        setLoading(false);
-      }
-    };
-    fetchApplicantsData();
+    fetchApplicantsData(ownProjects, setApplicantsData, setLoading);
   }, [ownProjects]);
 
   const handleApprove = async (projectId, applicantId) => {
-    try {
-      const response = await axios.post(
-        `http://localhost:8000/api/v1/projects/${projectId}/approve/${applicantId}`,
-        {},
-        {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: 'include',
-        },
-      );
-      const projectName = ownProjects.find(project => project._id === projectId)?.title;
-      const applicant = applicantsData;
-      const applicantName = applicant ? `${applicant.firstName} ${applicant.lastName}` : '';
-      setSuccessMessage(`Applicant successfully added to the project "${projectName}".`);
-    } catch (error) {
-      console.error('Error approving applicant:', error);
-      if (error.response) {
-        console.error('Server response:', error.response.data);
-      }
-    }
+    await approveApplicant(projectId, applicantId, ownProjects, applicantsData, setSuccessMessage);
   };
 
   const handleDecline = async (projectId, applicantId) => {
-    try {
-      const response = await axios.post(
-        `http://localhost:8000/api/v1/projects/${projectId}/reject/${applicantId}`,
-        {},
-        {
-          withCredentials: 'include',
-        },
-      );
-      const projectName = ownProjects.find(project => project._id === projectId)?.title;
-      const applicant = applicantsData;
-      const applicantName = applicant ? `${applicant.firstName} ${applicant.lastName}` : '';
-      setDeclineMessage(`Applicant has been successfully declined for the project "${projectName}".`);
-    } catch (error) {
-      console.error('Error declining applicant:', error);
-      if (error.response) {
-        console.error('Server response:', error.response.data);
-      }
-    }
+    await declineApplicant(projectId, applicantId, ownProjects, applicantsData, setDeclineMessage);
   };
 
   return (
