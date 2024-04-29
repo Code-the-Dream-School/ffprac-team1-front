@@ -81,7 +81,6 @@ export const fetchSearchSuggestions = async query => {
     const response = await axios.get(
       `http://localhost:8000/api/v1/projects/suggestions?q=${query}`,
     );
-    // console.log(response.data)
     return response.data;
   } catch (error) {
     console.error('Error fetching search suggestions:', error);
