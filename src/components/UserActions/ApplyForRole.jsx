@@ -81,7 +81,7 @@ const ApplyForRole = () => {
                           <a href={`mailto:${data.email}`}>Email: {data.email}</a>
                           {data.contacts &&
                             Object.entries(data.contacts)
-                              .filter(([_, value]) => value !== null)
+                              .filter(([_, value]) => value)
                               .map(([key, value]) => (
                                 <div key={key}>
                                   <a href={value} target="_blank" rel="noopener noreferrer">
