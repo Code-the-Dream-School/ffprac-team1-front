@@ -4,12 +4,14 @@ Welcome to the front-end repository for **DevConnexion** — an innovative platf
 
 This repository contains the **React.js application** code, which interfaces with our [Back-End Repository](https://github.com/Code-the-Dream-School/ffprac-team1-back/).
 
+
 ## Table of Contents
 
 1. [Technologies Used](#technologies-used)
 2. [Key Features](#key-features)
 3. [Quick Start](#quick-start)
-4. [Authors](#authors)
+4. [Presentation](#presentation)
+5. [Authors](#authors)
 
 ## Technologies Used
 
@@ -52,10 +54,10 @@ This setup leverages cutting-edge technologies and tools to streamline developme
 - **Text-based Search and Dynamic Filtering**: Users can search for projects using sophisticated querying capabilities, dynamically filtering projects based on titles, descriptions, technologies used, and roles needed.
 - **Enhanced Search Capabilities**: Features an intelligent search bar with dynamic suggestions and auto-complete options, facilitating efficient and targeted searches.
 - **Sorting and Pagination**: Results are organized intelligently, showing the best matches first and displayed in a paginated format.
-<p align="center">
+<!-- <p align="center">
   <img width="800" alt="Screenshot 2024-04-28 at 12 12 43" src="https://github.com/Code-the-Dream-School/ffprac-team1-front/assets/114008959/a592535d-14da-42db-93db-d3937df91a51">
   <img width="800" alt="Screenshot 2024-04-28 at 12 14 24" src="https://github.com/Code-the-Dream-School/ffprac-team1-front/assets/114008959/35b7c316-fc83-4d36-84f1-a9c3839daeee">
-</p>
+</p> -->
 
 ### Comprehensive User and Profile Management
 
@@ -86,6 +88,11 @@ This setup leverages cutting-edge technologies and tools to streamline developme
 ### Additional Configuration
 
 - Ensure the back-end server is running as per the instructions in our [Back-End Repository](https://github.com/Code-the-Dream-School/ffprac-team1-back/).
+
+---
+## Presentation
+- [Final Presentation Slides](https://docs.google.com/presentation/d/1tA_GcsecgXUW9qjkVMYCg9VqmwJCWgsn/edit#slide=id.p2)
+
 ---
 
 ## Authors
