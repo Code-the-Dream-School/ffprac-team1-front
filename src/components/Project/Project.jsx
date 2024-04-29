@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
-import Modal from '../Modal_Components/Modal.jsx';
-import UploadImage from '../Modal_Components/UploadImages.jsx';
+import Modal from '../Modal_Components/Modal';
+import UploadImage from '../Modal_Components/UploadImages';
 import { IconButton } from '@material-tailwind/react';
 import { Avatar, Tooltip } from '@material-tailwind/react';
 import { useAuth } from '../../AuthContext';
 import { v4 as uuidv4 } from 'uuid';
-import { likeProject } from '../../util/fetchData.js';
-import EditProject from '../Modal_Components/EditProject.jsx';
-import EditIcon from '../Modal_Components/EditIcon.jsx';
-import Apply from '../Modal_Components/Apply.jsx';
-import { fetchUserProfile, fetchProject } from '../../util/fetchData';
+import EditProject from '../Modal_Components/EditProject';
+import EditIcon from '../Modal_Components/EditIcon';
+import Apply from '../Modal_Components/Apply';
+import {
+  fetchUserProfile,
+  fetchProject,
+  fetchParticipantsData,
+  fetchCreatorData,
+  removeParticipant,
+  likeProject,
+} from '../../util/fetchData';
 import { TrashIcon } from '@heroicons/react/24/outline';
 
 const Project = () => {
@@ -84,54 +89,28 @@ const Project = () => {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    const fetchParticipantsData = async () => {
+    const fetchData = async () => {
       try {
-        if (!project || !project.project.participants) return;
-        const participantsRequests = project.project.participants.map(async participant => {
-          const response = await axios.get(
-            `http://localhost:8000/api/v1/profiles/${participant.user}`,
-            {
-              headers: { 'Content-Type': 'application/json' },
-              withCredentials: 'include',
-            },
-          );
-          return response.data.profile;
-        });
-
-        const participantsData = await Promise.all(participantsRequests);
+        if (!project || !project.project || !project.project.participants) return;
+        const participantsData = await fetchParticipantsData(project.project);
         setParticipantsData(participantsData);
       } catch (error) {
-        console.error('Error fetching participants data:', error);
+        console.error('Error in fetching participants data:', error);
       }
     };
 
-    fetchParticipantsData();
+    fetchData();
   }, [project]);
 
   useEffect(() => {
-    const fetchCreator = async () => {
-      try {
-        if (!isLoggedIn || !project || !project.project || !project.project.createdBy) return;
-        const response = await axios.get(
-          `http://localhost:8000/api/v1/profiles/${project.project.createdBy}`,
-          {
-            headers: { 'Content-Type': 'application/json' },
-            withCredentials: true,
-          },
-        );
-        setCreatorFirstName(response.data.profile.firstName);
-        setCreatorLastName(response.data.profile.lastName);
-        setCreatorProfilePictureUrl(response.data.profile.profilePictureUrl);
-      } catch (error) {
-        console.error(
-          'Error updating project:',
-          error.response ? error.response.data : error.message,
-        );
-      }
-    };
-
     if (isLoggedIn && project) {
-      fetchCreator();
+      fetchCreatorData(
+        isLoggedIn,
+        project,
+        setCreatorFirstName,
+        setCreatorLastName,
+        setCreatorProfilePictureUrl,
+      );
     }
   }, [isLoggedIn, project]);
 
@@ -209,35 +188,23 @@ const Project = () => {
             <p className="font-sans font-extralight italic text-[11px] text-blue">{role}</p>
           </div>
           {isCurrentUserProject && (
-              <TrashIcon  
-                onClick={() => removeParticipant(participant._id)}
-                size="sm"
-                color="blue"
-                strokeWidth="1"
-                className="h-5 w-5 ml-2 mb-2 mt-2 stroke-blue/50 inline hover:stroe-blue hover:cursor-pointer"
-              >
-                <i className="fas fa-trash"></i>
-              </TrashIcon>
-            )}
+            <TrashIcon
+              onClick={() => handleRemoveParticipant(participant._id)}
+              size="sm"
+              color="blue"
+              strokeWidth="1"
+              className="h-5 w-5 ml-2 mb-2 mt-2 stroke-blue/50 inline hover:stroe-blue hover:cursor-pointer"
+            >
+              <i className="fas fa-trash"></i>
+            </TrashIcon>
+          )}
         </div>
       );
     });
   };
 
-  const removeParticipant = async participantId => {
-    try {
-      await axios.delete(
-        `http://localhost:8000/api/v1/projects/${projectId}/participants/${participantId}`,
-        {
-          withCredentials: true,
-        },
-      );
-      setParticipantsData(
-        participantsData.filter(participant => participant._id !== participantId),
-      );
-    } catch (error) {
-      console.error('Error:', error);
-    }
+  const handleRemoveParticipant = async participantId => {
+    removeParticipant(projectId, participantId, setParticipantsData, participantsData);
   };
 
   const handleModalClose = () => {
@@ -454,12 +421,6 @@ const Project = () => {
                     />
                   </div>
                 )}
-              {/* {isLoggedIn && isUserParticipant && (
-  <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5 flex flex-col items-center">
-    <p>You are already a participant in this project.</p>
-  </div>
-)} */}
-
               {!isLoggedIn && (
                 <div className="my-4 p-8 border border-transparent rounded-lg bg-gray/5 flex flex-col items-center ">
                   <p className="text-center">

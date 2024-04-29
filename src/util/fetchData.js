@@ -246,6 +246,65 @@ export const uploadProjectImage = async (projectId, file, isCover = false) => {
   }
 };
 
+export const fetchParticipantsData = async (project) => {
+  try {
+    if (!project || !project.participants) return [];
+    const participantsRequests = project.participants.map(async participant => {
+      const response = await axios.get(
+        `http://localhost:8000/api/v1/profiles/${participant.user}`,
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: 'include',
+        },
+      );
+      return response.data.profile;
+    });
+
+    const participantsData = await Promise.all(participantsRequests);
+    return participantsData;
+  } catch (error) {
+    console.error('Error fetching participants data:', error);
+    return [];
+  }
+};
+
+export const fetchCreatorData = async (isLoggedIn, project, setCreatorFirstName, setCreatorLastName, setCreatorProfilePictureUrl) => {
+  try {
+    if (!isLoggedIn || !project || !project.project || !project.project.createdBy) return;
+    const response = await axios.get(
+      `http://localhost:8000/api/v1/profiles/${project.project.createdBy}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true,
+      },
+    );
+    setCreatorFirstName(response.data.profile.firstName);
+    setCreatorLastName(response.data.profile.lastName);
+    setCreatorProfilePictureUrl(response.data.profile.profilePictureUrl);
+  } catch (error) {
+    console.error(
+      'Error updating project:',
+      error.response ? error.response.data : error.message,
+    );
+  }
+};
+
+export const removeParticipant = async (projectId, participantId, setParticipantsData, participantsData) => {
+  try {
+    await axios.delete(
+      `http://localhost:8000/api/v1/projects/${projectId}/participants/${participantId}`,
+      {
+        withCredentials: true,
+      },
+    );
+    setParticipantsData(
+      participantsData.filter(participant => participant._id !== participantId),
+    );
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
 export default {
   register,
   login,
@@ -261,5 +320,8 @@ export default {
   fetchSearchSuggestions,
   applyForProject,
   uploadProfileImage,
-  uploadProjectImage
+  uploadProjectImage,
+  fetchParticipantsData,
+  fetchCreatorData,
+  removeParticipant
 };
