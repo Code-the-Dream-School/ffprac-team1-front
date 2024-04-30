@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import { uploadProfileImage } from '../../util/fetchData';
 
 const profileImageUpload = (profileId, isCover = false, closeModal) => {
   const [file, setFile] = useState();
@@ -9,28 +9,17 @@ const profileImageUpload = (profileId, isCover = false, closeModal) => {
     setFile(image);
   };
 
-  const handleSubmit = onSuccess => {
-    const formData = new FormData();
-    formData.append(isCover ? 'coverProfilePicture' : 'profilePicture', file);
-    axios
-      .patch(`http://localhost:8000/api/v1/profiles/myProfile`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        withCredentials: true,
-      })
-      .then(response => {
-        closeModal();
-        navigate(`/profile`);
-        if (typeof onSuccess === 'function') {
-          onSuccess(
-            isCover ? response.data.profileCoverPictureUrl : response.data.profilePictureUrl,
-          );
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
+  const handleSubmit = async () => {
+    try {
+      const imageUrl = await uploadProfileImage(profileId, file, isCover);
+      closeModal();
+      navigate(`/profile`);
+      if (typeof onSuccess === 'function') {
+        onSuccess(imageUrl);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return { file, handleChange, handleSubmit };

@@ -12,7 +12,7 @@ const Pagination = ({ currentPage, totalPages, paginate }) => {
     if (currentPage === 1) return;
     paginate(currentPage - 1);
   };
-  
+
   return (
     <div className="flex items-center gap-8">
       <Button

@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const isToken = sessionStorage.getItem('isToken');
-  useEffect(()=> {
+  useEffect(() => {
     if (isToken) {
       setIsLoggedIn(true);
     } else {
@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, [isToken]);
 
-  const loginUser = (status) => {
+  const loginUser = status => {
     sessionStorage.setItem('isToken', status);
     setIsLoggedIn(true);
   };
@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
     sessionStorage.removeItem('isToken');
     setIsLoggedIn(false);
   };
-  
+
   return (
     <AuthContext.Provider value={{ isLoggedIn, logoutUser, loginUser }}>
       {children}

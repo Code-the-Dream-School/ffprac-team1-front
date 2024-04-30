@@ -64,7 +64,7 @@ export const fetchProjects = async (search, page, limit) => {
   }
 };
 
-export const fetchProject = async (projectId) => {
+export const fetchProject = async projectId => {
   try {
     const response = await axios.get(`http://localhost:8000/api/v1/projects/${projectId}`, {
       withCredentials: 'include',
@@ -76,11 +76,12 @@ export const fetchProject = async (projectId) => {
   }
 };
 
-export const fetchSearchSuggestions = async (query) => {
+export const fetchSearchSuggestions = async query => {
   try {
-    const response = await axios.get(`http://localhost:8000/api/v1/projects/suggestions?q=${query}`);
-    // console.log(response.data)
-    return response.data; 
+    const response = await axios.get(
+      `http://localhost:8000/api/v1/projects/suggestions?q=${query}`,
+    );
+    return response.data;
   } catch (error) {
     console.error('Error fetching search suggestions:', error);
     return [];
@@ -152,20 +153,263 @@ export const updateProfile = async profileDetails => {
   }
 };
 
-export const createProject = async ( { title, description, rolesNeeded } ) => {
+export const createProject = async ({ title, description, rolesNeeded }) => {
   try {
-   const response = await axios.post(
-    `${API_BASE_URL_PROJECTS}`, 
-    {
-    title,
-    description,
-    rolesNeeded
-   }, { withCredentials: true })
-   return response;
+    const response = await axios.post(
+      `${API_BASE_URL_PROJECTS}`,
+      {
+        title,
+        description,
+        rolesNeeded,
+      },
+      { withCredentials: true },
+    );
+    return response;
   } catch (error) {
-   throw error.response.data;
+    throw error.response.data;
   }
- };
+};
+
+export const updateProject = async (projectId, updatedProject) => {
+  try {
+    const response = await fetch(`http://localhost:8000/api/v1/projects/${projectId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedProject),
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to update project');
+    }
+
+    return true;
+  } catch (error) {
+    throw new Error('Failed to update project. Please try again later.');
+  }
+};
+
+export const applyForProject = async (projectId, selectedRole) => {
+  try {
+    const response = await fetch(`http://localhost:8000/api/v1/projects/${projectId}/apply`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ role: selectedRole }),
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to submit application');
+    }
+
+    return true;
+  } catch (error) {
+    throw new Error(error.message || 'Error submitting application');
+  }
+};
+
+export const uploadProfileImage = async (profileId, file, isCover = false) => {
+  try {
+    const formData = new FormData();
+    formData.append(isCover ? 'coverProfilePicture' : 'profilePicture', file);
+
+    const response = await axios.patch(
+      `http://localhost:8000/api/v1/profiles/myProfile`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true,
+      },
+    );
+
+    return isCover ? response.data.profileCoverPictureUrl : response.data.profilePictureUrl;
+  } catch (error) {
+    throw new Error('Error uploading profile image');
+  }
+};
+
+export const uploadProjectImage = async (projectId, file, isCover = false) => {
+  try {
+    const formData = new FormData();
+    formData.append(isCover ? 'coverProjectPicture' : 'projectPicture', file);
+
+    const response = await axios.patch(
+      `http://localhost:8000/api/v1/projects/${projectId}`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true,
+      },
+    );
+
+    return isCover ? response.data.projectCoverPictureUrl : response.data.projectPictureUrl;
+  } catch (error) {
+    throw new Error('Error uploading project image');
+  }
+};
+
+export const fetchParticipantsData = async project => {
+  try {
+    if (!project || !project.participants) return [];
+    const participantsRequests = project.participants.map(async participant => {
+      const response = await axios.get(
+        `http://localhost:8000/api/v1/profiles/${participant.user}`,
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: 'include',
+        },
+      );
+      return response.data.profile;
+    });
+
+    const participantsData = await Promise.all(participantsRequests);
+    return participantsData;
+  } catch (error) {
+    console.error('Error fetching participants data:', error);
+    return [];
+  }
+};
+
+export const fetchCreatorData = async (
+  isLoggedIn,
+  project,
+  setCreatorFirstName,
+  setCreatorLastName,
+  setCreatorProfilePictureUrl,
+) => {
+  try {
+    if (!isLoggedIn || !project || !project.project || !project.project.createdBy) return;
+    const response = await axios.get(
+      `http://localhost:8000/api/v1/profiles/${project.project.createdBy}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true,
+      },
+    );
+    setCreatorFirstName(response.data.profile.firstName);
+    setCreatorLastName(response.data.profile.lastName);
+    setCreatorProfilePictureUrl(response.data.profile.profilePictureUrl);
+  } catch (error) {
+    console.error('Error updating project:', error.response ? error.response.data : error.message);
+  }
+};
+
+export const removeParticipant = async (
+  projectId,
+  participantId,
+  setParticipantsData,
+  participantsData,
+) => {
+  try {
+    await axios.delete(
+      `http://localhost:8000/api/v1/projects/${projectId}/participants/${participantId}`,
+      {
+        withCredentials: true,
+      },
+    );
+    setParticipantsData(participantsData.filter(participant => participant._id !== participantId));
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+export const fetchApplicantsData = async (ownProjects, setApplicantsData, setLoading) => {
+  if (!ownProjects) return;
+
+  setLoading(true);
+
+  const applicantsRequests = ownProjects.flatMap(project =>
+    project.applicants.map(applicant =>
+      axios
+        .get(`http://localhost:8000/api/v1/profiles/${applicant.user}`, {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: 'include',
+        })
+        .then(response => ({
+          ...response.data.profile,
+          projectId: project._id,
+          userId: applicant.user,
+        })),
+    ),
+  );
+
+  try {
+    const results = await Promise.all(applicantsRequests);
+    const newData = results.reduce((acc, curr) => {
+      acc[curr.userId] = curr;
+      return acc;
+    }, {});
+    setApplicantsData(newData);
+    setLoading(false);
+  } catch (error) {
+    console.error('Error fetching applicants data:', error);
+    setLoading(false);
+  }
+};
+
+export const approveApplicant = async (
+  projectId,
+  applicantId,
+  ownProjects,
+  applicantsData,
+  setSuccessMessage,
+) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:8000/api/v1/projects/${projectId}/approve/${applicantId}`,
+      {},
+      {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: 'include',
+      },
+    );
+    const projectName = ownProjects.find(project => project._id === projectId)?.title;
+    const applicant = applicantsData[applicantId];
+    const applicantName = applicant ? `${applicant.firstName} ${applicant.lastName}` : '';
+    setSuccessMessage(`Applicant successfully added to the project "${projectName}".`);
+  } catch (error) {
+    console.error('Error approving applicant:', error);
+    if (error.response) {
+      console.error('Server response:', error.response.data);
+    }
+  }
+};
+
+export const declineApplicant = async (
+  projectId,
+  applicantId,
+  ownProjects,
+  applicantsData,
+  setDeclineMessage,
+) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:8000/api/v1/projects/${projectId}/reject/${applicantId}`,
+      {},
+      {
+        withCredentials: 'include',
+      },
+    );
+    const projectName = ownProjects.find(project => project._id === projectId)?.title;
+    const applicant = applicantsData[applicantId];
+    const applicantName = applicant ? `${applicant.firstName} ${applicant.lastName}` : '';
+    setDeclineMessage(`Applicant has been successfully declined for the project "${projectName}".`);
+  } catch (error) {
+    console.error('Error declining applicant:', error);
+    if (error.response) {
+      console.error('Server response:', error.response.data);
+    }
+  }
+};
 
 export default {
   register,
@@ -178,5 +422,15 @@ export default {
   updateProfile,
   fetchProfile,
   createProject,
+  updateProject,
   fetchSearchSuggestions,
+  applyForProject,
+  uploadProfileImage,
+  uploadProjectImage,
+  fetchParticipantsData,
+  fetchCreatorData,
+  removeParticipant,
+  fetchApplicantsData,
+  approveApplicant,
+  declineApplicant,
 };

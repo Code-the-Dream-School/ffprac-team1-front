@@ -18,6 +18,7 @@ const EditProfile = ({ profileData, onSave, closeModal }) => {
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
   useEffect(() => {
     if (profileData) {
       setProfile({
@@ -33,6 +34,7 @@ const EditProfile = ({ profileData, onSave, closeModal }) => {
       });
     }
   }, [profileData]);
+
   const handleChange = e => {
     const { name, value } = e.target;
     if (name.startsWith('contacts.')) {
@@ -52,6 +54,7 @@ const EditProfile = ({ profileData, onSave, closeModal }) => {
       }));
     }
   };
+
   const urlPattern = new RegExp(
     '^(https?:\\/\\/)?' +
       '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' +
@@ -61,9 +64,11 @@ const EditProfile = ({ profileData, onSave, closeModal }) => {
       '(\\#[-a-z\\d_]*)?$',
     'i',
   );
+
   const isValidUrl = url => {
     return !url || urlPattern.test(url);
   };
+
   const handleSubmit = async e => {
     e.preventDefault();
     setError('');
@@ -95,6 +100,7 @@ const EditProfile = ({ profileData, onSave, closeModal }) => {
       console.error('Error updating profile:', error);
     }
   };
+
   return (
     <div className="max-h-[700px] overflow-y-auto p-4 rounded-lg">
       <form onSubmit={handleSubmit} className="px-4 rounded-lg ">
@@ -175,4 +181,5 @@ const EditProfile = ({ profileData, onSave, closeModal }) => {
     </div>
   );
 };
+
 export default EditProfile;

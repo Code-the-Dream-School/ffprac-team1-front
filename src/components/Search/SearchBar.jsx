@@ -9,7 +9,7 @@ const Search = ({ className, centered }) => {
   const [suggestions, setSuggestions] = useState([]);
   const navigate = useNavigate();
 
-  const fetchSuggestions = async (word) => {
+  const fetchSuggestions = async word => {
     try {
       const newSuggestions = await fetchSearchSuggestions(word);
       setSuggestions(newSuggestions.slice(0, 5));
@@ -59,15 +59,23 @@ const Search = ({ className, centered }) => {
           onChange={handleSearchInputChange}
         />
         {suggestions.length > 0 && (
-          <div style={{
-            position: 'absolute',
-            top: '100%',
-            left: centered ? '50%' : 0,
-            transform: centered ? 'translateX(-50%)' : 'none',
-            width: centered ? 'auto' : '100%',
-          }}>
+          <div
+            style={{
+              position: 'absolute',
+              top: '100%',
+              left: centered ? '50%' : 0,
+              transform: centered ? 'translateX(-50%)' : 'none',
+              width: centered ? 'auto' : '100%',
+            }}
+          >
             {suggestions.map((suggestion, index) => (
-              <span key={index} style={{ display: 'inline-block', margin: '0 5px', cursor: 'pointer' }} onClick={() => handleSuggestionClick(suggestion)}>{suggestion}</span>
+              <span
+                key={index}
+                style={{ display: 'inline-block', margin: '0 5px', cursor: 'pointer' }}
+                onClick={() => handleSuggestionClick(suggestion)}
+              >
+                {suggestion}
+              </span>
             ))}
           </div>
         )}

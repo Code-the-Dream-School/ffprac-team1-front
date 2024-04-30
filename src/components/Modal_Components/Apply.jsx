@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Alert } from "@material-tailwind/react";
+import { Alert } from '@material-tailwind/react';
+import { applyForProject } from '../../util/fetchData';
 
-const Apply = ({ projectTitle, projectRolesNeeded, projectId, participants}) => {
+const Apply = ({ projectTitle, projectRolesNeeded, projectId, participants }) => {
   const [selectedRole, setSelectedRole] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
-  useEffect(() => {
-    // console.log('Selected role:', selectedRole);
-  }, [selectedRole]);
-
-  const handleRoleChange = (e) => {
+  const handleRoleChange = e => {
     setSelectedRole(e.target.value);
     setError('');
     setSuccess(false);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
     if (!selectedRole) {
@@ -25,19 +22,7 @@ const Apply = ({ projectTitle, projectRolesNeeded, projectId, participants}) => 
     }
 
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/projects/${projectId}/apply`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ role: selectedRole }),
-        credentials: 'include',
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to submit application');
-      }
+      await applyForProject(projectId, selectedRole);
 
       setSuccess(true);
       setSelectedRole('');
@@ -62,7 +47,7 @@ const Apply = ({ projectTitle, projectRolesNeeded, projectId, participants}) => 
               className="bg-black text-white border-none px-4 py-2 rounded-md"
             >
               <option value="">Select a role</option>
-              {projectRolesNeeded.map((role) => (
+              {projectRolesNeeded.map(role => (
                 <option key={role} value={role}>
                   {role}
                 </option>

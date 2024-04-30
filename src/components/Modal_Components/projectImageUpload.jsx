@@ -1,34 +1,25 @@
 import { useState } from 'react';
-import axios from 'axios';
+import { uploadProjectImage } from '../../util/fetchData';
 
 const projectImageUpload = (projectId, isCover = false, closeModal) => {
   const [file, setFile] = useState();
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     const image = e.target.files[0];
     setFile(image);
   };
 
-  const handleSubmit = (onSuccess) => {
-    const formData = new FormData();
-    formData.append(isCover ? 'coverProjectPicture' : 'projectPicture', file);
-    axios
-      .patch(`http://localhost:8000/api/v1/projects/${projectId}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        withCredentials: true,
-      })
-      .then((response) => {
-        closeModal();
-        navigate(`/projects/${projectId}`);
-        if (typeof onSuccess === 'function') {
-          onSuccess(isCover ? response.data.projectCoverPictureUrl : response.data.projectPictureUrl);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const handleSubmit = async () => {
+    try {
+      const imageUrl = await uploadProjectImage(projectId, file, isCover);
+      closeModal();
+      navigate(`/projects/${projectId}`);
+      if (typeof onSuccess === 'function') {
+        onSuccess(imageUrl);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return { file, handleChange, handleSubmit };

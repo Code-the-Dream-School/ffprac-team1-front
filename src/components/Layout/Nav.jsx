@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../AuthContext';
-import { logout } from '../../util/fetchData'; 
+import { logout } from '../../util/fetchData';
 
 const Nav = () => {
   const { isLoggedIn, logoutUser } = useAuth();
@@ -10,13 +10,13 @@ const Nav = () => {
   const handleLogout = async () => {
     logoutUser();
     logout()
-     .then (() => {
-      logoutUser()      
-      navigate('/')
-    }) 
-      .catch (error => {
+      .then(() => {
+        logoutUser();
+        navigate('/');
+      })
+      .catch(error => {
         console.log(error);
-    })
+      });
   };
 
   return (
@@ -28,7 +28,7 @@ const Nav = () => {
         </Link>
       </div>
       <nav className="flex flex-row pr-4 pt-2">
-      {!isLoggedIn ? (
+        {!isLoggedIn ? (
           <>
             <div className="pr-4">
               <Link to="/register">Join Now</Link>
@@ -42,17 +42,16 @@ const Nav = () => {
             <div className="pr-4">
               <Link to="/projects-list">Browse projects</Link>
             </div>
-            {/* <div className="pr-4">
-              <Link to="/messaging">Messaging</Link>
-            </div>*/}
             <div className="pr-4">
               <Link to="/roleapplications">Role Applications</Link>
-            </div> 
+            </div>
             <div className="pr-4">
               <Link to="/profile">Profile</Link>
             </div>
             <div className="pr-4">
-              <Link to="/" onClick={handleLogout}>Sign Out</Link>
+              <Link to="/" onClick={handleLogout}>
+                Sign Out
+              </Link>
             </div>
           </>
         )}
