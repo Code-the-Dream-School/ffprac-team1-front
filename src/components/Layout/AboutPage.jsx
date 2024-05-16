@@ -106,11 +106,11 @@ const AboutPage = () => {
 
         <div className="border border-transparent rounded-lg bg-gray/5 px-8 py-6 mb-4 flex flex-col">
             <p className="text-xl text-green/85 pb-4">Project Links:</p>
-            <a href="https://github.com/Code-the-Dream-School/ffprac-team1-front" target="_blank" className="">
+            <a href="https://github.com/Code-the-Dream-School/ffprac-team1-front" target="_blank" rel="noopener noreferrer" className="">
                 <i className="fas fa-link fa-md pr-2" />  DevConnexion GitHub Front End</a>
-            <a href="https://github.com/Code-the-Dream-School/ffprac-team1-back" target="_blank" className="break-normal">
+            <a href="https://github.com/Code-the-Dream-School/ffprac-team1-back" target="_blank" rel="noopener noreferrer" className="break-normal">
                 <i className="fas fa-link fa-md pr-2" />  DevConnexion GitHub Back End</a>
-            <a href="https://dev-connexion-g6sv.onrender.com/api-docs/#/" target="_blank" className="break-normal">
+            <a href="https://dev-connexion-g6sv.onrender.com/api-docs/" target="_blank" rel="noopener noreferrer" className="break-normal">
                 <i className="fas fa-link fa-md pr-2" />  DevConnexion API</a>
             
         </div>
