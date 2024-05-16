@@ -323,35 +323,45 @@ export const removeParticipant = async (
 };
 
 export const fetchApplicantsData = async (ownProjects, setApplicantsData, setLoading) => {
-  if (!ownProjects) return;
+  if (!ownProjects || ownProjects.length === 0) {
+    setLoading(false);
+    return;
+  }
 
   setLoading(true);
 
-  const applicantsRequests = ownProjects.flatMap(project =>
-    project.applicants.map(applicant =>
-      axios
-        .get(`${API_BASE_URL}/profiles/${applicant.user}`, {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: 'include',
-        })
-        .then(response => ({
-          ...response.data.profile,
-          projectId: project._id,
-          userId: applicant.user,
-        })),
-    ),
-  );
-
   try {
-    const results = await Promise.all(applicantsRequests);
-    const newData = results.reduce((acc, curr) => {
-      acc[curr.userId] = curr;
+    const applicantsRequests = ownProjects.flatMap(project =>
+      project.applicants.map(applicant =>
+        axios
+          .get(`${API_BASE_URL}/profiles/${applicant.user}`, {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true, 
+          })
+          .then(response => ({
+            ...response.data.profile,
+            projectId: project._id,
+            userId: applicant.user,
+          }))
+          .catch(error => {
+            console.error(`Error fetching applicant ${applicant.user}:`, error);
+            return null; 
+          })
+      )
+    );
+
+    const applicantsDataArray = await Promise.all(applicantsRequests);
+    const validApplicantsData = applicantsDataArray.filter(data => data !== null);
+
+    const applicantsData = validApplicantsData.reduce((acc, data) => {
+      acc[data.userId] = data;
       return acc;
     }, {});
-    setApplicantsData(newData);
-    setLoading(false);
+
+    setApplicantsData(applicantsData);
   } catch (error) {
     console.error('Error fetching applicants data:', error);
+  } finally {
     setLoading(false);
   }
 };
