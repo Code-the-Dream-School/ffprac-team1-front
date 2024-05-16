@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000/api/v1';
-const API_BASE_URL_PROJECTS = 'http://localhost:8000/api/v1/projects';
+//const API_BASE_URL = 'http://localhost:8000/api/v1';
+const API_BASE_URL = 'https://dev-connexion-g6sv.onrender.com/api/v1';
 
 export const register = async ({ firstName, lastName, email, password }) => {
   try {
@@ -42,7 +42,7 @@ export const logout = async () => {
 };
 
 export const fetchProjects = async (search, page, limit) => {
-  const baseUrl = 'http://localhost:8000/api/v1/projects';
+  const baseUrl = `${API_BASE_URL}/projects`;
   const queryParams = new URLSearchParams();
 
   const params = { search, page, limit };
@@ -66,7 +66,7 @@ export const fetchProjects = async (search, page, limit) => {
 
 export const fetchProject = async projectId => {
   try {
-    const response = await axios.get(`http://localhost:8000/api/v1/projects/${projectId}`, {
+    const response = await axios.get(`${API_BASE_URL}/projects/${projectId}`, {
       withCredentials: 'include',
     });
     return response.data;
@@ -79,7 +79,7 @@ export const fetchProject = async projectId => {
 export const fetchSearchSuggestions = async query => {
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/v1/projects/suggestions?q=${query}`,
+      `${API_BASE_URL}/projects/suggestions?q=${query}`,
     );
     return response.data;
   } catch (error) {
@@ -90,7 +90,7 @@ export const fetchSearchSuggestions = async query => {
 
 export const likeProject = async projectId => {
   try {
-    const response = await fetch(`http://localhost:8000/api/v1/projects/${projectId}/like`, {
+    const response = await fetch(`${API_BASE_URL}/projects/${projectId}/like`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ export const likeProject = async projectId => {
 
 export const fetchProfile = async () => {
   try {
-    const response = await fetch('http://localhost:8000/api/v1/profiles/myProfile', {
+    const response = await fetch(`${API_BASE_URL}/profiles/myProfile`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -156,7 +156,7 @@ export const updateProfile = async profileDetails => {
 export const createProject = async ({ title, description, rolesNeeded }) => {
   try {
     const response = await axios.post(
-      `${API_BASE_URL_PROJECTS}`,
+      `${API_BASE_URL}/projects`,
       {
         title,
         description,
@@ -172,7 +172,7 @@ export const createProject = async ({ title, description, rolesNeeded }) => {
 
 export const updateProject = async (projectId, updatedProject) => {
   try {
-    const response = await fetch(`http://localhost:8000/api/v1/projects/${projectId}`, {
+    const response = await fetch(`${API_BASE_URL}/projects/${projectId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -193,7 +193,7 @@ export const updateProject = async (projectId, updatedProject) => {
 
 export const applyForProject = async (projectId, selectedRole) => {
   try {
-    const response = await fetch(`http://localhost:8000/api/v1/projects/${projectId}/apply`, {
+    const response = await fetch(`${API_BASE_URL}/projects/${projectId}/apply`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -219,7 +219,7 @@ export const uploadProfileImage = async (profileId, file, isCover = false) => {
     formData.append(isCover ? 'coverProfilePicture' : 'profilePicture', file);
 
     const response = await axios.patch(
-      `http://localhost:8000/api/v1/profiles/myProfile`,
+      `${API_BASE_URL}/profiles/myProfile`,
       formData,
       {
         headers: {
@@ -241,7 +241,7 @@ export const uploadProjectImage = async (projectId, file, isCover = false) => {
     formData.append(isCover ? 'coverProjectPicture' : 'projectPicture', file);
 
     const response = await axios.patch(
-      `http://localhost:8000/api/v1/projects/${projectId}`,
+      `${API_BASE_URL}/projects/${projectId}`,
       formData,
       {
         headers: {
@@ -262,7 +262,7 @@ export const fetchParticipantsData = async project => {
     if (!project || !project.participants) return [];
     const participantsRequests = project.participants.map(async participant => {
       const response = await axios.get(
-        `http://localhost:8000/api/v1/profiles/${participant.user}`,
+        `${API_BASE_URL}/profiles/${participant.user}`,
         {
           headers: { 'Content-Type': 'application/json' },
           withCredentials: 'include',
@@ -289,7 +289,7 @@ export const fetchCreatorData = async (
   try {
     if (!isLoggedIn || !project || !project.project || !project.project.createdBy) return;
     const response = await axios.get(
-      `http://localhost:8000/api/v1/profiles/${project.project.createdBy}`,
+      `${API_BASE_URL}/profiles/${project.project.createdBy}`,
       {
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true,
@@ -311,7 +311,7 @@ export const removeParticipant = async (
 ) => {
   try {
     await axios.delete(
-      `http://localhost:8000/api/v1/projects/${projectId}/participants/${participantId}`,
+      `${API_BASE_URL}/projects/${projectId}/participants/${participantId}`,
       {
         withCredentials: true,
       },
@@ -330,7 +330,7 @@ export const fetchApplicantsData = async (ownProjects, setApplicantsData, setLoa
   const applicantsRequests = ownProjects.flatMap(project =>
     project.applicants.map(applicant =>
       axios
-        .get(`http://localhost:8000/api/v1/profiles/${applicant.user}`, {
+        .get(`${API_BASE_URL}/profiles/${applicant.user}`, {
           headers: { 'Content-Type': 'application/json' },
           withCredentials: 'include',
         })
@@ -365,7 +365,7 @@ export const approveApplicant = async (
 ) => {
   try {
     const response = await axios.post(
-      `http://localhost:8000/api/v1/projects/${projectId}/approve/${applicantId}`,
+      `${API_BASE_URL}/projects/${projectId}/approve/${applicantId}`,
       {},
       {
         headers: { 'Content-Type': 'application/json' },
@@ -393,7 +393,7 @@ export const declineApplicant = async (
 ) => {
   try {
     const response = await axios.post(
-      `http://localhost:8000/api/v1/projects/${projectId}/reject/${applicantId}`,
+      `${API_BASE_URL}/projects/${projectId}/reject/${applicantId}`,
       {},
       {
         withCredentials: 'include',
