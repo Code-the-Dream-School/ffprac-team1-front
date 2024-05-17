@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 //const API_BASE_URL = 'http://localhost:8000/api/v1';
-const API_BASE_URL = 'https://dev-connexion-g6sv.onrender.com/api/v1';
+//const API_BASE_URL = 'https://dev-connexion-g6sv.onrender.com/api/v1';
+const API_BASE_URL = 'https://dev-connexion-pr-63.onrender.com';
 
 export const register = async ({ firstName, lastName, email, password }) => {
   try {
