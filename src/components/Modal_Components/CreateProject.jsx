@@ -4,7 +4,7 @@ import { createProject } from '../../util/fetchData';
 import { XCircleIcon } from '@heroicons/react/24/outline';
 
 const CreateProject = ({ closeModal }) => {
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
@@ -27,7 +27,7 @@ const CreateProject = ({ closeModal }) => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError('');
+    setErrors([]);
   };
 
   const handleSelectChange = (e) => {
@@ -62,7 +62,11 @@ const CreateProject = ({ closeModal }) => {
       closeModal();
       navigate('/profile');
     } catch (error) {
-      setError(error.response?.data?.message || 'Error creating project');
+      if (error.errors) {
+        setErrors(error.errors);
+      } else {
+        setErrors([{ message: 'Error creating project' }]);
+      }
     }
   };
 
@@ -130,7 +134,13 @@ const CreateProject = ({ closeModal }) => {
             </div>
           </div>
         </div>
-        {error && <div className="text-red-500 text-center" data-testid="error-message">{error}</div>}
+        {errors.length > 0 && (
+          <div className="text-red-500 text-center" data-testid="error-message">
+            {errors.map((err, idx) => (
+              <div key={idx}>{Object.values(err)}</div>
+            ))}
+          </div>
+        )}
         <div className="flex flex-row w-full justify-center items-center pt-8">
           <button
             color="green"
