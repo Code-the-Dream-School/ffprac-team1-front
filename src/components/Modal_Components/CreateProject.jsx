@@ -9,12 +9,11 @@ const CreateProject = ({ closeModal }) => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    rolesNeeded: '',
+    rolesNeeded: [],
   });
 
   const [rolesNeeded, setRolesNeeded] = useState([]);
   const [rolesNeededList, setRolesNeededList] = useState([
-    ' ',
     'Mentor',
     'Frontend Developer',
     'Backend Developer',
@@ -26,54 +25,42 @@ const CreateProject = ({ closeModal }) => {
     'Quality Assurance Engineer',
   ]);
 
-  let array = [];
-
-  const handleChange = e => {
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError(error);
+    setError('');
   };
 
-  const handleSelectChange = e => {
-    if (e !== ' ') {
-      rolesNeeded.forEach((item, index) => {
-        array[index] = item;
+  const handleSelectChange = (e) => {
+    const selectedRole = e.target.value;
+    if (selectedRole !== 'Select...') {
+      setRolesNeeded((prevRoles) => {
+        const newRoles = [...prevRoles, selectedRole];
+        setFormData({ ...formData, rolesNeeded: newRoles });
+        return newRoles;
       });
-      array.push(e.target.value);
-      setRolesNeeded(array);
-      setFormData({ ...formData, rolesNeeded: array });
 
-      array = [];
-
-      let temp = rolesNeededList.filter(item => item !== e.target.value);
-      temp.forEach((item, index) => {
-        array[index] = item;
-      });
-      setRolesNeededList(array);
+      setRolesNeededList((prevList) => prevList.filter((item) => item !== selectedRole));
     }
   };
 
-  const removeItem = param => {
-    array = [];
-    rolesNeededList.map((item, index) => {
-      array[index] = item;
+  const removeItem = (param) => {
+    setRolesNeeded((prevRoles) => {
+      const newRoles = prevRoles.filter((item) => item !== param);
+      setFormData({ ...formData, rolesNeeded: newRoles });
+      return newRoles;
     });
-    array.push(param);
-    setRolesNeededList(array);
 
-    array = [];
-    let rolesNeededFiltered = rolesNeeded.filter(item => item !== param);
-    rolesNeededFiltered.forEach((item, index) => {
-      array[index] = item;
+    setRolesNeededList((prevList) => {
+      const newList = [...prevList, param];
+      return newList.sort();
     });
-    setRolesNeeded(array);
-    setFormData({ ...formData, rolesNeeded: array });
   };
 
   const create = async () => {
     try {
-      const result = await createProject(formData);
+      await createProject(formData);
       closeModal();
-      navigate(`/profile`);
+      navigate('/profile');
     } catch (error) {
       setError(error.response?.data?.message || 'Error creating project');
     }
@@ -81,34 +68,46 @@ const CreateProject = ({ closeModal }) => {
 
   return (
     <div className="max-h-[700px] overflow-y-auto">
-      <header className="text-center text-xl pb-6 font-bold text-green"> Create New Project</header>
-      <form className="w-full h-[90%] py-6 flex flex-col">
+      <header className="text-center text-xl pb-6 font-bold text-green" data-testid="header">
+        Create New Project
+      </header>
+      <form className="w-full h-[90%] py-6 flex flex-col" data-testid="form">
         <div className="flex flex-row justify-center">
           <div className="w-[60%] flex flex-col">
-            <label className="text-lg text-green/85">Project Name</label>
+            <label className="text-lg text-green/85" htmlFor="title">
+              Project Name
+            </label>
             <input
               type="text"
               name="title"
+              id="title"
               placeholder=""
               value={formData.title}
               onChange={handleChange}
               className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent modal-input"
+              data-testid="title-input"
             />
 
-            <label className="text-lg text-green/85">About Project</label>
+            <label className="text-lg text-green/85" htmlFor="description">
+              About Project
+            </label>
             <textarea
               name="description"
+              id="description"
               value={formData.description}
               onChange={handleChange}
               className="w-full bg-gray/5 text-white/80 p-2 rounded border border-transparent modal-input"
+              data-testid="description-input"
             />
-            <div className=" mt-6 pb-10 flex flex-row bg-black">
+            <div className="mt-6 pb-10 flex flex-row bg-black">
               <select
                 label="Roles Needed"
-                value={rolesNeededList.toString()}
                 onChange={handleSelectChange}
                 className="w-full bg-gray/5 p-2 border border-transparent focus:outline-none focus:border-blue/40 rounded border border-transparent"
+                data-testid="roles-select"
+                value="Select..."
               >
+                <option value="Select..." className="bg-black h-full w-full z-10">Select...</option>
                 {rolesNeededList.map((item, index) => (
                   <option value={item} key={index} className="bg-black h-full w-full z-10">
                     {item}
@@ -116,28 +115,29 @@ const CreateProject = ({ closeModal }) => {
                 ))}
               </select>
             </div>
-            <div className="min-h-28">
+            <div className="min-h-28" data-testid="roles-list">
               {rolesNeeded.map((item, index) => (
                 <div className="flex flex-row" key={index}>
-                  <div>{item} </div>
+                  <div>{item}</div>
                   <XCircleIcon
                     onClick={() => removeItem(item)}
                     strokeWidth="1"
                     className="h-4 w-4 mt-2 ml-2 stroke-blue/50 hover:stroke-blue hover:cursor-pointer"
+                    data-testid={`remove-${item}`}
                   />
                 </div>
               ))}
             </div>
           </div>
         </div>
-        {error && <div className="text-red-500 text-center">{error}</div>}
+        {error && <div className="text-red-500 text-center" data-testid="error-message">{error}</div>}
         <div className="flex flex-row w-full justify-center items-center pt-8">
           <button
-            // variant="gradient"
             color="green"
-            className="btn-primary text-black w-[30%] "
+            className="btn-primary text-black w-[30%]"
             onClick={create}
             type="button"
+            data-testid="create-button"
           >
             Create
           </button>
